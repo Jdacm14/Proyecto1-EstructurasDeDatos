@@ -9,4 +9,5 @@ struct Nodo {
 
 	Nodo(const std::string& url, const std::string& title)
 		:url(url), titulo(title), prev(nullptr), next(nullptr){}
+
 };
