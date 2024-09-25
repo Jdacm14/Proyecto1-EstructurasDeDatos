@@ -14,6 +14,14 @@ private:
 public:
     Browser(int limiteHistorial = 10);
 
+    std::vector <Pestaña> getPestañas();
+    void setPestañas(std::vector<Pestaña>);
+    int getPestañaActual();
+    Pestaña getPestañaEnPos(int);
+    void setPestañaActual(int);
+    int getLimiteHistorial();
+    void setLimiteHistorial(int);
+
     // Manejo de pestañas
     void nuevaPestaña();
     void cerrarPestaña(int index);

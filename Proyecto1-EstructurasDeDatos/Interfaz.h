@@ -2,18 +2,22 @@
 #include"Pestaña.h"
 #include"Browser.h"
 #include"HistorialNavegacion.h"
+#include"CSV.h"
 
 class Interfaz {
 public:
-	static std::string buscadorPrincipal();
+	static char buscadorPrincipal();
+	void Interfaz::mostrarMenu();
 
-	static std::string irAlSitioWeb();
+	static void mostrarPaginaActual(Browser& navegador);
 
-	static std::string agregarBookmark();
+	static void irAlSitioWeb(Browser navegador);
+
+	static void agregarBookmark();
 
 	static void verBookmarks();
 
-	static std::string busquedaFiltros();
+	static void busquedaFiltros();
 
 	static std::string incognito();
 

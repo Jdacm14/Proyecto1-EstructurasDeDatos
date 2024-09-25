@@ -129,6 +129,8 @@
   <ItemGroup>
     <ClCompile Include="Bookmark.cpp" />
     <ClCompile Include="Browser.cpp" />
+    <ClCompile Include="Controladora.cpp" />
+    <ClCompile Include="CSV.cpp" />
     <ClCompile Include="HistorialNavegacion.cpp" />
     <ClCompile Include="Interfaz.cpp" />
     <ClCompile Include="Pestaña.cpp" />
@@ -137,6 +139,8 @@
   <ItemGroup>
     <ClInclude Include="Bookmark.h" />
     <ClInclude Include="Browser.h" />
+    <ClInclude Include="Controladora.h" />
+    <ClInclude Include="CSV.h" />
     <ClInclude Include="HistorialNavegacion.h" />
     <ClInclude Include="Interfaz.h" />
     <ClInclude Include="Pestaña.h" />

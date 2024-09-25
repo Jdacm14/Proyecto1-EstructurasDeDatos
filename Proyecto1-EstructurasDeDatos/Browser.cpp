@@ -1,10 +1,45 @@
 #include "Browser.h"
 // Implementación de los métodos
 
-Browser::Browser(int limite) : pestañaActual(0), limiteHistorial(limite) {
+Browser::Browser(int limite) : pestañaActual(0), limiteHistorial(limite) { // probablemente haya que cambiar este constructor
     // Crear la primera pestaña con el límite de historial dado
     pestañas.push_back(Pestaña());
 }
+
+std::vector<Pestaña> Browser::getPestañas()
+{
+    return pestañas;
+}
+
+void Browser::setPestañas(std::vector<Pestaña> listaPestañas)
+{
+    pestañas = listaPestañas;
+}
+
+int Browser::getPestañaActual()
+{
+    return pestañaActual;
+}
+
+Pestaña Browser::getPestañaEnPos(int pos)
+{
+    return pestañas.at(pos);
+}
+
+void Browser::setPestañaActual(int pest)
+{
+    pestañaActual = pest;
+}
+
+int Browser::getLimiteHistorial()
+{
+    return limiteHistorial;
+}
+
+void Browser::setLimiteHistorial(int lim){
+    limiteHistorial = lim;
+}
+
 
 void Browser::nuevaPestaña() {
     pestañas.push_back(Pestaña());  // Añadir nueva pestaña
@@ -45,14 +80,14 @@ void Browser::limpiarHistorialPestañaActual() {
     pestañas[pestañaActual].limpiarHistorialVentana();
 }
 
-void Browser::agregarBookmarkPestañaActual(std::string& url, std::string& title) {
-    pestañas[pestañaActual].agregarBookmark(url, title);
-}
-
-void Browser::mostrarBookmarksPestañaActual() {
-    pestañas[pestañaActual].mostrarBookmarks();
-}
-
+//void Browser::agregarBookmarkPestañaActual(std::string& url, std::string& title) {
+//    pestañas[pestañaActual].agregarBookmark(url, title);
+//}
+//
+//void Browser::mostrarBookmarksPestañaActual() {
+//    pestañas[pestañaActual].mostrarBookmarks();
+//}
+qq
 void Browser::activarIncognitoPestañaActual() {
     pestañas[pestañaActual].activarIncognito();
     std::cout << "Modo incógnito activado en la pestaña #" << pestañaActual << std::endl;

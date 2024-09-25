@@ -2,6 +2,22 @@
 
 Pestaña::Pestaña(): incognito(false)
 {
+	historial = HistorialNavegacion();
+}
+
+HistorialNavegacion Pestaña::getHistorial()
+{
+	return historial;
+}
+
+void Pestaña::setHistorial(HistorialNavegacion histo)
+{
+	historial = histo;
+}
+
+std::vector<Bookmark> Pestaña::geVectortBookmarks()
+{
+	return std::vector<Bookmark>();
 }
 
 void Pestaña::activarIncognito()
