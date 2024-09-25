@@ -1,0 +1,75 @@
+#include "Browser.h"
+// Implementación de los métodos
+
+Browser::Browser(int limite) : pestañaActual(0), limiteHistorial(limite) {
+    // Crear la primera pestaña con el límite de historial dado
+    pestañas.push_back(Pestaña());
+}
+
+void Browser::nuevaPestaña() {
+    pestañas.push_back(Pestaña());  // Añadir nueva pestaña
+    pestañaActual = pestañas.size() - 1;
+    std::cout << "Nueva pestaña creada, ahora estás en la pestaña #" << pestañaActual << std::endl;
+}
+
+void Browser::cerrarPestaña(int index) {
+    if (index >= 0 && index < pestañas.size()) {
+        pestañas.erase(pestañas.begin() + index);  // Eliminar la pestaña del vector
+        pestañaActual = (index == 0) ? 0 : index - 1;  // Cambiar a la pestaña anterior si se cierra la actual
+        std::cout << "Pestaña cerrada, ahora estás en la pestaña #" << pestañaActual << std::endl;
+    }
+    else {
+        std::cout << "Índice de pestaña inválido" << std::endl;
+    }
+}
+
+void Browser::cambiarPestaña(int index) {
+    if (index >= 0 && index < pestañas.size()) {
+        pestañaActual = index;
+        std::cout << "Cambiado a la pestaña #" << index << std::endl;
+    }
+    else {
+        std::cout << "Índice de pestaña inválido" << std::endl;
+    }
+}
+
+void Browser::irAtras() {
+    pestañas[pestañaActual].anteriorPag();
+}
+
+void Browser::irAdelante() {
+    pestañas[pestañaActual].siguientePag();
+}
+
+void Browser::limpiarHistorialPestañaActual() {
+    pestañas[pestañaActual].limpiarHistorialVentana();
+}
+
+void Browser::agregarBookmarkPestañaActual(std::string& url, std::string& title) {
+    pestañas[pestañaActual].agregarBookmark(url, title);
+}
+
+void Browser::mostrarBookmarksPestañaActual() {
+    pestañas[pestañaActual].mostrarBookmarks();
+}
+
+void Browser::activarIncognitoPestañaActual() {
+    pestañas[pestañaActual].activarIncognito();
+    std::cout << "Modo incógnito activado en la pestaña #" << pestañaActual << std::endl;
+}
+
+void Browser::desactivarIncognitoPestañaActual() {
+    pestañas[pestañaActual].desactivarIncognito();
+    std::cout << "Modo incógnito desactivado en la pestaña #" << pestañaActual << std::endl;
+}
+
+void Browser::mostrarPestañas() {
+    std::cout << "=== Pestañas abiertas ===" << std::endl;
+    for (size_t i = 0; i < pestañas.size(); ++i) {
+        std::cout << "Pestaña #" << i;
+        if (i == pestañaActual) {
+            std::cout << " (actual)";
+        }
+        std::cout << std::endl;
+    }
+}

@@ -127,16 +127,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Bookmark.cpp" />
+    <ClCompile Include="Browser.cpp" />
     <ClCompile Include="HistorialNavegacion.cpp" />
     <ClCompile Include="Interfaz.cpp" />
     <ClCompile Include="Pestaña.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Bookmark.h" />
     <ClInclude Include="Browser.h" />
     <ClInclude Include="HistorialNavegacion.h" />
     <ClInclude Include="Interfaz.h" />
-    <ClInclude Include="Nodo.h" />
     <ClInclude Include="Pestaña.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

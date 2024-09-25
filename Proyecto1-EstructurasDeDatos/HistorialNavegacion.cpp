@@ -1,63 +1,59 @@
 #include "HistorialNavegacion.h"
 
-HistorialNavegacion::HistorialNavegacion(int limite) : head(nullptr), tail(nullptr), actual(nullptr), limiteEntradas(limite) {};
+HistorialNavegacion::HistorialNavegacion(int limite) : actual(historial.end()), limiteEntradas(limite) {};
 
 HistorialNavegacion::~HistorialNavegacion(){
 	limpiarHistorial();
 }
 
-void HistorialNavegacion::agregarPagina(std::string& url, std::string& title){ // esto es un insertar al final de la lista
-	Nodo* nuevo = new Nodo(url, title);
-  
-
-    if (!head) {
-        head = tail = actual = nuevo;
+void HistorialNavegacion::agregarPagina(std::string& url, std::string& title){ 
+    // Si no estamos en el final, eliminamos lo que viene después
+    if (actual != historial.end()) {
+        historial.erase(std::next(actual), historial.end());
     }
-    else {
-        // Si no estamos al final del historial, eliminar nodos hacia adelante
-        if (actual->next) {
-            Nodo* temp = actual->next;
-            while (temp) {
-                Nodo* siguiente = temp->next;
-                delete temp;
-                temp = siguiente;
-            }
-            actual->next = nullptr;
-            tail = actual;
-        }
 
-        // Enlazar el nuevo nodo
-        actual->next = nuevo;
-        nuevo->prev = actual;
-        actual = nuevo;
-        tail = nuevo;
+    // Agregar la nueva entrada
+    historial.push_back({ url, title });
+    actual = std::prev(historial.end());
+
+    // Limitar el tamaño del historial
+    if (historial.size() > limiteEntradas) {
+        historial.pop_front();
     }
+    
+}
+
+std::pair<std::string, std::string> HistorialNavegacion::obtenerPaginaActual()
+{
+    return *actual;
 }
 
 bool HistorialNavegacion::puedeRetroceder() //faltan los demas metodos
 {
-	return false;
+	return actual != historial.begin();
 }
 
 bool HistorialNavegacion::puedeAvanzar()
 {
-	return false;
+    return actual != std::prev(historial.end());
 }
 
-Nodo* HistorialNavegacion::atras()
+void HistorialNavegacion::atras()
 {
-	return nullptr;
+    if (puedeRetroceder())
+        --actual;
 }
 
-Nodo* HistorialNavegacion::adelante()
+void HistorialNavegacion::adelante()
 {
-	return nullptr;
+    if (puedeAvanzar())
+        ++actual;
 }
 
-void HistorialNavegacion::limpiarHistorial()
-{
+void HistorialNavegacion::limpiarHistorial(){
+    historial.clear();
 }
 
-void HistorialNavegacion::establecerLimite(int limite)
-{
+void HistorialNavegacion::establecerLimite(int limite){
+    limiteEntradas = limite;
 }
