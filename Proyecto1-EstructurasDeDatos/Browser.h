@@ -44,6 +44,8 @@ public:
     void activarIncognitoPestañaActual();
     void desactivarIncognitoPestañaActual();
 
+    void mostrarTodosBookmarks();
+
     // Mostrar información sobre pestañas
     void mostrarPestañas();
 };

@@ -105,6 +105,13 @@ void Browser::desactivarIncognitoPestañaActual() {
     std::cout << "Modo incógnito desactivado en la pestaña #" << pestañaActual << std::endl;
 }
 
+void Browser::mostrarTodosBookmarks()
+{
+    for (Pestaña p : pestañas) {
+        p.mostrarBookmarks();
+    }
+}
+
 void Browser::mostrarPestañas() {
     std::cout << "=== Pestañas abiertas ===" << std::endl;
     for (size_t i = 0; i < pestañas.size(); ++i) {

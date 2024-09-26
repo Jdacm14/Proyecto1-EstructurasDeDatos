@@ -21,7 +21,7 @@ void Controladora::controlMenuGeneral()
         system("cls");  // Limpiar la pantalla
         Interfaz::mostrarMenu();  // Mostrar el menú en la parte superior
 
-        Interfaz::mostrarPaginaActual(*browser);
+       Interfaz::mostrarPaginaActual(*browser);
 
         opcion = Interfaz::buscadorPrincipal();
 
