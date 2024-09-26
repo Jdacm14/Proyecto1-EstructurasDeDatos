@@ -20,6 +20,19 @@ std::vector<Bookmark> Pestaña::geVectortBookmarks()
 	return std::vector<Bookmark>();
 }
 
+void Pestaña::agregarBookmark(Bookmark bo)
+{
+	bookmarks.push_back(bo);
+}
+
+
+void Pestaña::mostrarBookmarks()
+{
+	for (Bookmark b : bookmarks) {
+		std::cout << b.toString() << std::endl;
+	}
+}
+
 void Pestaña::activarIncognito()
 {
 	incognito = true;

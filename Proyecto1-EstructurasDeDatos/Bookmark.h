@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include<sstream>
 
 class Bookmark {
 private:
@@ -19,7 +20,7 @@ public:
 
 
 
-
+    std::string toString();
 
 };
 

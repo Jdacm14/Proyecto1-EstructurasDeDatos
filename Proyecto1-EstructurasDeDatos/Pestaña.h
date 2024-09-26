@@ -16,8 +16,7 @@ public:
 	//void agregarSitioWeb();
 
 
-	void agregarBookmark(std::string&, std::string&);
-	void agregarEtiquetaBook(std::string&, std::string&);
+	void agregarBookmark(Bookmark);
 	void mostrarBookmarks();
 	void activarIncognito();
 	void desactivarIncognito();

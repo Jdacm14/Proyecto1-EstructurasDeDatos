@@ -86,23 +86,52 @@ void Interfaz::irAlSitioWeb(Browser navegador)
 
 }
 
-void Interfaz::agregarBookmark()
+void Interfaz::agregarBookmark(Browser b)
 {
     std::string op;
+    std::string op2;
+    std::vector<std::string> pes;
+    bool s = false;
     system("cls");
     std::cout << std::endl;
     std::cout << "----------------------------------------------------------------" << std::endl;
     std::cout << "                            AGREGAR BOOKMARK                    " << std::endl;
-    std::cout << " Ingresar URL: " << std::endl;
+    std::cout << " Ingresar URL: ";
     std::cin >> op;
+    std::cout << " Ingresar titulo: ";
+    std::cin >> op2;
+    while (s==false) {
+        int siono;
+        std::string eti;
+        std::cout << " Desea agregar una etiqueta?... si(1) / no(2)";
+        std::cin >> siono;
+        if (siono == 0) {
+            s = true;
+        }
+        std::cout << " Ingresar etiqueta: ";
+        std::cin >> eti;
+        pes.push_back(eti);
+        system("cls");
+    }
+
+    Bookmark bo(op, op2);
+    for (std::string s : pes) {
+        bo.agregarEtiqueta(s);
+    }
+
+    b.getPestañaActualReal().agregarBookmark(bo);
+    
+
 }
 
-void Interfaz::verBookmarks()
+void Interfaz::verBookmarks(Browser b)
 {
     std::cout << std::endl;
     std::cout << "----------------------------------------------------------------" << std::endl;
     std::cout << "                          LISTA DE BOOKMARKS                    " << std::endl;
-    //Mostrar la lista de bookmarks
+    for (Pestaña p : b.getPestañas()) {
+        p.mostrarBookmarks();
+    }
 
 }
 

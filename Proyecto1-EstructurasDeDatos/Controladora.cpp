@@ -31,10 +31,10 @@ void Controladora::controlMenuGeneral()
             Interfaz::irAlSitioWeb(*browser);
             break;
         case 'b':
-            Interfaz::agregarBookmark();
+            Interfaz::agregarBookmark(*browser);
             break;
         case 'd':
-            Interfaz::verBookmarks();
+            Interfaz::verBookmarks(*browser);
             break;
         default:
            // Interfaz::msjOpcionNoValida();
