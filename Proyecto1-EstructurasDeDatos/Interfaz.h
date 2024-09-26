@@ -7,7 +7,7 @@
 class Interfaz {
 public:
 	static char buscadorPrincipal();
-	void Interfaz::mostrarMenu();
+	static void mostrarMenu();
 
 	static void mostrarPaginaActual(Browser& navegador);
 

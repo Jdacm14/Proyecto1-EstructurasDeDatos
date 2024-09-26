@@ -87,7 +87,7 @@ void Browser::limpiarHistorialPestañaActual() {
 //void Browser::mostrarBookmarksPestañaActual() {
 //    pestañas[pestañaActual].mostrarBookmarks();
 //}
-qq
+
 void Browser::activarIncognitoPestañaActual() {
     pestañas[pestañaActual].activarIncognito();
     std::cout << "Modo incógnito activado en la pestaña #" << pestañaActual << std::endl;

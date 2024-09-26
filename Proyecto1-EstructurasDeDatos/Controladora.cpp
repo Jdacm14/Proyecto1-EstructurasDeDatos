@@ -19,7 +19,7 @@ void Controladora::controlMenuGeneral()
     do {
         // Mostrar el menú antes de cada operación
         system("cls");  // Limpiar la pantalla
-        Interfaz::mostrarMenu;  // Mostrar el menú en la parte superior
+        Interfaz::mostrarMenu();  // Mostrar el menú en la parte superior
 
         opcion = Interfaz::buscadorPrincipal();
 
