@@ -1,6 +1,6 @@
 #include "HistorialNavegacion.h"
 
-HistorialNavegacion::HistorialNavegacion(int limite) : actual(historial.end()), limiteEntradas(limite) {};
+HistorialNavegacion::HistorialNavegacion(int limite) : actual(historial.begin()), limiteEntradas(limite) {};
 
 HistorialNavegacion::~HistorialNavegacion(){
 	limpiarHistorial();
@@ -51,10 +51,16 @@ void HistorialNavegacion::agregarPagina(std::string& url, std::string& title) {
 
 std::pair<std::string, std::string> HistorialNavegacion::obtenerPaginaActual()
 {
-    if (actual == historial.end()) {
-        throw std::out_of_range("No hay pagina actual...");
+    std::pair<std::string, std::string> null_pair = { "", "" };
+
+    if ( historial.empty() || actual == historial.end()) {
+        std::cout << "No hay pagina actual" << std::endl;
     }
-    return *actual;
+    else {
+        return *actual;
+    }
+
+    return null_pair;
 }
 
 bool HistorialNavegacion::puedeRetroceder() //faltan los demas metodos
