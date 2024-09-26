@@ -25,7 +25,4 @@ public:
 
 	static std::string configuracion();
 
-
-
-
 };

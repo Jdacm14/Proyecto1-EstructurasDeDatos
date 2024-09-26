@@ -17,14 +17,17 @@ void HistorialNavegacion::agregarPagina(std::string& url, std::string& title){
     actual = std::prev(historial.end());
 
     // Limitar el tamaño del historial
-    if (historial.size() > limiteEntradas) {
+    if (historial.size() > static_cast<std::size_t>(limiteEntradas)) {
         historial.pop_front();
+        actual = historial.end();
     }
-    
 }
 
 std::pair<std::string, std::string> HistorialNavegacion::obtenerPaginaActual()
 {
+    if (actual == historial.end()) {
+        throw std::out_of_range("No hay pagina actual...");
+    }
     return *actual;
 }
 

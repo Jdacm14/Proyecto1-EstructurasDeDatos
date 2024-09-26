@@ -25,9 +25,4 @@ public:
 	void limpiarHistorial();
 	void establecerLimite(int limite);
 
-
-
-
-
-
 };
