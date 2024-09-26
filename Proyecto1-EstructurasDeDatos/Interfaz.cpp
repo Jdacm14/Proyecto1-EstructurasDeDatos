@@ -39,6 +39,10 @@ void Interfaz::mostrarMenu() {
 
 void Interfaz::mostrarPaginaActual(Browser& navegador)
 {
+    if (navegador.getPestañas().empty()) {
+        std::cout << "No hay pestaña abiertas..." << std::endl;
+        return;
+    }
     std::cout << "================= Pestaña #" << navegador.getPestañaActual() << " =================\n";
     auto pagina = navegador.getPestañaEnPos(navegador.getPestañaActual()).getHistorial().obtenerPaginaActual();
     std::cout << "URL: " << pagina.first << "\n";
@@ -128,3 +132,4 @@ std::string Interfaz::configuracion()
 {
     return std::string();
 }
+
