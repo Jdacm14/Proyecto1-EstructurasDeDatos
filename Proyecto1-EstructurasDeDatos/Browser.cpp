@@ -40,10 +40,15 @@ void Browser::setLimiteHistorial(int lim){
     limiteHistorial = lim;
 }
 
+Pestaña Browser::getPestañaActualReal()
+{
+    return pestañas.at(pestañaActual);
+}
+
 
 void Browser::nuevaPestaña() {
     pestañas.push_back(Pestaña());  // Añadir nueva pestaña
-    pestañaActual = pestañas.size() - 1;
+    pestañaActual = (int) pestañas.size() - 1;
     std::cout << "Nueva pestaña creada, ahora estás en la pestaña #" << pestañaActual << std::endl;
 }
 
@@ -80,13 +85,15 @@ void Browser::limpiarHistorialPestañaActual() {
     pestañas[pestañaActual].limpiarHistorialVentana();
 }
 
-//void Browser::agregarBookmarkPestañaActual(std::string& url, std::string& title) {
-//    pestañas[pestañaActual].agregarBookmark(url, title);
-//}
-//
-//void Browser::mostrarBookmarksPestañaActual() {
-//    pestañas[pestañaActual].mostrarBookmarks();
-//}
+void Browser::agregarBookmarkPestañaActual(Bookmark b)
+{
+    pestañas.at(pestañaActual).agregarBookmark(b);
+}
+
+void Browser::mostrarBookmarksPestañaActual()
+{
+    pestañas.at(pestañaActual).mostrarBookmarks();
+}
 
 void Browser::activarIncognitoPestañaActual() {
     pestañas[pestañaActual].activarIncognito();

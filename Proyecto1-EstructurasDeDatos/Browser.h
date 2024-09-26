@@ -22,6 +22,8 @@ public:
     int getLimiteHistorial();
     void setLimiteHistorial(int);
 
+    Pestaña getPestañaActualReal();
+
     // Manejo de pestañas
     void nuevaPestaña();
     void cerrarPestaña(int index);
@@ -35,7 +37,7 @@ public:
     void limpiarHistorialPestañaActual();
 
     // Gestión de bookmarks
-    void agregarBookmarkPestañaActual(std::string& url, std::string& title);
+    void agregarBookmarkPestañaActual(Bookmark);
     void mostrarBookmarksPestañaActual();
 
     // Modo incógnito
