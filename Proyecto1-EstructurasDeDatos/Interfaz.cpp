@@ -34,27 +34,33 @@ void Interfaz::mostrarMenu() {
     std::cout << " g - Nueva Pestania                                             " << std::endl;
     std::cout << " h - Configuracion                                              " << std::endl;
     std::cout << "----------------------------------------------------------------" << std::endl;
+   
 }
 
 
-void Interfaz::mostrarPaginaActual(Browser& navegador)
+void Interfaz::mostrarPaginaActual(Browser navegador)
 {
     if (navegador.getPestañas().empty()) {
         std::cout << "No hay pestaña abiertas..." << std::endl;
         return;
     }
+
+    // Obtener la página actual en la pestaña actual
+    SitioWeb pagina = navegador.getPestañaEnPos(navegador.getPestañaActual()).getHistorial().obtenerPaginaActual();
+
+    // Mostrar los detalles de la página actual usando los getters
     std::cout << "================= Pestaña #" << navegador.getPestañaActual() << " =================\n";
-    auto pagina = navegador.getPestañaEnPos(navegador.getPestañaActual()).getHistorial().obtenerPaginaActual();
-    std::cout << "URL: " << pagina.first << "\n";
-    std::cout << "Título: " << pagina.second << "\n";
+    std::cout << "URL: " << pagina.getUrl() << "\n";
+    std::cout << "Título: " << pagina.getTitulo() << "\n";
     std::cout << "===============================================\n";
 }
 
-void Interfaz::irAlSitioWeb(Browser navegador)
+void Interfaz::irAlSitioWeb(Browser& navegador)  // Pasar navegador por referencia
 {
     std::string urlIngresada;
     CSV csv;  // Crear instancia para cargar y buscar en el CSV
     std::string archivo = "sitiosWeb.csv";
+
     // Cargar los sitios web desde el archivo CSV
     if (!csv.cargarSitiosDesdeCSV(archivo)) {
         std::cout << "Error al cargar los sitios web." << std::endl;
@@ -68,23 +74,24 @@ void Interfaz::irAlSitioWeb(Browser navegador)
     std::cin >> urlIngresada;
 
     // Buscar la URL en los sitios cargados
-    std::pair<std::string, std::string> resultado = csv.buscarSitioPorURL(urlIngresada);
-    std::string url = resultado.first;
-    std::string titulo = resultado.second;
+    SitioWeb sitioEncontrado = csv.buscarSitioPorURL(urlIngresada);
 
-    if (titulo != "404 - Not Found") {
+    if (sitioEncontrado.getTitulo() != "404 - Not Found") {
         // Si la URL fue encontrada, mostrar URL y título
-        std::cout << "Visitando: " << url << " - " << titulo << std::endl;
-        // Agregar al historial de navegación (suponiendo que tienes la clase HistorialNavegacion)
-        navegador.getPestañaEnPos(navegador.getPestañaActual()).getHistorial().agregarPagina(url, titulo);
+        std::cout << "Visitando: " << sitioEncontrado.getUrl() << " - " << sitioEncontrado.getTitulo() << std::endl;
+
+        // Agregar al historial de navegación
+        navegador.getPestañaEnPos(navegador.getPestañaActual()).getHistorial().agregarPagina(sitioEncontrado);
+
+        // Mostrar la página actual
         mostrarPaginaActual(navegador);
     }
     else {
-        std::cout << titulo << std::endl;
+        // Si no se encuentra, mostrar el error
+        std::cout << sitioEncontrado.getTitulo() << std::endl;  // "404 - Not Found"
     }
-   
-
 }
+
 
 void Interfaz::agregarBookmark(Browser b)
 {

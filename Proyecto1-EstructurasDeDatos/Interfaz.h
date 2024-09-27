@@ -9,9 +9,9 @@ public:
 	static char buscadorPrincipal();
 	static void mostrarMenu();
 
-	static void mostrarPaginaActual(Browser& navegador);
+	static void mostrarPaginaActual(Browser navegador);
 
-	static void irAlSitioWeb(Browser navegador);
+	static void irAlSitioWeb(Browser& navegador);
 
 	static void agregarBookmark(Browser);
 
