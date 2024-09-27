@@ -112,12 +112,15 @@ void Interfaz::agregarBookmark(Browser b)
         std::string eti;
         std::cout << " Desea agregar una etiqueta?... si(1) / no(2)";
         std::cin >> siono;
-        if (siono == 0) {
+        if (siono == 2) {
             s = true;
         }
-        std::cout << " Ingresar etiqueta: ";
-        std::cin >> eti;
-        pes.push_back(eti);
+        else {
+            std::cout << " Ingresar etiqueta: ";
+            std::cin >> eti;
+            pes.push_back(eti);
+
+        }
         system("cls");
     }
 
@@ -127,7 +130,6 @@ void Interfaz::agregarBookmark(Browser b)
     }
 
     b.getPestañaActualReal().agregarBookmark(bo);
-    
 
 }
 
@@ -136,10 +138,7 @@ void Interfaz::verBookmarks(Browser b)
     std::cout << std::endl;
     std::cout << "----------------------------------------------------------------" << std::endl;
     std::cout << "                          LISTA DE BOOKMARKS                    " << std::endl;
-    for (Pestaña p : b.getPestañas()) {
-        p.mostrarBookmarks();
-    }
-
+    b.mostrarTodosBookmarks();
 }
 
 void Interfaz::busquedaFiltros()
@@ -156,12 +155,13 @@ void Interfaz::busquedaFiltros()
 
 std::string Interfaz::incognito()
 {
-    return std::string();
+    return " ";
 }
 
-std::string Interfaz::nuevaPestania()
+std::string Interfaz::nuevaPestania(Browser b)
 {
-    return std::string();
+    b.nuevaPestaña();
+    return " ";
 }
 
 std::string Interfaz::configuracion()

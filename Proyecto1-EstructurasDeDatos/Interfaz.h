@@ -21,7 +21,7 @@ public:
 
 	static std::string incognito();
 
-	static std::string nuevaPestania();
+	static std::string nuevaPestania(Browser);
 
 	static std::string configuracion();
 
