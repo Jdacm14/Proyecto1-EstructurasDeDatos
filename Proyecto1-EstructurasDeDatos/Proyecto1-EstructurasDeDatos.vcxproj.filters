@@ -39,6 +39,9 @@
     <ClCompile Include="CSV.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
+    <ClCompile Include="SitioWeb.cpp">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Browser.h">
@@ -60,6 +63,9 @@
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
     <ClInclude Include="CSV.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="SitioWeb.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
   </ItemGroup>

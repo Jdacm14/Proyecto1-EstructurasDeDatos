@@ -1,15 +1,9 @@
 #include <fstream>
+#include "SitioWeb.h"
 #include <iostream>
 #include <vector>
 #include <string>
 #include <sstream>
-
-// Definir una estructura para almacenar los datos del sitio web
-struct SitioWeb {
-    std::string urlCompleto;
-    std::string dominio;
-    std::string titulo;
-};
 
 class CSV {
 private:
@@ -18,9 +12,9 @@ private:
 
 public:
     // Cargar sitios desde el archivo CSV
-    bool cargarSitiosDesdeCSV(std::string& archivo);
+    bool cargarSitiosDesdeCSV(const std::string& archivo);
+
     // Buscar una URL en los sitios cargados
-    std::pair<std::string, std::string> buscarSitioPorURL(std::string & url);
-     
+    SitioWeb buscarSitioPorURL(const std::string& url);
 };
 

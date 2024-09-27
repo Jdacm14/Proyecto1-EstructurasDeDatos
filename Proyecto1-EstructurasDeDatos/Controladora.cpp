@@ -17,15 +17,13 @@ void Controladora::msjOpcionNoValida()
 void Controladora::controlMenuGeneral()
 {
     do {
-        // Mostrar el menú antes de cada operación
+        // Mostrar el menÃº antes de cada operaciÃ³n
         system("cls");  // Limpiar la pantalla
-        Interfaz::mostrarMenu();  // Mostrar el menú en la parte superior
-
-       Interfaz::mostrarPaginaActual(*browser);
-
+        Interfaz::mostrarMenu();  // Mostrar el menÃº en la parte superior
+        Interfaz::mostrarPaginaActual(*browser);
         opcion = Interfaz::buscadorPrincipal();
 
-        // Ejecutar la opción seleccionada
+        // Ejecutar la opciÃ³n seleccionada
         switch (opcion) {
         case 'a':
             Interfaz::irAlSitioWeb(*browser);
@@ -41,7 +39,7 @@ void Controladora::controlMenuGeneral()
             break;
         }
 
-        // Pausa después de ejecutar cada opción para que el usuario vea el resultado
+        // Pausa despuÃ©s de ejecutar cada opciÃ³n para que el usuario vea el resultado
         std::cout << "\nPresione cualquier tecla para continuar...\n";
         std::cin.get();  // Esperar entrada para pausar
         std::cin.get();  // Capturar la tecla de continuar
