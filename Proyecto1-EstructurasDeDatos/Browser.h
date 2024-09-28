@@ -4,6 +4,7 @@
 #include "HistorialNavegacion.h"
 #include "Bookmark.h"
 #include <iostream>
+#include<windows.h>
 
 class Browser {
 private:
@@ -28,10 +29,11 @@ public:
     int nuevaPestaña();
     void cerrarPestaña(int index);
     void cambiarPestaña(int index);
+    bool existeSigPes();
 
     // Navegación en la pestaña actual
-    void irAtras();
-    void irAdelante();
+    bool irAtras();
+    bool irAdelante();
 
     // Historial
     void limpiarHistorialPestañaActual();

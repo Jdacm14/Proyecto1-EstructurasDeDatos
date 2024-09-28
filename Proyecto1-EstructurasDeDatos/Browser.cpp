@@ -74,12 +74,21 @@ void Browser::cambiarPestaña(int index) {
     }
 }
 
-void Browser::irAtras() {
-    pestañas[pestañaActual].anteriorPag();
+bool Browser::existeSigPes()
+{
+    if (pestañaActual == (int)pestañas.size()-1) {
+        return false;
+    }
+    return true;
 }
 
-void Browser::irAdelante() {
-    pestañas[pestañaActual].siguientePag();
+
+bool Browser::irAtras() {
+    return pestañas[pestañaActual].anteriorPag();
+}
+
+bool Browser::irAdelante() {
+   return pestañas[pestañaActual].siguientePag();
 }
 
 void Browser::limpiarHistorialPestañaActual() {

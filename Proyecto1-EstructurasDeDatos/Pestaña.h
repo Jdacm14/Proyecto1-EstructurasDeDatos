@@ -25,8 +25,8 @@ public:
 
 	void limpiarHistorialVentana();
 
-	void siguientePag();
-	void anteriorPag();
+	bool siguientePag();
+	bool anteriorPag();
 
 
 private:

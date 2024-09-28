@@ -53,22 +53,20 @@ void Pestaña::limpiarHistorialVentana()
 	historial.limpiarHistorial();
 }
 
-void Pestaña::siguientePag()
+bool Pestaña::siguientePag()
 {
-	if (GetAsyncKeyState(VK_RIGHT) & 0x8000) {
 		if (historial.puedeAvanzar()) {
-			historial.adelante();
+			return true;
 		}
-	}
+		return false;
 }
 
-void Pestaña::anteriorPag()
+bool Pestaña::anteriorPag()
 {
-	if (GetAsyncKeyState(VK_LEFT) & 0x8000) {
-		if (historial.puedeRetroceder()) {
-			historial.atras();
-		}
+	if (historial.puedeRetroceder()) {
+		return true;
 	}
+	return false;
 }
 
 
