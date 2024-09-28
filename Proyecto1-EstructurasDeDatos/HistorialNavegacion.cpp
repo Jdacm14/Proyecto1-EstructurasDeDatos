@@ -35,6 +35,19 @@ SitioWeb& HistorialNavegacion::obtenerPaginaActual() {
 }
 
 
+void HistorialNavegacion::setPaginaActual(int n)
+{
+    if (historial.empty()) {
+        return;
+    }
+    if (n == 75) {
+        actual = std::prev(actual);
+    }
+    else if(n==77){
+        actual = std::next(actual);
+    }
+}
+
 // Verificar si se puede retroceder
 bool HistorialNavegacion::puedeRetroceder() {
     return actual != historial.begin();
@@ -48,6 +61,7 @@ bool HistorialNavegacion::puedeAvanzar() {
 // Retroceder una página
 void HistorialNavegacion::atras() {
     if (puedeRetroceder()) {
+        
         --actual;
     }
     else {

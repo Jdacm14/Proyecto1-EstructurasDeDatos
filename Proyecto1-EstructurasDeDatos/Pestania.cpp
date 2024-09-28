@@ -48,6 +48,8 @@ bool Pestania::getEstadoIncognito()
 	return incognito;
 }
 
+
+
 void Pestania::limpiarHistorialVentana()
 {
 	historial.limpiarHistorial();

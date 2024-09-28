@@ -45,6 +45,8 @@ void Interfaz::mostrarMenu() {
 }
 
 
+
+
 void Interfaz::mostrarPaginaActual(Browser& navegador)
 {
     if (navegador.getPestanias().empty()) {
@@ -280,14 +282,14 @@ std::string Interfaz::configuracion()
 
 
 void Interfaz::cambiarPestania(Browser& b, int n) {
-    if (n == 72 && b.getPestaniaActual() > 0) {
-        b.setPestaniaActual(b.getPestaniaActual() - 1);
-        mostrarPaginaActual(b);
+    if (n == 72 && b.getPestaniaActual() > 0) {  //Si la tecla que se tocó fue la #72 y solo si la pestania actual no es la 0, se puede ir hacia atras
+        b.setPestaniaActual(b.getPestaniaActual() - 1);  //Se setea una nueva pestania actual
+        mostrarPaginaActual(b);  //Y se muestra la pagina de la nueva pestania actual
      
     }
-    if (n == 80 && b.getPestaniaActual() < 10 && b.existeSigPes() ) {
-        b.setPestaniaActual(b.getPestaniaActual() + 1);
-        mostrarPaginaActual(b);
+    if (n == 80 &&  b.existeSigPes() ) {    //Si la tecla que se toco fue la 80 y si siguiente pestania existe
+        b.setPestaniaActual(b.getPestaniaActual() + 1);     //Seter pestania actual
+        mostrarPaginaActual(b);  //Mostrar pagina de la nueva pestania
       
     }
     
@@ -295,10 +297,12 @@ void Interfaz::cambiarPestania(Browser& b, int n) {
 
 void Interfaz::cambiarHistorial(Browser& b, int n) {
     if (n == 75 && b.irAtras()) {
-        std::cout << "Falta esta parte" << "\n";
+        b.getPestaniaActualReal().getHistorial().setPaginaActual(75);
+        mostrarPaginaActual(b);
     }
     if (n == 77 && b.irAdelante()) {
-        std::cout << "Falta esta parte" << "\n";
+        b.getPestaniaActualReal().getHistorial().setPaginaActual(77);
+        mostrarPaginaActual(b);
     }
 
 

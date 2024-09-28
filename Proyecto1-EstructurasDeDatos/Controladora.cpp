@@ -31,10 +31,10 @@ void Controladora::controlMenuGeneral()
 
             switch (tecla) {
             case 72:  // Flecha arriba
-                Interfaz::cambiarPestania(*browser, 72);
+                Interfaz::cambiarPestania(*browser, 72); // Ir a la siguiente pestannia
                 break;
             case 80:  // Flecha abajo
-                Interfaz::cambiarPestania(*browser, 80);
+                Interfaz::cambiarPestania(*browser, 80); //Ir a la pestania anterior
                 break;
             case 75:  // Flecha izquierda
                 Interfaz::cambiarHistorial(*browser, 75);  // Ir al historial anterior
