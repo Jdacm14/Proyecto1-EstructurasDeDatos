@@ -29,3 +29,15 @@ std::string Bookmark::getTitle()
 {
 	return title;
 }
+
+std::string Bookmark::toString()
+{
+	std::stringstream s;
+
+	s << "Titulo: " << title << ", "
+		<< "URL: " << url << ", "
+	    << "Etiquetas: ";
+	mostrarEtiquetas();
+
+	return s.str();
+}

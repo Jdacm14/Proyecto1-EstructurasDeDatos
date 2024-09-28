@@ -1,62 +1,79 @@
 #include "HistorialNavegacion.h"
+#include <stdexcept>
 
-HistorialNavegacion::HistorialNavegacion(int limite) : actual(historial.end()), limiteEntradas(limite) {};
 
-HistorialNavegacion::~HistorialNavegacion(){
-	limpiarHistorial();
+// Constructor
+HistorialNavegacion::HistorialNavegacion(int limite) : limiteEntradas(limite) {
+    actual = historial.end();  // Inicialmente no hay ninguna página
+
 }
 
-void HistorialNavegacion::agregarPagina(std::string& url, std::string& title){ 
-    // Si no estamos en el final, eliminamos lo que viene despu�s
-    if (actual != historial.end()) {
-        historial.erase(std::next(actual), historial.end());
-    }
-
-    // Agregar la nueva entrada
-    historial.push_back({ url, title });
-    actual = std::prev(historial.end());
-
-    // Limitar el tama�o del historial
-    if (historial.size() > static_cast<std::size_t>(limiteEntradas)) {
-        historial.pop_front();
-        actual = historial.end();
-    }
+// Destructor
+HistorialNavegacion::~HistorialNavegacion() {
+    limpiarHistorial();
 }
 
-std::pair<std::string, std::string> HistorialNavegacion::obtenerPaginaActual()
-{
-    if (actual == historial.end()) {
-        throw std::out_of_range("No hay pagina actual...");
+// Agregar una página al historial
+void HistorialNavegacion::agregarPagina(const SitioWeb& sitio) {
+    // Agregar la nueva página al final
+    historial.push_back(sitio);
+    actual = std::prev(historial.end());  // Actualizar el iterador actual al último elemento
+
+    // Limitar el tamaño del historial si excede el límite
+    //while (historial.size() > static_cast<std::size_t>(limiteEntradas)) {
+    //    historial.pop_front();  // Eliminar la página más antigua
+    //}
+}
+
+
+
+// Obtener la página actual
+SitioWeb& HistorialNavegacion::obtenerPaginaActual() {
+    static SitioWeb sitioNulo("404 - Not Found", "Página no encontrada");  // Objeto estático para un sitio nulo
+    if (historial.empty()) {
+        return sitioNulo;  // Devolver el sitio nulo si no hay páginas en el historial
     }
     return *actual;
 }
 
-bool HistorialNavegacion::puedeRetroceder() //faltan los demas metodos
-{
-	return actual != historial.begin();
+
+// Verificar si se puede retroceder
+bool HistorialNavegacion::puedeRetroceder() {
+    return actual != historial.begin();
 }
 
-bool HistorialNavegacion::puedeAvanzar()
-{
-    return actual != std::prev(historial.end());
+// Verificar si se puede avanzar
+bool HistorialNavegacion::puedeAvanzar() {
+    return actual != historial.end() && std::next(actual) != historial.end();
 }
 
-void HistorialNavegacion::atras()
-{
-    if (puedeRetroceder())
+// Retroceder una página
+void HistorialNavegacion::atras() {
+    if (puedeRetroceder()) {
         --actual;
+    }
+    else {
+        throw std::out_of_range("No se puede retroceder más.");
+    }
 }
 
-void HistorialNavegacion::adelante()
-{
-    if (puedeAvanzar())
+// Avanzar una página
+void HistorialNavegacion::adelante() {
+    if (puedeAvanzar()) {
         ++actual;
+    }
+    else {
+        throw std::out_of_range("No se puede avanzar más.");
+    }
 }
 
-void HistorialNavegacion::limpiarHistorial(){
+// Limpiar el historial
+void HistorialNavegacion::limpiarHistorial() {
     historial.clear();
+    actual = historial.end();
 }
 
-void HistorialNavegacion::establecerLimite(int limite){
+// Establecer el límite de entradas del historial
+void HistorialNavegacion::establecerLimite(int limite) {
     limiteEntradas = limite;
 }

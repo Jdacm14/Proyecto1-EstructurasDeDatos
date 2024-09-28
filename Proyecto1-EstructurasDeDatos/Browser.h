@@ -14,13 +14,15 @@ private:
 public:
     Browser(int limiteHistorial = 10);
 
-    std::vector <Pestaña> getPestañas();
+    std::vector <Pestaña>& getPestañas();
     void setPestañas(std::vector<Pestaña>);
     int getPestañaActual();
-    Pestaña getPestañaEnPos(int);
+    Pestaña& getPestañaEnPos(int);
     void setPestañaActual(int);
     int getLimiteHistorial();
     void setLimiteHistorial(int);
+
+    Pestaña& getPestañaActualReal();
 
     // Manejo de pestañas
     void nuevaPestaña();
@@ -35,12 +37,14 @@ public:
     void limpiarHistorialPestañaActual();
 
     // Gestión de bookmarks
-    void agregarBookmarkPestañaActual(std::string& url, std::string& title);
+    void agregarBookmarkPestañaActual(Bookmark);
     void mostrarBookmarksPestañaActual();
 
     // Modo incógnito
     void activarIncognitoPestañaActual();
     void desactivarIncognitoPestañaActual();
+
+    void mostrarTodosBookmarks();
 
     // Mostrar información sobre pestañas
     void mostrarPestañas();

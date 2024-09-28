@@ -9,15 +9,15 @@ class Pestaña {
 public:
 	Pestaña();
 
-	HistorialNavegacion getHistorial();
+
+	HistorialNavegacion& getHistorial();
 	void setHistorial(HistorialNavegacion);
-	std::vector<Bookmark> geVectortBookmarks();
+	std::vector<Bookmark>& geVectortBookmarks();
 	
 	//void agregarSitioWeb();
 
 
-	void agregarBookmark(std::string&, std::string&);
-	void agregarEtiquetaBook(std::string&, std::string&);
+	void agregarBookmark(Bookmark);
 	void mostrarBookmarks();
 	void activarIncognito();
 	void desactivarIncognito();
