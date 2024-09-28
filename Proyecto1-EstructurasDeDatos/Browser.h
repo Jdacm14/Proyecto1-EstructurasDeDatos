@@ -4,6 +4,7 @@
 #include "HistorialNavegacion.h"
 #include "Bookmark.h"
 #include <iostream>
+#include<fstream>
 #include<windows.h>
 
 class Browser {
@@ -50,5 +51,11 @@ public:
 
     // Mostrar información sobre Pestanias
     void mostrarPestanias();
+
+    //Exportar/Serializar datos
+    void exportarSesion(const std::string&);
+
+    //Importar/Deserializar datos
+    void importarSesion(const std::string&);
 };
 

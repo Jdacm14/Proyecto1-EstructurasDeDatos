@@ -132,3 +132,126 @@ void Browser::mostrarPestanias() {
         std::cout << std::endl;
     }
 }
+
+void Browser::exportarSesion(const std::string& nombreArchivo) {
+    std::ofstream archivo(nombreArchivo, std::ios::binary);
+
+    if (!archivo.is_open()) {
+        std::cerr << "No se pudo abrir el archivo para exportar la sesión." << std::endl;
+        return;
+    }
+
+    // Guardar el número de pestañas
+    int numeroPestanias = Pestanias.size();
+    archivo.write(reinterpret_cast<const char*>(&numeroPestanias), sizeof(numeroPestanias));
+
+    // Guardar la pestaña actual
+    archivo.write(reinterpret_cast<const char*>(&PestaniaActual), sizeof(PestaniaActual));
+
+    // Exportar cada pestaña
+    for (auto& pestaña : Pestanias) {
+        HistorialNavegacion& historial = pestaña.getHistorial();
+        int historialSize = historial.getHistorialSize();
+        archivo.write(reinterpret_cast<const char*>(&historialSize), sizeof(historialSize));
+
+        // Exportar cada página del historial
+        for (const auto& pagina : historial.obtenerHistorial()) {
+            size_t urlLength = pagina.first.size();
+            size_t tituloLength = pagina.second.size();
+
+            archivo.write(reinterpret_cast<const char*>(&urlLength), sizeof(urlLength));
+            archivo.write(pagina.first.c_str(), urlLength);
+
+            archivo.write(reinterpret_cast<const char*>(&tituloLength), sizeof(tituloLength));
+            archivo.write(pagina.second.c_str(), tituloLength);
+        }
+
+        // Exportar los bookmarks
+        std::vector<Bookmark>& bookmarks = pestaña.geVectortBookmarks();
+        int numBookmarks = bookmarks.size();
+        archivo.write(reinterpret_cast<const char*>(&numBookmarks), sizeof(numBookmarks));
+
+        for (auto& bookmark : bookmarks) {
+            size_t urlLength = bookmark.getURL().size();
+            size_t titleLength = bookmark.getTitle().size();
+
+            archivo.write(reinterpret_cast<const char*>(&urlLength), sizeof(urlLength));
+            archivo.write(bookmark.getURL().c_str(), urlLength);
+
+            archivo.write(reinterpret_cast<const char*>(&titleLength), sizeof(titleLength));
+            archivo.write(bookmark.getTitle().c_str(), titleLength);
+        }
+    }
+
+    archivo.close();
+}
+
+void Browser::importarSesion(const std::string& nombreArchivo) {
+    std::ifstream archivo(nombreArchivo, std::ios::binary);
+
+    if (!archivo.is_open()) {
+        std::cerr << "No se pudo abrir el archivo para importar la sesión." << std::endl;
+        return;
+    }
+
+    // Limpiar las pestañas actuales antes de cargar las nuevas
+    Pestanias.clear();
+
+    // Leer el número de pestañas
+    int numeroPestanias;
+    archivo.read(reinterpret_cast<char*>(&numeroPestanias), sizeof(numeroPestanias));
+
+    // Leer la pestaña actual
+    archivo.read(reinterpret_cast<char*>(&PestaniaActual), sizeof(PestaniaActual));
+
+    for (int i = 0; i < numeroPestanias; ++i) {
+        Pestania nuevaPestania;
+        HistorialNavegacion nuevoHistorial;
+
+        // Leer el tamaño del historial
+        int historialSize;
+        archivo.read(reinterpret_cast<char*>(&historialSize), sizeof(historialSize));
+
+        // Leer cada página del historial
+        for (int j = 0; j < historialSize; ++j) {
+            size_t urlLength, tituloLength;
+            archivo.read(reinterpret_cast<char*>(&urlLength), sizeof(urlLength));
+
+            std::string url(urlLength, ' ');
+            archivo.read(&url[0], urlLength);
+
+            archivo.read(reinterpret_cast<char*>(&tituloLength), sizeof(tituloLength));
+            std::string titulo(tituloLength, ' ');
+            archivo.read(&titulo[0], tituloLength);
+
+            SitioWeb sitio(url, titulo);
+            nuevoHistorial.agregarPagina(sitio);
+        }
+
+        nuevaPestania.setHistorial(nuevoHistorial);
+
+        // Leer los bookmarks
+        int numBookmarks;
+        archivo.read(reinterpret_cast<char*>(&numBookmarks), sizeof(numBookmarks));
+
+        for (int k = 0; k < numBookmarks; ++k) {
+            size_t urlLength, titleLength;
+            archivo.read(reinterpret_cast<char*>(&urlLength), sizeof(urlLength));
+
+            std::string url(urlLength, ' ');
+            archivo.read(&url[0], urlLength);
+
+            archivo.read(reinterpret_cast<char*>(&titleLength), sizeof(titleLength));
+            std::string title(titleLength, ' ');
+            archivo.read(&title[0], titleLength);
+
+            Bookmark bookmark(url, title);
+            nuevaPestania.agregarBookmark(bookmark);
+        }
+
+        Pestanias.push_back(nuevaPestania);
+    }
+
+    archivo.close();
+}
+
