@@ -5,6 +5,12 @@
 #include"CSV.h"
 #include<conio.h>
 
+#define TECLA_IZQUIERDA 75
+#define TECLA_DERECHA 77
+#define TECLA_ARRIBA 72
+#define TECLA_ABAJO 80
+#define ESC 27
+
 class Interfaz {
 public:
 	static char buscadorPrincipal(Browser&);
@@ -20,10 +26,14 @@ public:
 
 	static void busquedaFiltros();
 
-	static std::string incognito();
+	static std::string incognito(Browser&);
 
 	static std::string nuevaPestania(Browser&);
 
 	static std::string configuracion();
+
+	static void cambiarPestania(Browser&, int);
+
+	static void cambiarHistorial(Browser&, int);
 
 };

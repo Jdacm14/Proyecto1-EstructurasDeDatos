@@ -112,38 +112,70 @@ void Interfaz::agregarBookmark(Browser& b)
     std::string op2;
     std::vector<std::string> pes;
     bool s = false;
-    system("cls");
+    std::cout << std::endl;
     std::cout << std::endl;
     std::cout << "----------------------------------------------------------------" << std::endl;
     std::cout << "                            AGREGAR BOOKMARK                    " << std::endl;
     std::cout << " Ingresar URL: ";
     std::cin >> op;
-    std::cout << " Ingresar titulo: ";
-    std::cin >> op2;
-    while (s==false) {
-        int siono;
-        std::string eti;
-        std::cout << " Desea agregar una etiqueta?... si(1) / no(2)";
-        std::cin >> siono;
-        if (siono == 2) {
-            s = true;
-        }
-        else {
-            std::cout << " Ingresar etiqueta: ";
-            std::cin >> eti;
-            pes.push_back(eti);
 
-        }
-        system("cls");
+    CSV csv;  
+    std::string archivo = "sitiosWeb.csv";
+
+    // Cargar los sitios web desde el archivo CSV
+    if (!csv.cargarSitiosDesdeCSV(archivo)) {
+        std::cout << "Error al cargar los sitios web." << std::endl;
+        return;
     }
 
-    Bookmark bo(op, op2);
-    for (std::string s : pes) {
-        bo.agregarEtiqueta(s);
+    // Buscar la URL en los sitios cargados
+    SitioWeb sitioEncontrado = csv.buscarSitioPorURL(op);
+
+    if (sitioEncontrado.getTitulo() != "404 - Not Found") {
+        // Si la URL fue encontrada, mostrar URL y título
+       /* std::cout << "Visitando: " << sitioEncontrado.getUrl() << " - " << sitioEncontrado.getTitulo() << std::endl;*/
+        for (Pestaña p : b.getPestañas()) {
+            for (Bookmark bo : p.geVectortBookmarks()) {
+                if (sitioEncontrado.getUrl() == bo.getURL()) {
+                    std::cout << "Este sitio ya es un bookmark" << "\n";
+                    system("pause");
+                    return;
+                }
+            }
+        }
+
+        while (s == false) {
+            int siono;
+            std::string eti;
+            std::cout << " Desea agregar una etiqueta?... si(1) / no(2): ";
+            std::cin >> siono;
+            if (siono != 1) {
+                s = true;
+            }
+            else {
+                std::cout << " Ingresar etiqueta: ";
+                std::cin >> eti;
+                pes.push_back(eti);
+
+            }
+            std::cout << std::endl;
+        }
+
+        Bookmark bo(op, sitioEncontrado.getTitulo());
+        for (std::string s : pes) {
+            bo.agregarEtiqueta(s);
+        }
+
+        b.getPestañaActualReal().agregarBookmark(bo);
+      
     }
-
-    b.getPestañaActualReal().agregarBookmark(bo);
-
+    else {
+        // Si no se encuentra, mostrar el error
+        std::cout << sitioEncontrado.getTitulo() << std::endl;  // "404 - Not Found"
+        system("pause");
+    }
+    system("pause");
+   
 }
 
 void Interfaz::verBookmarks(Browser& b)
@@ -152,6 +184,7 @@ void Interfaz::verBookmarks(Browser& b)
     std::cout << "----------------------------------------------------------------" << std::endl;
     std::cout << "                          LISTA DE BOOKMARKS                    " << std::endl;
     b.mostrarTodosBookmarks();
+    system("pause");
 }
 
 void Interfaz::busquedaFiltros()
@@ -166,8 +199,10 @@ void Interfaz::busquedaFiltros()
     
 }
 
-std::string Interfaz::incognito()
+std::string Interfaz::incognito(Browser& b)
 {
+    b.activarIncognitoPestañaActual();
+    system("pause");
     return " ";
 }
 
@@ -182,3 +217,28 @@ std::string Interfaz::configuracion()
     return std::string();
 }
 
+
+void Interfaz::cambiarPestania(Browser& b, int n) {
+    if (n == 72 && b.getPestañaActual() > 0) {
+        b.setPestañaActual(b.getPestañaActual() - 1);
+        mostrarPaginaActual(b);
+     
+    }
+    if (n == 80 && b.getPestañaActual() < 10 && b.existeSigPes() ) {
+        b.setPestañaActual(b.getPestañaActual() + 1);
+        mostrarPaginaActual(b);
+      
+    }
+    
+}
+
+void Interfaz::cambiarHistorial(Browser& b, int n) {
+    if (n == 75 && b.irAtras()) {
+        std::cout << "Falta esta parte" << "\n";
+    }
+    if (n == 77 && b.irAdelante()) {
+        std::cout << "Falta esta parte" << "\n";
+    }
+
+
+}

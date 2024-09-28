@@ -35,8 +35,7 @@ std::string Bookmark::toString()
 	std::stringstream s;
 
 	s << "Titulo: " << title << ", "
-		<< "URL: " << url << ", "
-	    << "Etiquetas: ";
+		<< "URL: " << url << " ";
 	mostrarEtiquetas();
 
 	return s.str();
