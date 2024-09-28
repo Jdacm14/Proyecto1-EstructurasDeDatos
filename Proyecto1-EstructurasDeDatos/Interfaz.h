@@ -30,7 +30,7 @@ public:
 
 	static std::string nuevaPestania(Browser&);
 
-	static std::string configuracion();
+	static void configuracion(Browser&);
 
 	static void cambiarPestania(Browser&, int);
 
