@@ -70,6 +70,8 @@ void Controladora::controlMenuGeneral()
         case 'd':
             Interfaz::verBookmarks(*browser);
             break;
+        case 'e':
+            Interfaz::busquedaFiltros(*browser);
         default:
            // Interfaz::msjOpcionNoValida();
             break;

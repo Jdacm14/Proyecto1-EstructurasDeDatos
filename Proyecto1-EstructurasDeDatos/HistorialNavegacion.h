@@ -2,6 +2,7 @@
 #include <list>
 #include "SitioWeb.h"
 
+
 class HistorialNavegacion {
 private:
     std::list<SitioWeb> historial;  // Usamos std::list para manejar los sitios web
@@ -21,4 +22,7 @@ public:
     void adelante();
     void limpiarHistorial();
     void establecerLimite(int limite);
+    size_t getHistorialSize();
+    std::list<std::pair<std::string, std::string>> obtenerHistorial();
+
 };
