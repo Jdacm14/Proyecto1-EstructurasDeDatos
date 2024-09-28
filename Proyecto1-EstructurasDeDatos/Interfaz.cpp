@@ -154,7 +154,7 @@ void Interfaz::verBookmarks(Browser& b)
     b.mostrarTodosBookmarks();
 }
 
-void Interfaz::busquedaFiltros()
+void Interfaz::busquedaFiltros(Browser& b)
 {
     std::string op;
     system("cls");
@@ -162,9 +162,32 @@ void Interfaz::busquedaFiltros()
     std::cout << "----------------------------------------------------------------" << std::endl;
     std::cout << "                            BUSQUEDA/FILTRAR                    " << std::endl;
     std::cout << " Ingresar tag o titulo: " << std::endl;
-    std::cin >> op;
-    
+    std::cin.clear();
+    std::cin.ignore();
+    std::getline(std::cin, op);
+
+    std::vector<std::pair<std::string, std::string>> coincidencias; // almacena las coincidencias
+
+    for (auto& pestaña : b.getPestañas()) {
+        auto& historial = pestaña.getHistorial();
+        for (const auto& pagina : historial.obtenerHistorial()) {
+            if (pagina.second.find(op) != std::string::npos) {
+                coincidencias.emplace_back(pagina.second, pagina.first);    // guarda la pagina si coincide
+            }
+        }
+    }
+    if (!coincidencias.empty()) {
+        std::cout << "Titulos encontrados: " << std::endl;
+        for (const auto& coincidencia : coincidencias) {
+            std::cout << "Titulo: " << coincidencia.first << " en la URL: " << coincidencia.second << std::endl;
+        }
+    }
+    else {
+        std::cout << "No se encontraron títulos..." << std::endl;
+    }
+    system("pause");
 }
+
 
 std::string Interfaz::incognito()
 {

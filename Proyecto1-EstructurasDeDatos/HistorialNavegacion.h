@@ -21,4 +21,7 @@ public:
     void adelante();
     void limpiarHistorial();
     void establecerLimite(int limite);
+    size_t getHistorialSize();
+    std::list<std::pair<std::string, std::string>> obtenerHistorial();
+
 };

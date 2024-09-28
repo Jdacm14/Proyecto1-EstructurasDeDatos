@@ -77,3 +77,15 @@ void HistorialNavegacion::limpiarHistorial() {
 void HistorialNavegacion::establecerLimite(int limite) {
     limiteEntradas = limite;
 }
+
+size_t HistorialNavegacion::getHistorialSize() {
+    return historial.size();
+}
+
+std::list<std::pair<std::string, std::string>> HistorialNavegacion::obtenerHistorial() {
+    std::list<std::pair<std::string, std::string>> historialLista;
+    for (const auto& pagina : historial) {
+        historialLista.emplace_back(pagina.getTitulo(), pagina.getUrl());
+    }
+    return historialLista;
+}
