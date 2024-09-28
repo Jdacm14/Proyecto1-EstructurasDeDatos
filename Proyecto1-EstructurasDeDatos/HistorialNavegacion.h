@@ -2,6 +2,7 @@
 #include <list>
 #include "SitioWeb.h"
 
+
 class HistorialNavegacion {
 private:
     std::list<SitioWeb> historial;  // Usamos std::list para manejar los sitios web

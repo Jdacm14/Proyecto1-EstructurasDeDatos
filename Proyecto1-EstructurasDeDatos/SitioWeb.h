@@ -1,6 +1,8 @@
 #pragma once
 #include <string>
 #include <iostream>
+#include <stdexcept>    // manejo de excepciones
+#include <set> // para verificar duplicados
 
 class SitioWeb {
 private:

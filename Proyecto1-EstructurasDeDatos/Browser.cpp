@@ -46,10 +46,11 @@ Pestaña& Browser::getPestañaActualReal()
 }
 
 
-void Browser::nuevaPestaña() {
+int Browser::nuevaPestaña() {
     pestañas.push_back(Pestaña());  // Añadir nueva pestaña
-    pestañaActual = (int) pestañas.size() - 1;
+    pestañaActual = static_cast<int>(pestañas.size()) - 1;
     std::cout << "Nueva pestaña creada, ahora estás en la pestaña #" << pestañaActual << std::endl;
+    return pestañaActual;
 }
 
 void Browser::cerrarPestaña(int index) {
@@ -97,12 +98,12 @@ void Browser::mostrarBookmarksPestañaActual()
 
 void Browser::activarIncognitoPestañaActual() {
     pestañas[pestañaActual].activarIncognito();
-    std::cout << "Modo incógnito activado en la pestaña #" << pestañaActual << std::endl;
+    std::cout << "Modo incognito activado en la pestaña #" << pestañaActual << std::endl;
 }
 
 void Browser::desactivarIncognitoPestañaActual() {
     pestañas[pestañaActual].desactivarIncognito();
-    std::cout << "Modo incógnito desactivado en la pestaña #" << pestañaActual << std::endl;
+    std::cout << "Modo incognito desactivado en la pestaña #" << pestañaActual << std::endl;
 }
 
 void Browser::mostrarTodosBookmarks()

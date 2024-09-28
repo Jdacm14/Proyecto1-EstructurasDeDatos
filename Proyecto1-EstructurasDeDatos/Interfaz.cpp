@@ -3,20 +3,26 @@
 char Interfaz::buscadorPrincipal(Browser& b)
 {
     char op;
-    system("cls");
-    std::cout << std:: endl;
-    /*std::cout << "----------------------------------------------------------------" << std::endl;
-    std::cout << "                             BUSCADOR                           " << std::endl;
-    std::cout << " a - Ir a sitio web                                             " << std::endl;
-    std::cout << " b - Agregar bookmark                                           " << std::endl;
-    std::cout << " c - Importar/Exportar                                          " << std::endl;
-    std::cout << " d - Ver bookmark                                               " << std::endl;
-    std::cout << " e - Busqueda/filtros                                           " << std::endl;
-    std::cout << " f - Incognito                                                  " << std::endl;
-    std::cout << " g - Nueva Pestania                                             " << std::endl;
-    std::cout << " h - Configuracion                                              " << std::endl;*/
-    mostrarPaginaActual(b);
-    std::cin >> op;
+    try {
+        system("cls");
+        std::cout << std::endl;
+        /*std::cout << "----------------------------------------------------------------" << std::endl;
+        std::cout << "                             BUSCADOR                           " << std::endl;
+        std::cout << " a - Ir a sitio web                                             " << std::endl;
+        std::cout << " b - Agregar bookmark                                           " << std::endl;
+        std::cout << " c - Importar/Exportar                                          " << std::endl;
+        std::cout << " d - Ver bookmark                                               " << std::endl;
+        std::cout << " e - Busqueda/filtros                                           " << std::endl;
+        std::cout << " f - Incognito                                                  " << std::endl;
+        std::cout << " g - Nueva Pestania                                             " << std::endl;
+        std::cout << " h - Configuracion                                              " << std::endl;*/
+        mostrarPaginaActual(b);
+        std::cin >> op;
+    }
+    catch (const std::exception& e) {
+        std::cerr << "Error en el buscador principal: " << e.what() << std::endl;
+        op = ' ';
+    }
     return op;
 
 
@@ -46,26 +52,31 @@ void Interfaz::mostrarPaginaActual(Browser& navegador)
         return;
     }
 
-    // Obtener la página actual en la pestaña actual
-    SitioWeb pagina = navegador.getPestañaEnPos(navegador.getPestañaActual()).getHistorial().obtenerPaginaActual();
+    try {
+        // Obtener la página actual en la pestaña actual
+        SitioWeb pagina = navegador.getPestañaEnPos(navegador.getPestañaActual()).getHistorial().obtenerPaginaActual();
 
-    // Mostrar los detalles de la página actual usando los getters
-    std::cout << std::endl;
-    std::cout << "----------------------------------------------------------------" << std::endl;
-    std::cout << "                             BUSCADOR                           " << std::endl;
-    std::cout << " a - Ir a sitio web                                             " << std::endl;
-    std::cout << " b - Agregar bookmark                                           " << std::endl;
-    std::cout << " c - Importar/Exportar                                          " << std::endl;
-    std::cout << " d - Ver bookmark                                               " << std::endl;
-    std::cout << " e - Busqueda/filtros                                           " << std::endl;
-    std::cout << " f - Incognito                                                  " << std::endl;
-    std::cout << " g - Nueva Pestania                                             " << std::endl;
-    std::cout << " h - Configuracion                                              " << std::endl;
-    std::cout << "----------------------------------------------------------------" << std::endl;
-    std::cout << "================= Pestaña #" << navegador.getPestañaActual() << " =================\n";
-    std::cout << "URL: " << pagina.getUrl() << "\n";
-    std::cout << "Título: " << pagina.getTitulo() << "\n";
-    std::cout << "===============================================\n";
+        // Mostrar los detalles de la página actual usando los getters
+        std::cout << std::endl;
+        std::cout << "----------------------------------------------------------------" << std::endl;
+        std::cout << "                             BUSCADOR                           " << std::endl;
+        std::cout << " a - Ir a sitio web                                             " << std::endl;
+        std::cout << " b - Agregar bookmark                                           " << std::endl;
+        std::cout << " c - Importar/Exportar                                          " << std::endl;
+        std::cout << " d - Ver bookmark                                               " << std::endl;
+        std::cout << " e - Busqueda/filtros                                           " << std::endl;
+        std::cout << " f - Incognito                                                  " << std::endl;
+        std::cout << " g - Nueva Pestania                                             " << std::endl;
+        std::cout << " h - Configuracion                                              " << std::endl;
+        std::cout << "----------------------------------------------------------------" << std::endl;
+        std::cout << "================= Pestaña #" << navegador.getPestañaActual() << " =================\n";
+        std::cout << "URL: " << pagina.getUrl() << "\n";
+        std::cout << "Titulo: " << pagina.getTitulo() << "\n";
+        std::cout << "===============================================\n";
+    } 
+    catch (const std::exception& e) {
+        std::cerr << "Error al mostrar la pagina actual: " << e.what() << std::endl;
+    }
 }
 
 void Interfaz::irAlSitioWeb(Browser& navegador)  // Pasar navegador por referencia
@@ -74,34 +85,39 @@ void Interfaz::irAlSitioWeb(Browser& navegador)  // Pasar navegador por referenc
     CSV csv;  // Crear instancia para cargar y buscar en el CSV
     std::string archivo = "sitiosWeb.csv";
 
-    // Cargar los sitios web desde el archivo CSV
-    if (!csv.cargarSitiosDesdeCSV(archivo)) {
-        std::cout << "Error al cargar los sitios web." << std::endl;
-        return;
+    try {
+        // Cargar los sitios web desde el archivo CSV
+        if (!csv.cargarSitiosDesdeCSV(archivo)) {
+            std::cout << "Error al cargar los sitios web." << std::endl;
+            return;
+        }
+
+        // Solicitar al usuario que ingrese una URL
+        std::cout << "----------------------------------------------------------------" << std::endl;
+        std::cout << "                            SITIO WEB                           " << std::endl;
+        std::cout << " Ingresar URL: ";
+        std::cin >> urlIngresada;
+
+        // Buscar la URL en los sitios cargados
+        SitioWeb sitioEncontrado = csv.buscarSitioPorURL(urlIngresada);
+
+        if (sitioEncontrado.getTitulo() != "404 - Not Found") {
+            // Si la URL fue encontrada, mostrar URL y título
+           /* std::cout << "Visitando: " << sitioEncontrado.getUrl() << " - " << sitioEncontrado.getTitulo() << std::endl;*/
+
+            // Agregar al historial de navegación
+            navegador.getPestañaEnPos(navegador.getPestañaActual()).getHistorial().agregarPagina(sitioEncontrado);
+
+            // Mostrar la página actual
+            /*mostrarPaginaActual(navegador);*/
+        }
+        else {
+            // Si no se encuentra, mostrar el error
+            std::cout << sitioEncontrado.getTitulo() << std::endl;  // "404 - Not Found"
+        }
     }
-
-    // Solicitar al usuario que ingrese una URL
-    std::cout << "----------------------------------------------------------------" << std::endl;
-    std::cout << "                            SITIO WEB                           " << std::endl;
-    std::cout << " Ingresar URL: ";
-    std::cin >> urlIngresada;
-
-    // Buscar la URL en los sitios cargados
-    SitioWeb sitioEncontrado = csv.buscarSitioPorURL(urlIngresada);
-
-    if (sitioEncontrado.getTitulo() != "404 - Not Found") {
-        // Si la URL fue encontrada, mostrar URL y título
-       /* std::cout << "Visitando: " << sitioEncontrado.getUrl() << " - " << sitioEncontrado.getTitulo() << std::endl;*/
-
-        // Agregar al historial de navegación
-        navegador.getPestañaEnPos(navegador.getPestañaActual()).getHistorial().agregarPagina(sitioEncontrado);
-
-        // Mostrar la página actual
-        /*mostrarPaginaActual(navegador);*/
-    }
-    else {
-        // Si no se encuentra, mostrar el error
-        std::cout << sitioEncontrado.getTitulo() << std::endl;  // "404 - Not Found"
+    catch (const std::exception& e) {
+        std::cerr << "Error al ir al sitio web: " << e.what() << std::endl;
     }
 }
 
@@ -158,34 +174,55 @@ void Interfaz::busquedaFiltros(Browser& b)
 {
     std::string op;
     system("cls");
-    std::cout << std::endl;
-    std::cout << "----------------------------------------------------------------" << std::endl;
-    std::cout << "                            BUSQUEDA/FILTRAR                    " << std::endl;
-    std::cout << " Ingresar tag o titulo: " << std::endl;
-    std::cin.clear();
-    std::cin.ignore();
-    std::getline(std::cin, op);
+    try {
+        std::cout << std::endl;
+        std::cout << "----------------------------------------------------------------" << std::endl;
+        std::cout << "                            BUSQUEDA/FILTRAR                    " << std::endl;
+        std::cout << " Ingrese un titulo o parte de este: " << std::endl;
+        std::cin.clear();
+        std::cin.ignore();
+        std::getline(std::cin, op);
 
-    std::vector<std::pair<std::string, std::string>> coincidencias; // almacena las coincidencias
+        std::vector<std::pair<std::string, std::string>> coincidencias; // contendra las coincidencias
 
-    for (auto& pestaña : b.getPestañas()) {
-        auto& historial = pestaña.getHistorial();
-        for (const auto& pagina : historial.obtenerHistorial()) {
-            if (pagina.second.find(op) != std::string::npos) {
-                coincidencias.emplace_back(pagina.second, pagina.first);    // guarda la pagina si coincide
+        for (auto& pestaña : b.getPestañas()) { // recorre cada historias registrado en cada una de las pestañas
+            auto& historial = pestaña.getHistorial();
+            for (const auto& pagina : historial.obtenerHistorial()) {
+                if (pagina.second.find(op) != std::string::npos) {
+                    coincidencias.emplace_back(pagina.second, pagina.first);    // guarda la pagina si coincide
+                }
             }
         }
-    }
-    if (!coincidencias.empty()) {
-        std::cout << "Titulos encontrados: " << std::endl;
-        for (const auto& coincidencia : coincidencias) {
-            std::cout << "Titulo: " << coincidencia.first << " en la URL: " << coincidencia.second << std::endl;
+        if (!coincidencias.empty()) {   // si encuentra al menos una coincidencia, crea una nueva pestaña
+            int nuevaPestania = b.nuevaPestaña();
+            auto& nuevaHistorial = b.getPestañaEnPos(nuevaPestania).getHistorial();
+
+            std::set<std::pair<std::string, std::string>> agregadas;
+
+            for (const auto& coincidencia : coincidencias) {
+                SitioWeb encontrados(coincidencia.first, coincidencia.second);
+                auto entrada = std::make_pair(encontrados.getTitulo(), encontrados.getUrl());
+
+                if (agregadas.find(entrada) == agregadas.end()) {
+                    nuevaHistorial.agregarPagina(encontrados);
+                    agregadas.insert(entrada);
+                }
+            }
+            b.setPestañaActual(nuevaPestania);
+            std::cout << "Titulos encontrados: " << std::endl;
+            for (const auto& coincidencia : coincidencias) {
+                std::cout << "Titulo: " << coincidencia.first << " en la URL: " << coincidencia.second << std::endl;
+            }
+            mostrarPaginaActual(b);
         }
+        else {
+            std::cout << "No se encontraron títulos..." << std::endl;
+        }
+        system("pause");
     }
-    else {
-        std::cout << "No se encontraron títulos..." << std::endl;
+    catch (const std::exception& e) {
+        std::cerr << "Error en la busqueda de filtros: " << e.what() << std::endl;
     }
-    system("pause");
 }
 
 
