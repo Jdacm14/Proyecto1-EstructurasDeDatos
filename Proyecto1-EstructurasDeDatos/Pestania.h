@@ -22,6 +22,7 @@ public:
 	void activarIncognito();
 	void desactivarIncognito();
 	bool getEstadoIncognito();
+	
 
 	void limpiarHistorialVentana();
 
