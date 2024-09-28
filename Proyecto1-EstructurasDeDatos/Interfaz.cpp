@@ -1,11 +1,11 @@
 #include "Interfaz.h"
 
-char Interfaz::buscadorPrincipal()
+char Interfaz::buscadorPrincipal(Browser& b)
 {
     char op;
     system("cls");
     std::cout << std:: endl;
-    std::cout << "----------------------------------------------------------------" << std::endl;
+    /*std::cout << "----------------------------------------------------------------" << std::endl;
     std::cout << "                             BUSCADOR                           " << std::endl;
     std::cout << " a - Ir a sitio web                                             " << std::endl;
     std::cout << " b - Agregar bookmark                                           " << std::endl;
@@ -14,7 +14,8 @@ char Interfaz::buscadorPrincipal()
     std::cout << " e - Busqueda/filtros                                           " << std::endl;
     std::cout << " f - Incognito                                                  " << std::endl;
     std::cout << " g - Nueva Pestania                                             " << std::endl;
-    std::cout << " h - Configuracion                                              " << std::endl;
+    std::cout << " h - Configuracion                                              " << std::endl;*/
+    mostrarPaginaActual(b);
     std::cin >> op;
     return op;
 
@@ -38,7 +39,7 @@ void Interfaz::mostrarMenu() {
 }
 
 
-void Interfaz::mostrarPaginaActual(Browser navegador)
+void Interfaz::mostrarPaginaActual(Browser& navegador)
 {
     if (navegador.getPestañas().empty()) {
         std::cout << "No hay pestaña abiertas..." << std::endl;
@@ -49,6 +50,18 @@ void Interfaz::mostrarPaginaActual(Browser navegador)
     SitioWeb pagina = navegador.getPestañaEnPos(navegador.getPestañaActual()).getHistorial().obtenerPaginaActual();
 
     // Mostrar los detalles de la página actual usando los getters
+    std::cout << std::endl;
+    std::cout << "----------------------------------------------------------------" << std::endl;
+    std::cout << "                             BUSCADOR                           " << std::endl;
+    std::cout << " a - Ir a sitio web                                             " << std::endl;
+    std::cout << " b - Agregar bookmark                                           " << std::endl;
+    std::cout << " c - Importar/Exportar                                          " << std::endl;
+    std::cout << " d - Ver bookmark                                               " << std::endl;
+    std::cout << " e - Busqueda/filtros                                           " << std::endl;
+    std::cout << " f - Incognito                                                  " << std::endl;
+    std::cout << " g - Nueva Pestania                                             " << std::endl;
+    std::cout << " h - Configuracion                                              " << std::endl;
+    std::cout << "----------------------------------------------------------------" << std::endl;
     std::cout << "================= Pestaña #" << navegador.getPestañaActual() << " =================\n";
     std::cout << "URL: " << pagina.getUrl() << "\n";
     std::cout << "Título: " << pagina.getTitulo() << "\n";
@@ -78,13 +91,13 @@ void Interfaz::irAlSitioWeb(Browser& navegador)  // Pasar navegador por referenc
 
     if (sitioEncontrado.getTitulo() != "404 - Not Found") {
         // Si la URL fue encontrada, mostrar URL y título
-        std::cout << "Visitando: " << sitioEncontrado.getUrl() << " - " << sitioEncontrado.getTitulo() << std::endl;
+       /* std::cout << "Visitando: " << sitioEncontrado.getUrl() << " - " << sitioEncontrado.getTitulo() << std::endl;*/
 
         // Agregar al historial de navegación
         navegador.getPestañaEnPos(navegador.getPestañaActual()).getHistorial().agregarPagina(sitioEncontrado);
 
         // Mostrar la página actual
-        mostrarPaginaActual(navegador);
+        /*mostrarPaginaActual(navegador);*/
     }
     else {
         // Si no se encuentra, mostrar el error
@@ -93,7 +106,7 @@ void Interfaz::irAlSitioWeb(Browser& navegador)  // Pasar navegador por referenc
 }
 
 
-void Interfaz::agregarBookmark(Browser b)
+void Interfaz::agregarBookmark(Browser& b)
 {
     std::string op;
     std::string op2;
@@ -133,7 +146,7 @@ void Interfaz::agregarBookmark(Browser b)
 
 }
 
-void Interfaz::verBookmarks(Browser b)
+void Interfaz::verBookmarks(Browser& b)
 {
     std::cout << std::endl;
     std::cout << "----------------------------------------------------------------" << std::endl;
@@ -158,7 +171,7 @@ std::string Interfaz::incognito()
     return " ";
 }
 
-std::string Interfaz::nuevaPestania(Browser b)
+std::string Interfaz::nuevaPestania(Browser& b)
 {
     b.nuevaPestaña();
     return " ";

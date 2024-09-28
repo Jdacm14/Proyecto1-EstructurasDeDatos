@@ -28,12 +28,14 @@ void HistorialNavegacion::agregarPagina(const SitioWeb& sitio) {
 
 
 // Obtener la página actual
-SitioWeb HistorialNavegacion::obtenerPaginaActual() {
+SitioWeb& HistorialNavegacion::obtenerPaginaActual() {
+    static SitioWeb sitioNulo("404 - Not Found", "Página no encontrada");  // Objeto estático para un sitio nulo
     if (historial.empty()) {
-        return SitioWeb("", "");
+        return sitioNulo;  // Devolver el sitio nulo si no hay páginas en el historial
     }
     return *actual;
 }
+
 
 // Verificar si se puede retroceder
 bool HistorialNavegacion::puedeRetroceder() {

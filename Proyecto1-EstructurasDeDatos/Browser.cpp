@@ -6,7 +6,7 @@ Browser::Browser(int limite) : pestañaActual(0), limiteHistorial(limite) { // pr
     pestañas.push_back(Pestaña());
 }
 
-std::vector<Pestaña> Browser::getPestañas()
+std::vector<Pestaña>& Browser::getPestañas()
 {
     return pestañas;
 }
@@ -21,7 +21,7 @@ int Browser::getPestañaActual()
     return pestañaActual;
 }
 
-Pestaña Browser::getPestañaEnPos(int pos)
+Pestaña& Browser::getPestañaEnPos(int pos)
 {
     return pestañas.at(pos);
 }
@@ -40,7 +40,7 @@ void Browser::setLimiteHistorial(int lim){
     limiteHistorial = lim;
 }
 
-Pestaña Browser::getPestañaActualReal()
+Pestaña& Browser::getPestañaActualReal()
 {
     return pestañas.at(pestañaActual);
 }
