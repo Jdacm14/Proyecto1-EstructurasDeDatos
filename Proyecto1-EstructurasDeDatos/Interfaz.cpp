@@ -108,8 +108,11 @@ void Interfaz::irAlSitioWeb(Browser& navegador)  // Pasar navegador por referenc
            /* std::cout << "Visitando: " << sitioEncontrado.getUrl() << " - " << sitioEncontrado.getTitulo() << std::endl;*/
 
             // Agregar al historial de navegación
-            navegador.getPestaniaEnPos(navegador.getPestaniaActual()).getHistorial().agregarPagina(sitioEncontrado);
-
+            if (navegador.getPestaniaActualReal().getHistorial().getHistorialSize() < navegador.getLimiteHistorial()) {
+                navegador.getPestaniaEnPos(navegador.getPestaniaActual()).getHistorial().agregarPagina(sitioEncontrado);
+            }else{
+                std::cout << "No hay espacio para mas sitios... " << std::endl;
+            }
             // Mostrar la página actual
             /*mostrarPaginaActual(navegador);*/
         }
@@ -275,9 +278,41 @@ std::string Interfaz::nuevaPestania(Browser& b)
     return " ";
 }
 
-std::string Interfaz::configuracion()
+void Interfaz::configuracion(Browser& b)
 {
-    return std::string();
+
+    int opcion;
+    std::cout << std::endl;
+    std::cout << "----------------------------------------------------------------" << std::endl;
+    std::cout << "                            CONFIGURACION                       " << std::endl;
+    std::cout << " 1 - Limitar cantidad de sitios por pestania                    " << std::endl;
+    std::cout << " 2 - Configurar el tiempo por pestania                          " << std::endl;
+    std::cout << " Ingrese una opcion: ";
+    std::cin >> opcion;
+
+    switch (opcion) {
+    case 1:
+        int cant;
+        std::cout << std::endl;
+        std::cout << "Ingrese la cantidad de sitios por pestania: ";
+        std::cin >> cant;
+        if (cant <= 0) {
+            std::cout << "Numero incorrecto" << std::endl;
+
+        }else{
+            b.setLimiteHistorial(cant);
+        }
+
+        break;
+    case 2: 
+        std::cout << "Esta opcion todavia no sirve" << std::endl;
+        break;
+    default:
+        break;
+    }
+
+
+
 }
 
 
@@ -296,13 +331,17 @@ void Interfaz::cambiarPestania(Browser& b, int n) {
 }
 
 void Interfaz::cambiarHistorial(Browser& b, int n) {
-    if (n == 75 && b.irAtras()) {
-        b.getPestaniaActualReal().getHistorial().setPaginaActual(75);
-        mostrarPaginaActual(b);
+    if (n == 75 && b.getPestaniaActualReal().getHistorial().obtenerPaginaActual().getUrl() != "404 - Not Found") {
+        if (b.irAtras()) {
+            b.getPestaniaActualReal().getHistorial().setPaginaActual(75);
+            mostrarPaginaActual(b);
+        }
     }
-    if (n == 77 && b.irAdelante()) {
-        b.getPestaniaActualReal().getHistorial().setPaginaActual(77);
-        mostrarPaginaActual(b);
+    if (n == 77 && b.getPestaniaActualReal().getHistorial().obtenerPaginaActual().getUrl() != "404 - Not Found") {
+        if (b.irAdelante()) {
+            b.getPestaniaActualReal().getHistorial().setPaginaActual(77);
+            mostrarPaginaActual(b);
+        }
     }
 
 
