@@ -26,7 +26,7 @@ public:
     Pestaña& getPestañaActualReal();
 
     // Manejo de pestañas
-    void nuevaPestaña();
+    int nuevaPestaña();
     void cerrarPestaña(int index);
     void cambiarPestaña(int index);
     bool existeSigPes();

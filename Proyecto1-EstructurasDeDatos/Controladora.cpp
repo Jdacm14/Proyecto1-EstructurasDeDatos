@@ -21,6 +21,7 @@ void Controladora::controlMenuGeneral()
         // Mostrar el menú y la pestaña actual
         system("cls");  // Limpiar la pantalla
         /*Interfaz::mostrarMenu(); */ // Mostrar el menú en la parte superior
+
         Interfaz::mostrarPaginaActual(*browser); // Mostrar la página actual
 
         // Capturar teclas
@@ -63,6 +64,9 @@ void Controladora::controlMenuGeneral()
             case 'd':
                 Interfaz::verBookmarks(*browser);
                 break;
+            case 'e':
+                Interfaz::busquedaFiltros(*browser);
+                break;
             case 'f':
                 Interfaz::incognito(*browser);
                 break;
@@ -73,6 +77,7 @@ void Controladora::controlMenuGeneral()
                 msjOpcionNoValida(); // Mostrar mensaje de opción no válida
                 break;
             }
+
         }
 
         // Pausa para mostrar el resultado

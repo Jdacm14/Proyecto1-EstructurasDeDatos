@@ -1,6 +1,4 @@
 #include "HistorialNavegacion.h"
-#include <stdexcept>
-
 
 // Constructor
 HistorialNavegacion::HistorialNavegacion(int limite) : limiteEntradas(limite) {
@@ -76,4 +74,21 @@ void HistorialNavegacion::limpiarHistorial() {
 // Establecer el límite de entradas del historial
 void HistorialNavegacion::establecerLimite(int limite) {
     limiteEntradas = limite;
+}
+
+size_t HistorialNavegacion::getHistorialSize() {
+    return historial.size();
+}
+
+std::list<std::pair<std::string, std::string>> HistorialNavegacion::obtenerHistorial() {
+    std::list<std::pair<std::string, std::string>> historialLista; 
+    std::set<std::pair<std::string, std::string>> agregadas;
+    for (const auto& pagina : historial) {
+        auto entrada = std::make_pair(pagina.getTitulo(), pagina.getUrl()); // Crea un par con titulo y utl
+        if (agregadas.find(entrada) == agregadas.end()) {
+            historialLista.emplace_back(entrada);
+            agregadas.insert(entrada);
+        }
+    }
+    return historialLista;
 }

@@ -24,7 +24,7 @@ public:
 
 	static void verBookmarks(Browser&);
 
-	static void busquedaFiltros();
+	static void busquedaFiltros(Browser&);
 
 	static std::string incognito(Browser&);
 
