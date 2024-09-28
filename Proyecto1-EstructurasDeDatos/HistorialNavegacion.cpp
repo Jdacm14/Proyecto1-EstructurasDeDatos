@@ -14,6 +14,7 @@ HistorialNavegacion::~HistorialNavegacion() {
 // Agregar una página al historial
 void HistorialNavegacion::agregarPagina(const SitioWeb& sitio) {
     // Agregar la nueva página al final
+    
     historial.push_back(sitio);
     actual = std::prev(historial.end());  // Actualizar el iterador actual al último elemento
 

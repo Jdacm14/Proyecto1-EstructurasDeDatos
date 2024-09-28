@@ -73,6 +73,9 @@ void Controladora::controlMenuGeneral()
             case 'g':
                 Interfaz::nuevaPestania(*browser);
                 break;
+            case 'h':
+                Interfaz::configuracion(*browser);
+                break;
             default:
                 msjOpcionNoValida(); // Mostrar mensaje de opción no válida
                 break;
