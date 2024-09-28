@@ -331,9 +331,11 @@ void Interfaz::cambiarPestania(Browser& b, int n) {
 }
 
 void Interfaz::cambiarHistorial(Browser& b, int n) {
-    if (n == 75 && b.irAtras() && b.getPestaniaActualReal().getHistorial().obtenerPaginaActual().getUrl() != "404 - Not Found") {
-        b.getPestaniaActualReal().getHistorial().setPaginaActual(75);
-        mostrarPaginaActual(b);
+    if (n == 75 && b.getPestaniaActualReal().getHistorial().obtenerPaginaActual().getUrl() != "404 - Not Found") {
+        if (b.irAtras()) {
+            b.getPestaniaActualReal().getHistorial().setPaginaActual(75);
+            mostrarPaginaActual(b);
+        }
     }
     if (n == 77 && b.getPestaniaActualReal().getHistorial().obtenerPaginaActual().getUrl() != "404 - Not Found") {
         if (b.irAdelante()) {
