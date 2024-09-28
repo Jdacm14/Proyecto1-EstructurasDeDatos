@@ -1,34 +1,34 @@
 #include "Browser.h"
 // Implementación de los métodos
 
-Browser::Browser(int limite) : pestañaActual(0), limiteHistorial(limite) { // probablemente haya que cambiar este constructor
-    // Crear la primera pestaña con el límite de historial dado
-    pestañas.push_back(Pestaña());
+Browser::Browser(int limite) : PestaniaActual(0), limiteHistorial(limite) { // probablemente haya que cambiar este constructor
+    // Crear la primera Pestania con el límite de historial dado
+    Pestanias.push_back(Pestania());
 }
 
-std::vector<Pestaña>& Browser::getPestañas()
+std::vector<Pestania>& Browser::getPestanias()
 {
-    return pestañas;
+    return Pestanias;
 }
 
-void Browser::setPestañas(std::vector<Pestaña> listaPestañas)
+void Browser::setPestanias(std::vector<Pestania> listaPestanias)
 {
-    pestañas = listaPestañas;
+    Pestanias = listaPestanias;
 }
 
-int Browser::getPestañaActual()
+int Browser::getPestaniaActual()
 {
-    return pestañaActual;
+    return PestaniaActual;
 }
 
-Pestaña& Browser::getPestañaEnPos(int pos)
+Pestania& Browser::getPestaniaEnPos(int pos)
 {
-    return pestañas.at(pos);
+    return Pestanias.at(pos);
 }
 
-void Browser::setPestañaActual(int pest)
+void Browser::setPestaniaActual(int pest)
 {
-    pestañaActual = pest;
+    PestaniaActual = pest;
 }
 
 int Browser::getLimiteHistorial()
@@ -40,84 +40,93 @@ void Browser::setLimiteHistorial(int lim){
     limiteHistorial = lim;
 }
 
-Pestaña& Browser::getPestañaActualReal()
+Pestania& Browser::getPestaniaActualReal()
 {
-    return pestañas.at(pestañaActual);
+    return Pestanias.at(PestaniaActual);
 }
 
 
-int Browser::nuevaPestaña() {
-    pestañas.push_back(Pestaña());  // Añadir nueva pestaña
-    pestañaActual = static_cast<int>(pestañas.size()) - 1;
-    std::cout << "Nueva pestaña creada, ahora estás en la pestaña #" << pestañaActual << std::endl;
-    return pestañaActual;
+int Browser::nuevaPestania() {
+    Pestanias.push_back(Pestania());  // Añadir nueva Pestania
+    PestaniaActual = static_cast<int>(Pestanias.size()) - 1;
+    std::cout << "Nueva Pestania creada, ahora estás en la Pestania #" << PestaniaActual << std::endl;
+    return PestaniaActual;
 }
 
-void Browser::cerrarPestaña(int index) {
-    if (index >= 0 && index < pestañas.size()) {
-        pestañas.erase(pestañas.begin() + index);  // Eliminar la pestaña del vector
-        pestañaActual = (index == 0) ? 0 : index - 1;  // Cambiar a la pestaña anterior si se cierra la actual
-        std::cout << "Pestaña cerrada, ahora estás en la pestaña #" << pestañaActual << std::endl;
+void Browser::cerrarPestania(int index) {
+    if (index >= 0 && index < Pestanias.size()) {
+        Pestanias.erase(Pestanias.begin() + index);  // Eliminar la Pestania del vector
+        PestaniaActual = (index == 0) ? 0 : index - 1;  // Cambiar a la Pestania anterior si se cierra la actual
+        std::cout << "Pestania cerrada, ahora estás en la Pestania #" << PestaniaActual << std::endl;
     }
     else {
-        std::cout << "Índice de pestaña inválido" << std::endl;
+        std::cout << "Índice de Pestania inválido" << std::endl;
     }
 }
 
-void Browser::cambiarPestaña(int index) {
-    if (index >= 0 && index < pestañas.size()) {
-        pestañaActual = index;
-        std::cout << "Cambiado a la pestaña #" << index << std::endl;
+void Browser::cambiarPestania(int index) {
+    if (index >= 0 && index < Pestanias.size()) {
+        PestaniaActual = index;
+        std::cout << "Cambiado a la Pestania #" << index << std::endl;
     }
     else {
-        std::cout << "Índice de pestaña inválido" << std::endl;
+        std::cout << "Índice de Pestania inválido" << std::endl;
     }
 }
 
-void Browser::irAtras() {
-    pestañas[pestañaActual].anteriorPag();
-}
-
-void Browser::irAdelante() {
-    pestañas[pestañaActual].siguientePag();
-}
-
-void Browser::limpiarHistorialPestañaActual() {
-    pestañas[pestañaActual].limpiarHistorialVentana();
-}
-
-void Browser::agregarBookmarkPestañaActual(Bookmark b)
+bool Browser::existeSigPes()
 {
-    pestañas.at(pestañaActual).agregarBookmark(b);
+    if (PestaniaActual == (int)Pestanias.size()-1) {
+        return false;
+    }
+    return true;
 }
 
-void Browser::mostrarBookmarksPestañaActual()
+
+bool Browser::irAtras() {
+    return Pestanias[PestaniaActual].anteriorPag();
+}
+
+bool Browser::irAdelante() {
+   return Pestanias[PestaniaActual].siguientePag();
+}
+
+void Browser::limpiarHistorialPestaniaActual() {
+    Pestanias[PestaniaActual].limpiarHistorialVentana();
+}
+
+void Browser::agregarBookmarkPestaniaActual(Bookmark b)
 {
-    pestañas.at(pestañaActual).mostrarBookmarks();
+    Pestanias.at(PestaniaActual).agregarBookmark(b);
 }
 
-void Browser::activarIncognitoPestañaActual() {
-    pestañas[pestañaActual].activarIncognito();
-    std::cout << "Modo incognito activado en la pestaña #" << pestañaActual << std::endl;
+void Browser::mostrarBookmarksPestaniaActual()
+{
+    Pestanias.at(PestaniaActual).mostrarBookmarks();
 }
 
-void Browser::desactivarIncognitoPestañaActual() {
-    pestañas[pestañaActual].desactivarIncognito();
-    std::cout << "Modo incognito desactivado en la pestaña #" << pestañaActual << std::endl;
+void Browser::activarIncognitoPestaniaActual() {
+    Pestanias[PestaniaActual].activarIncognito();
+    std::cout << "Modo incognito activado en la Pestania #" << PestaniaActual << std::endl;
+}
+
+void Browser::desactivarIncognitoPestaniaActual() {
+    Pestanias[PestaniaActual].desactivarIncognito();
+    std::cout << "Modo incognito desactivado en la Pestania #" << PestaniaActual << std::endl;
 }
 
 void Browser::mostrarTodosBookmarks()
 {
-    for (Pestaña p : pestañas) {
+    for (Pestania p : Pestanias) {
         p.mostrarBookmarks();
     }
 }
 
-void Browser::mostrarPestañas() {
-    std::cout << "=== Pestañas abiertas ===" << std::endl;
-    for (size_t i = 0; i < pestañas.size(); ++i) {
-        std::cout << "Pestaña #" << i;
-        if (i == pestañaActual) {
+void Browser::mostrarPestanias() {
+    std::cout << "=== Pestanias abiertas ===" << std::endl;
+    for (size_t i = 0; i < Pestanias.size(); ++i) {
+        std::cout << "Pestania #" << i;
+        if (i == PestaniaActual) {
             std::cout << " (actual)";
         }
         std::cout << std::endl;

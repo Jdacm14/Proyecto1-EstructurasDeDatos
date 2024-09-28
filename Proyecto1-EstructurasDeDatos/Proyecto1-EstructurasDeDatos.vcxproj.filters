@@ -30,7 +30,7 @@
     <ClCompile Include="Interfaz.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
-    <ClCompile Include="Pestaña.cpp">
+    <ClCompile Include="Pestania.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
     <ClCompile Include="Controladora.cpp">
@@ -56,7 +56,7 @@
     <ClInclude Include="Interfaz.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="Pestaña.h">
+    <ClInclude Include="Pestania.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
     <ClInclude Include="Controladora.h">

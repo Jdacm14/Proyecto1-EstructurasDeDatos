@@ -16,6 +16,8 @@ public:
     // Métodos
     void agregarPagina(const SitioWeb& sitio);
     SitioWeb& obtenerPaginaActual();
+
+    void setPaginaActual(int);
     bool puedeRetroceder();
     bool puedeAvanzar();
     void atras();

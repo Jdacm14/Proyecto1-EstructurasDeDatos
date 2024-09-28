@@ -5,9 +5,9 @@
 #include "Bookmark.h"
 #include <vector>
 
-class Pestaña {
+class Pestania {
 public:
-	Pestaña();
+	Pestania();
 
 
 	HistorialNavegacion& getHistorial();
@@ -22,11 +22,12 @@ public:
 	void activarIncognito();
 	void desactivarIncognito();
 	bool getEstadoIncognito();
+	
 
 	void limpiarHistorialVentana();
 
-	void siguientePag();
-	void anteriorPag();
+	bool siguientePag();
+	bool anteriorPag();
 
 
 private:

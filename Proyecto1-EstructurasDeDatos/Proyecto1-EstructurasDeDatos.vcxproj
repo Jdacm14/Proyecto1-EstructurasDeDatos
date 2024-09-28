@@ -133,7 +133,7 @@
     <ClCompile Include="CSV.cpp" />
     <ClCompile Include="HistorialNavegacion.cpp" />
     <ClCompile Include="Interfaz.cpp" />
-    <ClCompile Include="Pestaña.cpp" />
+    <ClCompile Include="Pestania.cpp" />
     <ClCompile Include="SitioWeb.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
@@ -144,7 +144,7 @@
     <ClInclude Include="CSV.h" />
     <ClInclude Include="HistorialNavegacion.h" />
     <ClInclude Include="Interfaz.h" />
-    <ClInclude Include="Pestaña.h" />
+    <ClInclude Include="Pestania.h" />
     <ClInclude Include="SitioWeb.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
