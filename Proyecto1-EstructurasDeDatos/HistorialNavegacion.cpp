@@ -99,7 +99,7 @@ std::list<std::pair<std::string, std::string>> HistorialNavegacion::obtenerHisto
     std::list<std::pair<std::string, std::string>> historialLista; 
     std::set<std::pair<std::string, std::string>> agregadas;
     for (const auto& pagina : historial) {
-        auto entrada = std::make_pair(pagina.getTitulo(), pagina.getUrl()); // Crea un par con titulo y utl
+        auto entrada = std::make_pair(pagina.getUrl(), pagina.getTitulo()); // Crea un par con titulo y utl
         if (agregadas.find(entrada) == agregadas.end()) {
             historialLista.emplace_back(entrada);
             agregadas.insert(entrada);
