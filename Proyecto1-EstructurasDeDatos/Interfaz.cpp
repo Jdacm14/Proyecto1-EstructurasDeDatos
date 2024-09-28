@@ -47,14 +47,14 @@ void Interfaz::mostrarMenu() {
 
 void Interfaz::mostrarPaginaActual(Browser& navegador)
 {
-    if (navegador.getPestañas().empty()) {
-        std::cout << "No hay pestaña abiertas..." << std::endl;
+    if (navegador.getPestanias().empty()) {
+        std::cout << "No hay Pestania abiertas..." << std::endl;
         return;
     }
 
     try {
-        // Obtener la página actual en la pestaña actual
-        SitioWeb pagina = navegador.getPestañaEnPos(navegador.getPestañaActual()).getHistorial().obtenerPaginaActual();
+        // Obtener la página actual en la Pestania actual
+        SitioWeb pagina = navegador.getPestaniaEnPos(navegador.getPestaniaActual()).getHistorial().obtenerPaginaActual();
 
         // Mostrar los detalles de la página actual usando los getters
         std::cout << std::endl;
@@ -69,7 +69,7 @@ void Interfaz::mostrarPaginaActual(Browser& navegador)
         std::cout << " g - Nueva Pestania                                             " << std::endl;
         std::cout << " h - Configuracion                                              " << std::endl;
         std::cout << "----------------------------------------------------------------" << std::endl;
-        std::cout << "================= Pestaña #" << navegador.getPestañaActual() << " =================\n";
+        std::cout << "================= Pestania #" << navegador.getPestaniaActual() << " =================\n";
         std::cout << "URL: " << pagina.getUrl() << "\n";
         std::cout << "Titulo: " << pagina.getTitulo() << "\n";
         std::cout << "===============================================\n";
@@ -106,7 +106,7 @@ void Interfaz::irAlSitioWeb(Browser& navegador)  // Pasar navegador por referenc
            /* std::cout << "Visitando: " << sitioEncontrado.getUrl() << " - " << sitioEncontrado.getTitulo() << std::endl;*/
 
             // Agregar al historial de navegación
-            navegador.getPestañaEnPos(navegador.getPestañaActual()).getHistorial().agregarPagina(sitioEncontrado);
+            navegador.getPestaniaEnPos(navegador.getPestaniaActual()).getHistorial().agregarPagina(sitioEncontrado);
 
             // Mostrar la página actual
             /*mostrarPaginaActual(navegador);*/
@@ -150,7 +150,7 @@ void Interfaz::agregarBookmark(Browser& b)
     if (sitioEncontrado.getTitulo() != "404 - Not Found") {
         // Si la URL fue encontrada, mostrar URL y título
        /* std::cout << "Visitando: " << sitioEncontrado.getUrl() << " - " << sitioEncontrado.getTitulo() << std::endl;*/
-        for (Pestaña p : b.getPestañas()) {
+        for (Pestania p : b.getPestanias()) {
             for (Bookmark bo : p.geVectortBookmarks()) {
                 if (sitioEncontrado.getUrl() == bo.getURL()) {
                     std::cout << "Este sitio ya es un bookmark" << "\n";
@@ -182,7 +182,7 @@ void Interfaz::agregarBookmark(Browser& b)
             bo.agregarEtiqueta(s);
         }
 
-        b.getPestañaActualReal().agregarBookmark(bo);
+        b.getPestaniaActualReal().agregarBookmark(bo);
       
     }
     else {
@@ -218,17 +218,17 @@ void Interfaz::busquedaFiltros(Browser& b)
 
         std::vector<std::pair<std::string, std::string>> coincidencias; // contendra las coincidencias
 
-        for (auto& pestaña : b.getPestañas()) { // recorre cada historias registrado en cada una de las pestañas
-            auto& historial = pestaña.getHistorial();
+        for (auto& Pestania : b.getPestanias()) { // recorre cada historias registrado en cada una de las Pestanias
+            auto& historial = Pestania.getHistorial();
             for (const auto& pagina : historial.obtenerHistorial()) {
                 if (pagina.second.find(op) != std::string::npos) {
                     coincidencias.emplace_back(pagina.second, pagina.first);    // guarda la pagina si coincide
                 }
             }
         }
-        if (!coincidencias.empty()) {   // si encuentra al menos una coincidencia, crea una nueva pestaña
-            int nuevaPestania = b.nuevaPestaña();
-            auto& nuevaHistorial = b.getPestañaEnPos(nuevaPestania).getHistorial();
+        if (!coincidencias.empty()) {   // si encuentra al menos una coincidencia, crea una nueva Pestania
+            int nuevaPestania = b.nuevaPestania();
+            auto& nuevaHistorial = b.getPestaniaEnPos(nuevaPestania).getHistorial();
 
             std::set<std::pair<std::string, std::string>> agregadas;
 
@@ -241,7 +241,7 @@ void Interfaz::busquedaFiltros(Browser& b)
                     agregadas.insert(entrada);
                 }
             }
-            b.setPestañaActual(nuevaPestania);
+            b.setPestaniaActual(nuevaPestania);
             std::cout << "Titulos encontrados: " << std::endl;
             for (const auto& coincidencia : coincidencias) {
                 std::cout << "Titulo: " << coincidencia.first << " en la URL: " << coincidencia.second << std::endl;
@@ -262,14 +262,14 @@ void Interfaz::busquedaFiltros(Browser& b)
 std::string Interfaz::incognito(Browser& b)
 
 {
-    b.activarIncognitoPestañaActual();
+    b.activarIncognitoPestaniaActual();
     system("pause");
     return " ";
 }
 
 std::string Interfaz::nuevaPestania(Browser& b)
 {
-    b.nuevaPestaña();
+    b.nuevaPestania();
     return " ";
 }
 
@@ -280,13 +280,13 @@ std::string Interfaz::configuracion()
 
 
 void Interfaz::cambiarPestania(Browser& b, int n) {
-    if (n == 72 && b.getPestañaActual() > 0) {
-        b.setPestañaActual(b.getPestañaActual() - 1);
+    if (n == 72 && b.getPestaniaActual() > 0) {
+        b.setPestaniaActual(b.getPestaniaActual() - 1);
         mostrarPaginaActual(b);
      
     }
-    if (n == 80 && b.getPestañaActual() < 10 && b.existeSigPes() ) {
-        b.setPestañaActual(b.getPestañaActual() + 1);
+    if (n == 80 && b.getPestaniaActual() < 10 && b.existeSigPes() ) {
+        b.setPestaniaActual(b.getPestaniaActual() + 1);
         mostrarPaginaActual(b);
       
     }

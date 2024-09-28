@@ -5,9 +5,9 @@
 #include "Bookmark.h"
 #include <vector>
 
-class Pestaña {
+class Pestania {
 public:
-	Pestaña();
+	Pestania();
 
 
 	HistorialNavegacion& getHistorial();

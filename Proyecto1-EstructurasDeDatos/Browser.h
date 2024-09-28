@@ -1,6 +1,6 @@
 #pragma once
 #include <vector>
-#include "Pestaña.h"
+#include "Pestania.h"
 #include "HistorialNavegacion.h"
 #include "Bookmark.h"
 #include <iostream>
@@ -8,47 +8,47 @@
 
 class Browser {
 private:
-    std::vector<Pestaña> pestañas;    // Lista de pestañas abiertas
-    int pestañaActual;                // Índice de la pestaña actual
-    int limiteHistorial;              // Límite global para el historial de cada pestaña
+    std::vector<Pestania> Pestanias;    // Lista de Pestanias abiertas
+    int PestaniaActual;                // Índice de la Pestania actual
+    int limiteHistorial;              // Límite global para el historial de cada Pestania
 
 public:
     Browser(int limiteHistorial = 10);
 
-    std::vector <Pestaña>& getPestañas();
-    void setPestañas(std::vector<Pestaña>);
-    int getPestañaActual();
-    Pestaña& getPestañaEnPos(int);
-    void setPestañaActual(int);
+    std::vector <Pestania>& getPestanias();
+    void setPestanias(std::vector<Pestania>);
+    int getPestaniaActual();
+    Pestania& getPestaniaEnPos(int);
+    void setPestaniaActual(int);
     int getLimiteHistorial();
     void setLimiteHistorial(int);
 
-    Pestaña& getPestañaActualReal();
+    Pestania& getPestaniaActualReal();
 
-    // Manejo de pestañas
-    int nuevaPestaña();
-    void cerrarPestaña(int index);
-    void cambiarPestaña(int index);
+    // Manejo de Pestanias
+    int nuevaPestania();
+    void cerrarPestania(int index);
+    void cambiarPestania(int index);
     bool existeSigPes();
 
-    // Navegación en la pestaña actual
+    // Navegación en la Pestania actual
     bool irAtras();
     bool irAdelante();
 
     // Historial
-    void limpiarHistorialPestañaActual();
+    void limpiarHistorialPestaniaActual();
 
     // Gestión de bookmarks
-    void agregarBookmarkPestañaActual(Bookmark);
-    void mostrarBookmarksPestañaActual();
+    void agregarBookmarkPestaniaActual(Bookmark);
+    void mostrarBookmarksPestaniaActual();
 
     // Modo incógnito
-    void activarIncognitoPestañaActual();
-    void desactivarIncognitoPestañaActual();
+    void activarIncognitoPestaniaActual();
+    void desactivarIncognitoPestaniaActual();
 
     void mostrarTodosBookmarks();
 
-    // Mostrar información sobre pestañas
-    void mostrarPestañas();
+    // Mostrar información sobre Pestanias
+    void mostrarPestanias();
 };
 

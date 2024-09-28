@@ -1,5 +1,5 @@
 #pragma once
-#include"Pestaña.h"
+#include"Pestania.h"
 #include"Browser.h"
 #include"HistorialNavegacion.h"
 #include"CSV.h"
