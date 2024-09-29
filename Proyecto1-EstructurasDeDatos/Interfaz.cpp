@@ -274,6 +274,29 @@ std::string Interfaz::incognito(Browser& b)
     return " ";
 }
 
+
+
+
+void Interfaz::exportarSesion(Browser& navegador) {
+    std::string nombreArchivo;
+    std::cout << "Ingrese el nombre del archivo para exportar la sesión: ";
+    std::cin >> nombreArchivo;
+
+    navegador.exportarSesion(nombreArchivo);
+    std::cout << "Sesión exportada con éxito." << std::endl;
+}
+
+void Interfaz::importarSesion(Browser& navegador){
+    std::string nombreArchivo;
+    std::cout << "Ingrese el nombre del archivo para importar la sesión: ";
+    std::cin >> nombreArchivo;
+
+    navegador.importarSesion(nombreArchivo);
+    std::cout << "Sesión importada con éxito." << std::endl;
+}
+
+std::string Interfaz::nuevaPestania(Browser& b)
+
 void Interfaz::nuevaPestania(Browser& b)
 {
     b.nuevaPestania();

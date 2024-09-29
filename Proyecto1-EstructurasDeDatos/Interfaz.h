@@ -16,9 +16,9 @@ public:
 	static char buscadorPrincipal(Browser&);
 	static void mostrarMenu();
 
-	static void mostrarPaginaActualII(Browser&, SitioWeb&);
 
-	static void mostrarPaginaActual(Browser& navegador);
+	static void mostrarPaginaActual(Browser&);
+
 
 	static void irAlSitioWeb(Browser& navegador);
 
@@ -30,7 +30,17 @@ public:
 
 	static std::string incognito(Browser&);
 
+
 	static void nuevaPestania(Browser&);
+
+	static void importarYExportar(Browser&);
+
+	static void exportarSesion(Browser&);
+
+	static void importarSesion(Browser&);
+
+	static std::string nuevaPestania(Browser&);
+
 
 	static void configuracion(Browser&);
 
