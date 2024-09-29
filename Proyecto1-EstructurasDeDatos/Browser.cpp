@@ -173,7 +173,7 @@ void Browser::exportarSesion(const std::string& nombreArchivo) {
     std::ofstream archivo(nombreArchivo, std::ios::binary);
 
     if (!archivo.is_open()) {
-        std::cerr << "No se pudo abrir el archivo para exportar la sesión." << std::endl;
+        std::cerr << "No se pudo abrir el archivo para exportar la sesion." << std::endl;
         return;
     }
 
@@ -226,7 +226,7 @@ void Browser::importarSesion(const std::string& nombreArchivo) {
     std::ifstream archivo(nombreArchivo, std::ios::binary);
 
     if (!archivo.is_open()) {
-        std::cerr << "No se pudo abrir el archivo para importar la sesión." << std::endl;
+        std::cerr << "No se pudo abrir el archivo para importar la sesion." << std::endl;
         return;
     }
 
@@ -262,6 +262,13 @@ void Browser::importarSesion(const std::string& nombreArchivo) {
 
             SitioWeb sitio(url, titulo);
             nuevoHistorial.agregarPagina(sitio);
+        }
+
+        if (!nuevoHistorial.getHistorial().empty()) {   // aseguramos que el historial no esté vacío
+            nuevoHistorial.setearActualAlPrincipio();
+        }
+        else {
+            std::cerr << "Historial vacio despues de importar. " << std::endl;
         }
 
         nuevaPestania.setHistorial(nuevoHistorial);

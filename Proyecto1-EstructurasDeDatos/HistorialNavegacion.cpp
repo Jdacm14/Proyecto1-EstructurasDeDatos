@@ -33,7 +33,7 @@ void HistorialNavegacion::agregarPagina(const SitioWeb& sitio) {
 
 // Obtener la página actual
 SitioWeb& HistorialNavegacion::obtenerPaginaActual() {
-    static SitioWeb sitioNulo("404 - Not Found", "Página no encontrada");  // Objeto estático para un sitio nulo
+    static SitioWeb sitioNulo("404 - Not Found", "Pagina no encontrada");  // Objeto estático para un sitio nulo
     if (historial.empty()  || actual == historial.end()) {
         return sitioNulo;  // Devolver el sitio nulo si no hay páginas en el historial
     }
@@ -143,4 +143,8 @@ std::list<std::pair<std::string, std::string>> HistorialNavegacion::obtenerHisto
         }
     }
     return historialLista;
+}
+
+std::list<SitioWeb>& HistorialNavegacion::getHistorial() {
+    return historial;
 }
