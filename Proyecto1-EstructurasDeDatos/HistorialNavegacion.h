@@ -1,5 +1,6 @@
 #pragma once
 #include <list>
+#include <iterator> 
 #include "SitioWeb.h"
 
 
@@ -17,6 +18,8 @@ public:
     void agregarPagina(const SitioWeb& sitio);
     SitioWeb& obtenerPaginaActual();
 
+    bool estaVacio();
+    void setActualAlUltimo();
     void setPaginaActual(int);
     bool puedeRetroceder();
     bool puedeAvanzar();
@@ -26,5 +29,11 @@ public:
     void establecerLimite(int limite);
     size_t getHistorialSize();
     std::list<std::pair<std::string, std::string>> obtenerHistorial();
+
+    //Guardar
+    void guardarEnBinario(std::ofstream& archivo) const;
+
+    //Cargar
+    void cargarDesdeBinario(std::ifstream& archivo);
 
 };

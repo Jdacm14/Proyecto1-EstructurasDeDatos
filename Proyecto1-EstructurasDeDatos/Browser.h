@@ -17,7 +17,7 @@ public:
     Browser(int limiteHistorial = 10);
 
     std::vector <Pestania>& getPestanias();
-    void setPestanias(std::vector<Pestania>);
+    void setPestanias(std::vector<Pestania>&);
     int getPestaniaActual();
     Pestania& getPestaniaEnPos(int);
     void setPestaniaActual(int);
@@ -57,5 +57,7 @@ public:
 
     //Importar/Deserializar datos
     void importarSesion(const std::string&);
+    std::vector<Pestania> importarPestaniasConHistorial(const std::string& nombreArchivo);
+    std::vector<Bookmark> importarBookmarks(const std::string& nombreArchivo);
 };
 
