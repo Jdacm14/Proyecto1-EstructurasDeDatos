@@ -1,7 +1,7 @@
 #include "SitioWeb.h"
 
 // Constructor
-SitioWeb::SitioWeb(const std::string& _url,const std::string& _dominio, const std::string& _titulo) : url(_url),dominio(_dominio), titulo(_titulo) {}
+SitioWeb::SitioWeb(const std::string& _url, const std::string& _dominio, const std::string& _titulo) : url(_url), dominio(_dominio), titulo(_titulo), creacion(Clock::now()) {}
 
 // Getters
 std::string SitioWeb::getUrl() const {
@@ -15,6 +15,18 @@ std::string SitioWeb::getDominio() const
 
 std::string SitioWeb::getTitulo() const {
     return titulo;
+}
+
+TimePoint SitioWeb::getCreacion() const
+{
+    return creacion;
+}
+
+bool SitioWeb::haExpirado() const
+{
+    auto ahora = std::chrono::steady_clock::now();
+    auto duracion = std::chrono::duration_cast<std::chrono::minutes>(ahora - creacion);
+    return duracion.count() >= 5;  // Retorna true si han pasado 5 minutos o más   
 }
 
 // Setters
@@ -62,29 +74,29 @@ void SitioWeb::cargarSitio(std::ifstream& archivo) {
     size_t urlSize, dominioSize, tituloSize;
 
     archivo.read(reinterpret_cast<char*>(&urlSize), sizeof(urlSize));
-    if (archivo.fail()) throw std::runtime_error("Error al leer tama�o de URL.");
+    if (archivo.fail()) throw std::runtime_error("Error al leer tamaño de URL.");
 
     url.resize(urlSize);
     archivo.read(&url[0], urlSize);
     if (archivo.fail()) throw std::runtime_error("Error al leer URL.");
 
     archivo.read(reinterpret_cast<char*>(&dominioSize), sizeof(dominioSize));
-    if (archivo.fail()) throw std::runtime_error("Error al leer tama�o de dominio.");
+    if (archivo.fail()) throw std::runtime_error("Error al leer tamaño de dominio.");
 
     dominio.resize(dominioSize);
     archivo.read(&dominio[0], dominioSize);
     if (archivo.fail()) throw std::runtime_error("Error al leer dominio.");
 
     archivo.read(reinterpret_cast<char*>(&tituloSize), sizeof(tituloSize));
-    if (archivo.fail()) throw std::runtime_error("Error al leer tama�o de t�tulo.");
+    if (archivo.fail()) throw std::runtime_error("Error al leer tamaño de título.");
 
     titulo.resize(tituloSize);
     archivo.read(&titulo[0], tituloSize);
-    if (archivo.fail()) throw std::runtime_error("Error al leer t�tulo.");
+    if (archivo.fail()) throw std::runtime_error("Error al leer título.");
 }
 
 
-// Mostrar informaci�n del sitio
+// Mostrar información del sitio
 void SitioWeb::mostrarInfo() const {
-    std::cout << "URL: " << url << ", T�tulo: " << titulo << std::endl;
+    std::cout << "URL: " << url << ", Título: " << titulo << std::endl;
 }

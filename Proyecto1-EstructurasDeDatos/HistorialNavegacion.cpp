@@ -28,6 +28,11 @@ HistorialNavegacion::~HistorialNavegacion() {
     limpiarHistorial();
 }
 
+std::list<SitioWeb>::iterator HistorialNavegacion::Getactual()
+{
+    return actual;
+}
+
 // Agregar una página al historial
 void HistorialNavegacion::agregarPagina(const SitioWeb& sitio) {
     // Agregar la nueva página al final
@@ -48,11 +53,10 @@ void HistorialNavegacion::agregarPagina(const SitioWeb& sitio) {
 // Obtener la página actual
 SitioWeb& HistorialNavegacion::obtenerPaginaActual() {
     static SitioWeb sitioNulo("404 - Not Found", "Página no encontrada");  // Objeto estático para un sitio nulo
-
     if (historial.empty() || actual == historial.end()) {
         return sitioNulo;  // Devolver el sitio nulo si no hay páginas en el historial o el iterador es inválido
     }
-
+  
     return *actual;
 }
 
@@ -70,6 +74,21 @@ void HistorialNavegacion::setActualAlUltimo()
     else {
         actual = historial.end();  // Si está vacío, apunta al end()
     }
+  
+void HistorialNavegacion::setearActualAlPrincipio()
+{
+    actual = std::prev(historial.end());
+}
+
+void HistorialNavegacion::eliminarSitiosWeb()
+{
+    TimePoint ahora = Clock::now();
+
+    auto duracionExpiracion = std::chrono::minutes(5);
+
+    historial.erase(std::remove_if(historial.begin(), historial.end(), [&](const SitioWeb& sitio) {
+        return(ahora - sitio.getCreacion()) >= duracionExpiracion;
+    }), historial.end());
 }
 
 void HistorialNavegacion::setPaginaActual(int n)
@@ -135,7 +154,7 @@ std::list<std::pair<std::string, std::string>> HistorialNavegacion::obtenerHisto
     std::list<std::pair<std::string, std::string>> historialLista; 
     std::set<std::pair<std::string, std::string>> agregadas;
     for (const auto& pagina : historial) {
-        auto entrada = std::make_pair(pagina.getTitulo(), pagina.getUrl()); // Crea un par con titulo y utl
+        auto entrada = std::make_pair(pagina.getUrl(), pagina.getTitulo()); // Crea un par con titulo y utl
         if (agregadas.find(entrada) == agregadas.end()) {
             historialLista.emplace_back(entrada);
             agregadas.insert(entrada);
