@@ -110,8 +110,10 @@ void Interfaz::irAlSitioWeb(Browser& navegador)  // Pasar navegador por referenc
             // Agregar al historial de navegación
             if (navegador.getPestaniaActualReal().getHistorial().getHistorialSize() < navegador.getLimiteHistorial()) {
                 navegador.getPestaniaEnPos(navegador.getPestaniaActual()).getHistorial().agregarPagina(sitioEncontrado);
+               
             }else{
                 std::cout << "No hay espacio para mas sitios... " << std::endl;
+                system("pause");
             }
             // Mostrar la página actual
             /*mostrarPaginaActual(navegador);*/
@@ -272,10 +274,32 @@ std::string Interfaz::incognito(Browser& b)
     return " ";
 }
 
-std::string Interfaz::nuevaPestania(Browser& b)
+
+
+
+void Interfaz::exportarSesion(Browser& navegador) {
+    std::string nombreArchivo;
+    std::cout << "Ingrese el nombre del archivo para exportar la sesión: ";
+    std::cin >> nombreArchivo;
+
+    navegador.exportarSesion(nombreArchivo);
+    std::cout << "Sesión exportada con éxito." << std::endl;
+}
+
+void Interfaz::importarSesion(Browser& navegador){
+    std::string nombreArchivo;
+    std::cout << "Ingrese el nombre del archivo para importar la sesión: ";
+    std::cin >> nombreArchivo;
+
+    navegador.importarSesion(nombreArchivo);
+    std::cout << "Sesión importada con éxito." << std::endl;
+}
+
+
+void Interfaz::nuevaPestania(Browser& b)
 {
     b.nuevaPestania();
-    return " ";
+    
 }
 
 void Interfaz::configuracion(Browser& b)
@@ -318,7 +342,7 @@ void Interfaz::configuracion(Browser& b)
 
 void Interfaz::cambiarPestania(Browser& b, int n) {
     if (n == 72 && b.getPestaniaActual() > 0) {  //Si la tecla que se tocó fue la #72 y solo si la pestania actual no es la 0, se puede ir hacia atras
-        b.setPestaniaActual(b.getPestaniaActual() - 1);  //Se setea una nueva pestania actual
+        b.setPestaniaActual(b.getPestaniaActual() - 1); //Se setea una nueva pestania actual
         mostrarPaginaActual(b);  //Y se muestra la pagina de la nueva pestania actual
      
     }
@@ -345,4 +369,22 @@ void Interfaz::cambiarHistorial(Browser& b, int n) {
     }
 
 
+}
+
+
+void Interfaz::eliminarSitios(Browser& b) {
+    while (true) {
+        std::this_thread::sleep_for(std::chrono::seconds(2));  
+        
+        for (Pestania p : b.getPestanias()) {
+            p.getHistorial().eliminarSitiosWeb();
+        }
+
+        for (Pestania p : b.getPestanias()) {
+            if (p.getHistorial().obtenerHistorial().empty()) {
+              
+                break;
+            }
+        }
+    }
 }

@@ -13,10 +13,14 @@ public:
     HistorialNavegacion(int limite = 10);  // Constructor
     ~HistorialNavegacion();  // Destructor
 
+
+    std::list<SitioWeb>::iterator Getactual();
     // Métodos
     void agregarPagina(const SitioWeb& sitio);
     SitioWeb& obtenerPaginaActual();
 
+    void setearActualAlPrincipio();
+    void eliminarSitiosWeb();
     void setPaginaActual(int);
     bool puedeRetroceder();
     bool puedeAvanzar();
