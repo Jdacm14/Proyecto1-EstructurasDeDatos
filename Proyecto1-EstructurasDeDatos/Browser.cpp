@@ -40,13 +40,46 @@ void Browser::setLimiteHistorial(int lim){
     limiteHistorial = lim;
 }
 
+void Browser::setMinutosDeTodasLasPest(int min)
+{
+
+    for (Pestania& p : Pestanias) {
+        p.getHistorial().setMinutosTodosSitios(min);
+    }
+}
+
 Pestania& Browser::getPestaniaActualReal()
 {
     return Pestanias.at(PestaniaActual);
 }
 
+bool Browser::haysitios()
+{
+    int cont = 0;
+    for (Pestania p : Pestanias) {
+        if (!p.getHistorial().getLista().empty()) {
+            cont++;
+        }
+    }
+    if (cont > 0) {
+        return true;
+    }
+    return false;
+}
+
+void Browser::agregarSitioWeb(const SitioWeb& s)
+{
+    std::lock_guard<std::mutex> lock(mtx);
+   
+   Pestanias[PestaniaActual].getHistorial().agregarPagina(s);
+   std::cout << "Sitio web agregado." << std::endl;
+    
+    
+}
+
 
 int Browser::nuevaPestania() {
+    std::lock_guard<std::mutex> lock(mtx);
     Pestanias.push_back(Pestania());  // Añadir nueva Pestania
     PestaniaActual = static_cast<int>(Pestanias.size()) - 1;
     for (int i = (int)Pestanias.size() - 1; i > 0; i--) {
@@ -256,5 +289,13 @@ void Browser::importarSesion(const std::string& nombreArchivo) {
     }
 
     archivo.close();
+}
+
+void Browser::verificarSitios()
+{
+    std::lock_guard<std::mutex> lock(mtx);
+    for (auto& pestana : Pestanias) {
+        pestana.getHistorial().eliminarSitiosWeb();
+    }
 }
 
