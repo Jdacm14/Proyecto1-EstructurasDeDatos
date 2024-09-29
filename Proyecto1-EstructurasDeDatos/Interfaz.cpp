@@ -56,7 +56,7 @@ void Interfaz::mostrarPaginaActual(Browser& navegador)
 
     try {
         // Obtener la página actual en la Pestania actual
-        SitioWeb pagina = navegador.getPestaniaEnPos(navegador.getPestaniaActual()).getHistorial().obtenerPaginaActual();
+        SitioWeb pagina = navegador.getPestaniaEnPos(/*navegador.getPestaniaActual()*/0).getHistorial().obtenerPaginaActual();
 
         // Mostrar los detalles de la página actual usando los getters
         std::cout << std::endl;
@@ -265,7 +265,6 @@ void Interfaz::busquedaFiltros(Browser& b)
     }
 }
 
-
 std::string Interfaz::incognito(Browser& b)
 
 {
@@ -274,8 +273,26 @@ std::string Interfaz::incognito(Browser& b)
     return " ";
 }
 
+{
+    char op;
+    std::cout << std::endl;
+    std::cout << "----------------------------------------------------------------" << std::endl;
+    std::cout << "                         Exportar e Importar                    " << std::endl;
+    std::cout << "Seleccione una opcion: Importar (i) o Exportar(e) los datos";
+    std::cin >> op;
+    try {
+        if (op == 'i') {
+            importarSesion(b);
+        }
+        else if (op == 'e') {
+            exportarSesion(b);
+        }
+    }
+    catch (const std::exception& e) {
+        std::cerr << "/////// Error al momento de serializar o deserializar los datos ////////";
+    }
 
-
+}
 
 void Interfaz::exportarSesion(Browser& navegador) {
     std::string nombreArchivo;
@@ -291,6 +308,7 @@ void Interfaz::importarSesion(Browser& navegador){
     std::cout << "Ingrese el nombre del archivo para importar la sesión: ";
     std::cin >> nombreArchivo;
 
+  
     navegador.importarSesion(nombreArchivo);
     std::cout << "Sesión importada con éxito." << std::endl;
 }
@@ -334,8 +352,6 @@ void Interfaz::configuracion(Browser& b)
     default:
         break;
     }
-
-
 
 }
 
