@@ -62,7 +62,7 @@ void Controladora::controlMenuGeneral()
                 Interfaz::agregarBookmark(*browser);
                 break;
             case 'c':
-                Interfaz::a
+                //Interfaz::a
             case 'd':
                 Interfaz::verBookmarks(*browser);
                 break;
