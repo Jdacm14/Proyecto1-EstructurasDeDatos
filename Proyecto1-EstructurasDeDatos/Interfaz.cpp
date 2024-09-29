@@ -373,7 +373,8 @@ void Interfaz::cambiarHistorial(Browser& b, int n) {
 
 
 void Interfaz::eliminarSitios(Browser& b) {
-    while (true) {
+    bool t = true;
+    while (t) {
         std::this_thread::sleep_for(std::chrono::seconds(2));  
         
         for (Pestania p : b.getPestanias()) {
@@ -386,5 +387,6 @@ void Interfaz::eliminarSitios(Browser& b) {
                 break;
             }
         }
+        t = false;
     }
 }

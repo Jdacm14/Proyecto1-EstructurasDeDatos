@@ -49,7 +49,9 @@ Pestania& Browser::getPestaniaActualReal()
 int Browser::nuevaPestania() {
     Pestanias.push_back(Pestania());  // Añadir nueva Pestania
     PestaniaActual = static_cast<int>(Pestanias.size()) - 1;
-    Pestanias.at(PestaniaActual - 1).getHistorial().setearActualAlPrincipio();
+    for (int i = (int)Pestanias.size() - 1; i > 0; i--) {
+        Pestanias.at(PestaniaActual - i).getHistorial().setearActualAlPrincipio();
+    }
     std::cout << "Nueva Pestania creada, ahora estás en la Pestania #" << PestaniaActual << std::endl;
     return PestaniaActual;
 }
@@ -143,7 +145,7 @@ void Browser::exportarSesion(const std::string& nombreArchivo) {
     }
 
     // Guardar el número de pestañas
-    int numeroPestanias = Pestanias.size();
+    int numeroPestanias = (int) Pestanias.size();
     archivo.write(reinterpret_cast<const char*>(&numeroPestanias), sizeof(numeroPestanias));
 
     // Guardar la pestaña actual
@@ -152,7 +154,7 @@ void Browser::exportarSesion(const std::string& nombreArchivo) {
     // Exportar cada pestaña
     for (auto& pestaña : Pestanias) {
         HistorialNavegacion& historial = pestaña.getHistorial();
-        int historialSize = historial.getHistorialSize();
+        int historialSize = (int) historial.getHistorialSize();
         archivo.write(reinterpret_cast<const char*>(&historialSize), sizeof(historialSize));
 
         // Exportar cada página del historial
@@ -169,7 +171,7 @@ void Browser::exportarSesion(const std::string& nombreArchivo) {
 
         // Exportar los bookmarks
         std::vector<Bookmark>& bookmarks = pestaña.geVectortBookmarks();
-        int numBookmarks = bookmarks.size();
+        int numBookmarks = (int) bookmarks.size();
         archivo.write(reinterpret_cast<const char*>(&numBookmarks), sizeof(numBookmarks));
 
         for (auto& bookmark : bookmarks) {
