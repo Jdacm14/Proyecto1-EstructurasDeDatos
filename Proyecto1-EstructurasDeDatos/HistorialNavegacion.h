@@ -1,6 +1,7 @@
 #pragma once
 #include <list>
 #include "SitioWeb.h"
+#include<algorithm>
 
 
 class HistorialNavegacion {
@@ -20,6 +21,7 @@ public:
     SitioWeb& obtenerPaginaActual();
     std::list<SitioWeb> getLista();
 
+    void setMinutosTodosSitios(int);
     void setearActualAlPrincipio();
     void eliminarSitiosWeb();
     void setPaginaActual(int);

@@ -47,7 +47,13 @@ std::list<SitioWeb> HistorialNavegacion::getLista()
 }
 
 
-
+void HistorialNavegacion::setMinutosTodosSitios(int n)
+{
+    
+    for (SitioWeb& sitio : historial) {
+        sitio.setTiempo(n);
+    }
+}
 
 void HistorialNavegacion::setearActualAlPrincipio()
 {
@@ -61,12 +67,8 @@ void HistorialNavegacion::setearActualAlPrincipio()
 
 void HistorialNavegacion::eliminarSitiosWeb()
 {
-    TimePoint ahora = Clock::now();
-
-    auto duracionExpiracion = std::chrono::minutes(5);
-
     historial.erase(std::remove_if(historial.begin(), historial.end(), [&](const SitioWeb& sitio) {
-        return(ahora - sitio.getCreacion()) >= duracionExpiracion;
+        return sitio.haExpirado();
     }), historial.end());
 
 }

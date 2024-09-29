@@ -14,16 +14,26 @@ void Controladora::msjOpcionNoValida()
 {
 }
 
+void Controladora::verificarSitiosEliminados()
+{
+    while (true) {
+        std::this_thread::sleep_for(std::chrono::seconds(10));
+        Interfaz::eliminarSitios(*browser);
+    }
+}
+
 void Controladora::controlMenuGeneral()
 {
     // Bucle infinito hasta que el usuario lo detenga
+    std::thread verificador(&Controladora::verificarSitiosEliminados, this); //Hilo que verifica si el tiempo de vida de un sitio web se acabó
+
     do {
         // Mostrar el menú y la pestaña actual
         system("cls");  // Limpiar la pantalla
-        
+
         Interfaz::mostrarPaginaActual(*browser); // Mostrar la página actual
         
-        Interfaz::eliminarSitios(*browser);
+       
         // Capturar teclas
         
         int tecla = _getch();            // Capturar una tecla
@@ -93,5 +103,7 @@ void Controladora::controlMenuGeneral()
         
     } while (true);  // Bucle infinito hasta que se presione 'q'
 
-
+    verificador.join();
 }
+
+

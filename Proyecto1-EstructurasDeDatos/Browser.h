@@ -4,14 +4,16 @@
 #include "HistorialNavegacion.h"
 #include "Bookmark.h"
 #include <iostream>
-#include<fstream>
-#include<windows.h>
+#include <fstream>
+#include <windows.h>
+#include <mutex>
 
 class Browser {
 private:
     std::vector<Pestania> Pestanias;    // Lista de Pestanias abiertas
     int PestaniaActual;                // Índice de la Pestania actual
     int limiteHistorial;              // Límite global para el historial de cada Pestania
+    std::mutex mtx;
 
 public:
     Browser(int limiteHistorial = 10);
@@ -23,9 +25,12 @@ public:
     void setPestaniaActual(int);
     int getLimiteHistorial();
     void setLimiteHistorial(int);
+    void setMinutosDeTodasLasPest(int);
 
     Pestania& getPestaniaActualReal();
 
+    bool haysitios();
+    void agregarSitioWeb(const SitioWeb&);
     // Manejo de Pestanias
     int nuevaPestania();
     void cerrarPestania(int index);
@@ -57,5 +62,7 @@ public:
 
     //Importar/Deserializar datos
     void importarSesion(const std::string&);
+
+    void verificarSitios();
 };
 
