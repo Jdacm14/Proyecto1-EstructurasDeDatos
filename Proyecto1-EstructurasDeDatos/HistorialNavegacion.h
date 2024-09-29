@@ -18,6 +18,7 @@ public:
     // Métodos
     void agregarPagina(const SitioWeb& sitio);
     SitioWeb& obtenerPaginaActual();
+    std::list<SitioWeb> getLista();
 
     void setearActualAlPrincipio();
     void eliminarSitiosWeb();

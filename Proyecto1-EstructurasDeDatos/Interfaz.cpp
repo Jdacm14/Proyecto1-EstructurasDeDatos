@@ -154,43 +154,50 @@ void Interfaz::agregarBookmark(Browser& b)
     // Buscar la URL en los sitios cargados
     SitioWeb sitioEncontrado = csv.buscarSitioPorURL(op);
 
-    if (sitioEncontrado.getTitulo() != "404 - Not Found") {
+    if (sitioEncontrado.getUrl() != "404 - Not Found") {
         // Si la URL fue encontrada, mostrar URL y título
-       /* std::cout << "Visitando: " << sitioEncontrado.getUrl() << " - " << sitioEncontrado.getTitulo() << std::endl;*/
-        for (Pestania p : b.getPestanias()) {
-            for (Bookmark bo : p.geVectortBookmarks()) {
-                if (sitioEncontrado.getUrl() == bo.getURL()) {
-                    std::cout << "Este sitio ya es un bookmark" << "\n";
-                    system("pause");
-                    return;
+        
+        for (SitioWeb sitio : b.getPestaniaActualReal().getHistorial().getLista()) {
+            if (sitio.getUrl() == sitioEncontrado.getUrl()) {
+                std::cout << " Sitio encontrado en el historial" << std::endl;
+                for (Bookmark bo : b.getPestaniaActualReal().geVectortBookmarks()) {
+                    if (sitioEncontrado.getUrl() == bo.getURL()) {
+                        std::cout << "Este sitio ya es un bookmark en esta pestania" << "\n";
+                        system("pause");
+                        return;
+                    }
                 }
+
+                while (s == false) {
+                    int siono;
+                    std::string eti;
+                    std::cout << " Desea agregar una etiqueta?... si(1) / no(2): ";
+                    std::cin >> siono;
+                    if (siono != 1) {
+                        s = true;
+                    }
+                    else {
+                        std::cout << " Ingresar etiqueta: ";
+                        std::cin >> eti;
+                        pes.push_back(eti);
+
+                    }
+                    std::cout << std::endl;
+                }
+
+                Bookmark bo(op, sitioEncontrado.getTitulo());
+                for (std::string s : pes) {
+                    bo.agregarEtiqueta(s);
+                }
+
+                b.getPestaniaActualReal().agregarBookmark(bo);
+                return;
             }
         }
 
-        while (s == false) {
-            int siono;
-            std::string eti;
-            std::cout << " Desea agregar una etiqueta?... si(1) / no(2): ";
-            std::cin >> siono;
-            if (siono != 1) {
-                s = true;
-            }
-            else {
-                std::cout << " Ingresar etiqueta: ";
-                std::cin >> eti;
-                pes.push_back(eti);
-
-            }
-            std::cout << std::endl;
-        }
-
-        Bookmark bo(op, sitioEncontrado.getTitulo());
-        for (std::string s : pes) {
-            bo.agregarEtiqueta(s);
-        }
-
-        b.getPestaniaActualReal().agregarBookmark(bo);
-      
+        
+        std::cout << "Sitio no se encuentra en el historial de esta pestania... " << std::endl;
+       
     }
     else {
         // Si no se encuentra, mostrar el error
@@ -206,7 +213,8 @@ void Interfaz::verBookmarks(Browser& b)
     std::cout << std::endl;
     std::cout << "----------------------------------------------------------------" << std::endl;
     std::cout << "                          LISTA DE BOOKMARKS                    " << std::endl;
-    b.mostrarTodosBookmarks();
+  
+    b.getPestaniaActualReal().mostrarBookmarks();
     system("pause");
 }
 
@@ -375,7 +383,7 @@ void Interfaz::cambiarHistorial(Browser& b, int n) {
 void Interfaz::eliminarSitios(Browser& b) {
     bool t = true;
     while (t) {
-        std::this_thread::sleep_for(std::chrono::seconds(2));  
+        //std::this_thread::sleep_for(std::chrono::seconds(2));  
         
         for (Pestania p : b.getPestanias()) {
             p.getHistorial().eliminarSitiosWeb();

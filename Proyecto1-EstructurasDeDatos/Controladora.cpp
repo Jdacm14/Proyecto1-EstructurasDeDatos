@@ -23,7 +23,7 @@ void Controladora::controlMenuGeneral()
         
         Interfaz::mostrarPaginaActual(*browser); // Mostrar la página actual
         
-        //Interfaz::eliminarSitios(*browser);
+        Interfaz::eliminarSitios(*browser);
         // Capturar teclas
         
         int tecla = _getch();            // Capturar una tecla

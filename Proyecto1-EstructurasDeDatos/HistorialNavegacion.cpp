@@ -41,6 +41,11 @@ SitioWeb& HistorialNavegacion::obtenerPaginaActual() {
     return *actual;
 }
 
+std::list<SitioWeb> HistorialNavegacion::getLista()
+{
+    return historial;
+}
+
 
 
 
