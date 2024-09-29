@@ -46,7 +46,12 @@ SitioWeb& HistorialNavegacion::obtenerPaginaActual() {
 
 void HistorialNavegacion::setearActualAlPrincipio()
 {
-    actual = std::prev(historial.end());
+    if (historial.size() >= 1) {
+        actual = std::prev(historial.end());
+    }
+    else {
+        actual = actual;
+    }
 }
 
 void HistorialNavegacion::eliminarSitiosWeb()

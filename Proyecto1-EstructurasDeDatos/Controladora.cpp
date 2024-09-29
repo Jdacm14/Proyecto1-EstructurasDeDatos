@@ -23,15 +23,16 @@ void Controladora::controlMenuGeneral()
         
         Interfaz::mostrarPaginaActual(*browser); // Mostrar la página actual
         
-
+        //Interfaz::eliminarSitios(*browser);
         // Capturar teclas
+        
         int tecla = _getch();            // Capturar una tecla
         if (tecla == 0 || tecla == 224) {  // Teclas especiales (flechas)
             tecla = _getch();  // Capturar el segundo valor de la tecla especial
-
+         
             switch (tecla) {
             case 72:  // Flecha arriba
-                Interfaz::cambiarPestania(*browser, 72); // Ir a la siguiente pestannia
+                Interfaz::cambiarPestania(*browser, 72); // Ir a la siguiente pestania
                 break;
             case 80:  // Flecha abajo
                 Interfaz::cambiarPestania(*browser, 80); //Ir a la pestania anterior
@@ -42,9 +43,11 @@ void Controladora::controlMenuGeneral()
             case 77:  // Flecha derecha
                 Interfaz::cambiarHistorial(*browser, 77);  // Ir al historial siguiente
                 break;
+            default:
+                
+                break;
             }
-
-            //system("cls");
+           
         }
         else if (tecla == 'q') {  // Presionar 'q' para salir del bucle
             break; // Salir del bucle
