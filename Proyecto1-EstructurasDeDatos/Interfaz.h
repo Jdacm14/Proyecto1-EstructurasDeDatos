@@ -39,7 +39,7 @@ public:
 
 	static void importarSesion(Browser&);
 
-	static std::string nuevaPestania(Browser&);
+
 
 
 	static void configuracion(Browser&);
