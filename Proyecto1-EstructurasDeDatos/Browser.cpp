@@ -49,6 +49,7 @@ Pestania& Browser::getPestaniaActualReal()
 int Browser::nuevaPestania() {
     Pestanias.push_back(Pestania());  // Añadir nueva Pestania
     PestaniaActual = static_cast<int>(Pestanias.size()) - 1;
+    Pestanias.at(PestaniaActual - 1).getHistorial().setearActualAlPrincipio();
     std::cout << "Nueva Pestania creada, ahora estás en la Pestania #" << PestaniaActual << std::endl;
     return PestaniaActual;
 }
