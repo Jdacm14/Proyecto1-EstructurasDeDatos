@@ -9,6 +9,7 @@ Controladora::Controladora()
 
 Controladora::~Controladora()
 {
+	delete browser;
 }
 
 void Controladora::msjOpcionNoValida()
