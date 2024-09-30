@@ -185,8 +185,8 @@ void Browser::exportarSesion(const std::string& nombreArchivo) {
     archivo.write(reinterpret_cast<const char*>(&PestaniaActual), sizeof(PestaniaActual));
 
     // Exportar cada pestaña
-    for (auto& pestaña : Pestanias) {
-        HistorialNavegacion& historial = pestaña.getHistorial();
+    for (auto& pestania : Pestanias) {
+        HistorialNavegacion& historial = pestania.getHistorial();
         int historialSize = (int) historial.getHistorialSize();
         archivo.write(reinterpret_cast<const char*>(&historialSize), sizeof(historialSize));
 
@@ -203,7 +203,7 @@ void Browser::exportarSesion(const std::string& nombreArchivo) {
         }
 
         // Exportar los bookmarks
-        std::vector<Bookmark>& bookmarks = pestaña.geVectortBookmarks();
+        std::vector<Bookmark>& bookmarks = pestania.geVectortBookmarks();
         int numBookmarks = (int) bookmarks.size();
         archivo.write(reinterpret_cast<const char*>(&numBookmarks), sizeof(numBookmarks));
 
