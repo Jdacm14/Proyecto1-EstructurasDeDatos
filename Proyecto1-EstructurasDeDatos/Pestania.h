@@ -11,13 +11,13 @@ public:
 
 
 	HistorialNavegacion& getHistorial();
-	void setHistorial(HistorialNavegacion&);
+	void setHistorial(HistorialNavegacion);
 	std::vector<Bookmark>& geVectortBookmarks();
 	
 	//void agregarSitioWeb();
 	
 
-	void agregarBookmark(Bookmark&);
+	void agregarBookmark(Bookmark);
 	void mostrarBookmarks();
 	void activarIncognito();
 	void desactivarIncognito();
@@ -29,11 +29,6 @@ public:
 	bool siguientePag();
 	bool anteriorPag();
 
-	//Guardar
-	void guardarEnBinario(std::ofstream& archivo) const;
-
-	//Cargar
-	void cargarDesdeBinario(std::ifstream& archivo);
 
 private:
 	std::vector<Bookmark> bookmarks;

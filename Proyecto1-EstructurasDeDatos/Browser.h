@@ -11,15 +11,15 @@
 class Browser {
 private:
     std::vector<Pestania> Pestanias;    // Lista de Pestanias abiertas
-    int PestaniaActual;                // 脥ndice de la Pestania actual
-    int limiteHistorial;              // L铆mite global para el historial de cada Pestania
+    int PestaniaActual;                // 蚽dice de la Pestania actual
+    int limiteHistorial;              // L韒ite global para el historial de cada Pestania
     std::mutex mtx;
 
 public:
     Browser(int limiteHistorial = 10);
 
     std::vector <Pestania>& getPestanias();
-    void setPestanias(std::vector<Pestania>&);
+    void setPestanias(std::vector<Pestania>);
     int getPestaniaActual();
     Pestania& getPestaniaEnPos(int);
     void setPestaniaActual(int);
@@ -37,24 +37,24 @@ public:
     void cambiarPestania(int index);
     bool existeSigPes();
 
-    // Navegaci贸n en la Pestania actual
+    // Navegaci髇 en la Pestania actual
     bool irAtras();
     bool irAdelante();
 
     // Historial
     void limpiarHistorialPestaniaActual();
 
-    // Gesti贸n de bookmarks
+    // Gesti髇 de bookmarks
     void agregarBookmarkPestaniaActual(Bookmark);
     void mostrarBookmarksPestaniaActual();
 
-    // Modo inc贸gnito
+    // Modo inc骻nito
     void activarIncognitoPestaniaActual();
     void desactivarIncognitoPestaniaActual();
 
     void mostrarTodosBookmarks();
 
-    // Mostrar informaci贸n sobre Pestanias
+    // Mostrar informaci髇 sobre Pestanias
     void mostrarPestanias();
 
     //Exportar/Serializar datos
@@ -62,9 +62,7 @@ public:
 
     //Importar/Deserializar datos
     void importarSesion(const std::string&);
-  
+
     void verificarSitios();
-    std::vector<Pestania> importarPestaniasConHistorial(const std::string& nombreArchivo);
-    std::vector<Bookmark> importarBookmarks(const std::string& nombreArchivo
 };
 

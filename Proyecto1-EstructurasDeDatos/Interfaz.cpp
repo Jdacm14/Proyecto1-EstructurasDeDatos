@@ -56,7 +56,7 @@ void Interfaz::mostrarPaginaActual(Browser& navegador)
 
     try {
         // Obtener la página actual en la Pestania actual
-        SitioWeb pagina = navegador.getPestaniaEnPos(/*navegador.getPestaniaActual()*/0).getHistorial().obtenerPaginaActual();
+        SitioWeb pagina = navegador.getPestaniaEnPos(navegador.getPestaniaActual()).getHistorial().obtenerPaginaActual();
 
         // Mostrar los detalles de la página actual usando los getters
         std::cout << std::endl;
@@ -276,20 +276,21 @@ void Interfaz::busquedaFiltros(Browser& b)
     }
 }
 
-std::string Interfaz::incognito(Browser& b)
 
+std::string Interfaz::incognito(Browser& b)
 {
     b.activarIncognitoPestaniaActual();
     system("pause");
     return " ";
 }
 
+void Interfaz::importarYExportar(Browser& b)
 {
     char op;
     std::cout << std::endl;
     std::cout << "----------------------------------------------------------------" << std::endl;
     std::cout << "                         Exportar e Importar                    " << std::endl;
-    std::cout << "Seleccione una opcion: Importar (i) o Exportar(e) los datos";
+    std::cout << "Seleccione una opcion: Importar (i) o Exportar(e) los datos: ";
     std::cin >> op;
     try {
         if (op == 'i') {
@@ -299,10 +300,9 @@ std::string Interfaz::incognito(Browser& b)
             exportarSesion(b);
         }
     }
-    catch (const std::exception& e) {
+    catch (const std::exception&) {
         std::cerr << "/////// Error al momento de serializar o deserializar los datos ////////";
     }
-
 }
 
 void Interfaz::exportarSesion(Browser& navegador) {
@@ -319,7 +319,6 @@ void Interfaz::importarSesion(Browser& navegador){
     std::cout << "Ingrese el nombre del archivo para importar la sesión: ";
     std::cin >> nombreArchivo;
 
-  
     navegador.importarSesion(nombreArchivo);
     std::cout << "Sesión importada con éxito." << std::endl;
 }
@@ -417,7 +416,6 @@ void Interfaz::cambiarHistorial(Browser& b, int n) {
             mostrarPaginaActual(b);
         }
     }
-
 
 }
 
