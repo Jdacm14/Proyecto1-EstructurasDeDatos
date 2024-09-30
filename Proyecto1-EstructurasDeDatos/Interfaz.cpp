@@ -373,6 +373,7 @@ void Interfaz::importarSesion(Browser& navegador){
     std::cout << "Sesión importada con éxito." << std::endl;
 }
 
+std::string Interfaz::nuevaPestania(Browser& b)
 
 void Interfaz::nuevaPestania(Browser& b)
 {

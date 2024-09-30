@@ -80,8 +80,7 @@ void Controladora::controlMenuGeneral()
                 Interfaz::agregarBookmark(*browser);
                 break;
             case 'c':
-                Interfaz::importarYExportar(*browser);
-                break;
+                Interfaz::a
             case 'd':
                 Interfaz::verBookmarks(*browser);
                 break;
