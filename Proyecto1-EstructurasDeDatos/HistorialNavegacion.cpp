@@ -148,3 +148,29 @@ std::list<std::pair<std::string, std::string>> HistorialNavegacion::obtenerHisto
 std::list<SitioWeb>& HistorialNavegacion::getHistorial() {
     return historial;
 }
+
+void HistorialNavegacion::guardarArchivoHistorial(std::ofstream& out)
+{
+
+    size_t histTam = historial.size();
+    out.write(reinterpret_cast<const char*>(&histTam), sizeof(histTam));
+
+    for (SitioWeb sitio : historial) {
+        sitio.guardarArchivoSitioWeb(out);
+    }
+}
+
+HistorialNavegacion HistorialNavegacion::cargarArchivoHistorial(std::ifstream& in)
+{
+    HistorialNavegacion nH;
+
+    size_t histTam;
+    in.read(reinterpret_cast<char*>(&histTam), sizeof(histTam));
+
+    for (size_t i = 0; i < histTam; ++i) {
+        SitioWeb sitio = SitioWeb::cargarArchivoSitioWeb(in);
+        nH.agregarPagina(sitio);
+    }
+
+    return nH;
+}
