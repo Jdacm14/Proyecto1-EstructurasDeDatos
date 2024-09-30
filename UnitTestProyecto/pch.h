@@ -13,7 +13,7 @@
 #include <list>
 #include <set>
 #include "CppUnitTest.h"
-#include "C:\Users\Daniel\source\repos\Jdacm14\Proyecto1-EstructurasDeDatos\Proyecto1-EstructurasDeDatos\HistorialNavegacion.h"
-#include "C:\Users\Daniel\source\repos\Jdacm14\Proyecto1-EstructurasDeDatos\Proyecto1-EstructurasDeDatos\SitioWeb.h"
+#include "HistorialNavegacion.h"
+#include "SitioWeb.h"
 
 #endif //PCH_H

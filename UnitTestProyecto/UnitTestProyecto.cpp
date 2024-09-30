@@ -1,9 +1,9 @@
 #include "pch.h"
 #include "CppUnitTest.h"
-#include "C:\Users\Daniel\source\repos\Jdacm14\Proyecto1-EstructurasDeDatos\Proyecto1-EstructurasDeDatos\HistorialNavegacion.h"
-#include "C:\Users\Daniel\source\repos\Jdacm14\Proyecto1-EstructurasDeDatos\Proyecto1-EstructurasDeDatos\SitioWeb.h"
-#include "C:\Users\Daniel\source\repos\Jdacm14\Proyecto1-EstructurasDeDatos\Proyecto1-EstructurasDeDatos\Pestania.h"
-#include "C:\Users\Daniel\source\repos\Jdacm14\Proyecto1-EstructurasDeDatos\Proyecto1-EstructurasDeDatos\Bookmark.h"
+#include "HistorialNavegacion.h"
+#include "SitioWeb.h"
+#include "Pestania.h"
+#include "Bookmark.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
