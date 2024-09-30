@@ -185,8 +185,8 @@ void Browser::exportarSesion(const std::string& nombreArchivo) {
     archivo.write(reinterpret_cast<const char*>(&PestaniaActual), sizeof(PestaniaActual));
 
     // Exportar cada pestaña
-    for (auto& pestania : Pestanias) {
-        HistorialNavegacion& historial = pestania.getHistorial();
+    for (auto& pestaña : Pestanias) {
+        HistorialNavegacion& historial = pestaña.getHistorial();
         int historialSize = (int) historial.getHistorialSize();
         archivo.write(reinterpret_cast<const char*>(&historialSize), sizeof(historialSize));
 
@@ -203,7 +203,7 @@ void Browser::exportarSesion(const std::string& nombreArchivo) {
         }
 
         // Exportar los bookmarks
-        std::vector<Bookmark>& bookmarks = pestania.geVectortBookmarks();
+        std::vector<Bookmark>& bookmarks = pestaña.geVectortBookmarks();
         int numBookmarks = (int) bookmarks.size();
         archivo.write(reinterpret_cast<const char*>(&numBookmarks), sizeof(numBookmarks));
 
@@ -305,3 +305,44 @@ void Browser::verificarSitios()
         pestana.getHistorial().eliminarSitiosWeb();
     }
 }
+
+void Browser::guardarArchivoNavegador(std::ofstream& out)
+{
+   out.write(reinterpret_cast<const char*>(&limiteHistorial), sizeof(limiteHistorial));
+
+   size_t pest;
+   out.write(reinterpret_cast<const char*>(&pest), sizeof(pest));
+
+
+   for (Pestania p : Pestanias) {
+       if(!p.getEstadoIncognito()){
+           p.guardarArchivoPestania(out);
+       }
+   }
+
+}
+
+Browser* Browser::cargarArchivoNavegador(std::ifstream& in)
+{
+    Browser* browser = new Browser();
+
+
+    in.read(reinterpret_cast<char*>(&browser->limiteHistorial), sizeof(browser->limiteHistorial));
+
+    size_t pesta;
+    in.read(reinterpret_cast<char*>(&pesta), sizeof(pesta));
+
+    browser->Pestanias.clear();
+
+    browser->Pestanias.reserve(pesta);
+    
+    for (size_t i = 0; i < pesta; ++i) {
+        Pestania nuevaPestania;
+        nuevaPestania.cargarArchivoPestania(in);  // Cargar la pestaña individualmente
+        browser->Pestanias.push_back(nuevaPestania);  // Añadirla al vector
+    }
+
+
+    return browser;
+}
+
