@@ -294,10 +294,12 @@ void Interfaz::importarYExportar(Browser& b)
     std::cin >> op;
     try {
         if (op == 'i') {
-            importarSesion(b);
+            Browser* bb = imp(b);
+            system("cls");
+            mostrarPaginaActual(*bb);
         }
         else if (op == 'e') {
-            exportarSesion(b);
+            exp(b);
         }
     }
     catch (const std::exception&) {
@@ -305,22 +307,67 @@ void Interfaz::importarYExportar(Browser& b)
     }
 }
 
-void Interfaz::exportarSesion(Browser& navegador) {
-    std::string nombreArchivo;
-    std::cout << "Ingrese el nombre del archivo para exportar la sesión: ";
-    std::cin >> nombreArchivo;
+//void Interfaz::exportarSesion(Browser& navegador) {
+//    std::string nombreArchivo;
+//    std::cout << "Ingrese el nombre del archivo para exportar la sesión: ";
+//    std::cin >> nombreArchivo;
+//
+//    navegador.exportarSesion(nombreArchivo);
+//    std::cout << "Sesión exportada con éxito." << std::endl;
+//}
+//
+//void Interfaz::importarSesion(Browser& navegador){
+//    std::string nombreArchivo;
+//    std::cout << "Ingrese el nombre del archivo para importar la sesión: ";
+//    std::cin >> nombreArchivo;
+//
+//    navegador.importarSesion(nombreArchivo);
+//    std::cout << "Sesión importada con éxito." << std::endl;
+//}
 
-    navegador.exportarSesion(nombreArchivo);
-    std::cout << "Sesión exportada con éxito." << std::endl;
+Browser* Interfaz::imp(Browser& b)
+{
+    std::string op;
+    std::cout << "Ingrese el nombre de la sesion: ";
+    std::cin >> op;
+
+    std::ifstream arch(op + ".bin", std::ios::binary);
+    if (!arch) {
+        std::cout<<"No se ha podido abrir el archivo";
+    }
+
+    Browser* browser = Browser::cargarArchivoNavegador(arch);
+
+    if (browser) {
+        std::cout << "Se ha importado." << std::endl;
+        system("pause");
+    }
+    else {
+        std::cout<<"No se ha podido importar el historial.";
+    }
+
+    arch.close();
+    return browser;
+
 }
 
-void Interfaz::importarSesion(Browser& navegador){
-    std::string nombreArchivo;
-    std::cout << "Ingrese el nombre del archivo para importar la sesión: ";
-    std::cin >> nombreArchivo;
+void Interfaz::exp(Browser& b)
+{
+    std::string opcion;
+    std::cout << "Nombre de la sesiona a guardar: ";
+    std::cin >> opcion;
 
-    navegador.importarSesion(nombreArchivo);
-    std::cout << "Sesión importada con éxito." << std::endl;
+    std::ofstream arch(opcion + ".bin", std::ios::binary);
+    if (!arch) {
+        std::cout<<"Error: No se ha podido crear el archivo.";
+        system("pause");
+        return;
+    }
+    b.guardarArchivoNavegador(arch);
+    arch.close();
+    std::cout << "Se ha exportado el historial." << std::endl;
+    system("pause");
+    
 }
 
 
