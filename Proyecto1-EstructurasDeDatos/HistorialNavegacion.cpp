@@ -3,8 +3,8 @@
 
 // Constructor
 HistorialNavegacion::HistorialNavegacion(int limite) : limiteEntradas(limite) {
-    historial = new std::list<SitioWeb*>();  // Crear dinámicamente la lista de sitios web
-    actual = historial->end();  // Inicialmente, no hay páginas, así que 'actual' apunta a 'end()'
+    historial = new std::list<SitioWeb*>();  // Crear din�micamente la lista de sitios web
+    actual = historial->end();  // Inicialmente, no hay p�ginas, as� que 'actual' apunta a 'end()'
 }
 
 //// Constructor copia
@@ -13,7 +13,7 @@ HistorialNavegacion::HistorialNavegacion(int limite) : limiteEntradas(limite) {
 //    actual = historial.begin();
 //}
 //
-//// Operador de asignación por movimiento
+//// Operador de asignaci�n por movimiento
 //HistorialNavegacion& operator=(HistorialNavegacion&& other) noexcept {
 //    if (this != &other) {
 //        historial = std::move(other.historial);
@@ -95,10 +95,10 @@ void HistorialNavegacion::setMinutosTodosSitios(int n)
 void HistorialNavegacion::setActualAlUltimo()
 {
     if (!historial->empty()) {
-        actual = std::prev(historial->end());  // Siempre apunta al último si no está vacío
+        actual = std::prev(historial->end());  // Siempre apunta al �ltimo si no est� vac�o
     }
     else {
-        actual = historial->end();  // Si está vacío, apunta al end()
+        actual = historial->end();  // Si est� vac�o, apunta al end()
     }
   
 void HistorialNavegacion::setearActualAlPrincipio()
@@ -141,24 +141,24 @@ bool HistorialNavegacion::puedeAvanzar() {
     return actual != historial->end() && std::next(actual) != historial->end();
 }
 
-// Retroceder una página
+// Retroceder una p�gina
 void HistorialNavegacion::atras() {
     if (puedeRetroceder()) {
         
         --actual;
     }
     else {
-        throw std::out_of_range("No se puede retroceder más.");
+        throw std::out_of_range("No se puede retroceder m�s.");
     }
 }
 
-// Avanzar una página
+// Avanzar una p�gina
 void HistorialNavegacion::adelante() {
     if (puedeAvanzar()) {
         ++actual;
     }
     else {
-        throw std::out_of_range("No se puede avanzar más.");
+        throw std::out_of_range("No se puede avanzar m�s.");
     }
 }
 
@@ -168,7 +168,7 @@ void HistorialNavegacion::limpiarHistorial() {
     actual = historial->end();
 }
 
-// Establecer el límite de entradas del historial
+// Establecer el l�mite de entradas del historial
 void HistorialNavegacion::establecerLimite(int limite) {
     limiteEntradas = limite;
 }
@@ -198,7 +198,7 @@ void HistorialNavegacion::guardarEnBinario(const std::string& nombreArchivo) con
         return;
     }
 
-    // Escribir el número de sitios en el historial
+    // Escribir el n�mero de sitios en el historial
     size_t numSitios = historial->size();
     archivo.write(reinterpret_cast<const char*>(&numSitios), sizeof(numSitios));
 
@@ -221,7 +221,7 @@ void HistorialNavegacion::cargarDesdeBinario(const std::string& nombreArchivo) {
     CSV csv;
 
     // Cargar los sitios desde el archivo CSV
-    if (!csv.cargarSitiosDesdeCSV("sitiosWeb.csv")) {  // Método que carga sitios desde un archivo CSV
+    if (!csv.cargarSitiosDesdeCSV("sitiosWeb.csv")) {  // M�todo que carga sitios desde un archivo CSV
         std::cerr << "Error al cargar los sitios web desde el archivo CSV." << std::endl;
         return;
     }
@@ -239,7 +239,7 @@ void HistorialNavegacion::cargarDesdeBinario(const std::string& nombreArchivo) {
     }
     historial->clear();  // Limpiar la lista
 
-    // Leer el número de sitios en el historial
+    // Leer el n�mero de sitios en el historial
     size_t numSitios;
     archivo.read(reinterpret_cast<char*>(&numSitios), sizeof(numSitios));
 
@@ -254,15 +254,15 @@ void HistorialNavegacion::cargarDesdeBinario(const std::string& nombreArchivo) {
         archivo.read(&url[0], longitudUrl);
 
         // Buscar el sitio web en la lista de sitios utilizando la clase CSV
-        SitioWeb* sitioEncontrado = csv.buscarSitioPorURL(url);  // Método que busca el sitio por su URL
+        SitioWeb* sitioEncontrado = csv.buscarSitioPorURL(url);  // M�todo que busca el sitio por su URL
 
         if (sitioEncontrado != nullptr) {
-            // Si se encuentra el sitio, lo añadimos al historial
+            // Si se encuentra el sitio, lo a�adimos al historial
             historial->push_back(sitioEncontrado);
             actual = historial->begin();
         }
         else {
-            std::cerr << "Error: No se encontró un sitio web para la URL: " << url << std::endl;
+            std::cerr << "Error: No se encontr� un sitio web para la URL: " << url << std::endl;
         }
     }
 
