@@ -305,5 +305,3 @@ void Browser::verificarSitios()
         pestana.getHistorial().eliminarSitiosWeb();
     }
 }
-
-
