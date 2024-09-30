@@ -35,5 +35,8 @@ public:
     std::list<std::pair<std::string, std::string>> obtenerHistorial();
     std::list<SitioWeb>& getHistorial();
 
-};
 
+    void guardarArchivoHistorial(std::ofstream& in);
+    static HistorialNavegacion cargarArchivoHistorial(std::ifstream& out);
+
+};
