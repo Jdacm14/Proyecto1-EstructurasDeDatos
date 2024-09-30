@@ -5,6 +5,11 @@ Pestania::Pestania(): incognito(false)
 	historial = HistorialNavegacion();
 }
 
+Pestania::Pestania(HistorialNavegacion nh)
+{
+	historial = nh;
+}
+
 HistorialNavegacion& Pestania::getHistorial()
 {
 	return historial;
@@ -70,4 +75,23 @@ bool Pestania::anteriorPag()
 	}
 	return false;
 }
+
+void Pestania::guardarArchivoPestania(std::ofstream& out)
+{
+	historial.guardarArchivoHistorial(out);
+
+}
+
+Pestania Pestania::cargarArchivoPestania(std::ifstream& in)
+{
+	HistorialNavegacion historialCargado = HistorialNavegacion::cargarArchivoHistorial(in);
+	Pestania p(historialCargado);
+	
+	return p;
+
+}
+
+
+
+
 
