@@ -3,25 +3,26 @@
 // Cargar sitios desde el archivo CSV
 bool CSV::cargarSitiosDesdeCSV(const std::string& archivo) {
     std::ifstream file(archivo);
+    std::string linea;
+
     if (!file.is_open()) {
+        std::cerr << "No se pudo abrir el archivo: " << archivo << std::endl;
         return false;
     }
 
-    std::string linea;
+    // Limpiar cualquier contenido anterior en el vector de sitios web
+    sitiosWeb.clear();
+
+    // Leer cada lÃ­nea del archivo CSV
     while (std::getline(file, linea)) {
-        std::istringstream ss(linea);
-        std::string url, dominio, titulo;
+        std::stringstream ss(linea);
+        std::string url, titulo;
 
-        // Supongamos que los valores están separados por comas
-        std::getline(ss, url, ',');
-        std::getline(ss, dominio, ',');
-        std::getline(ss, titulo, ',');
-
-        // Crear un nuevo objeto SitioWeb dinámicamente
-        SitioWeb* nuevoSitio = new SitioWeb(url, dominio, titulo);
-
-        // Agregar el puntero al vector
-        sitiosWeb.push_back(nuevoSitio);
+        // Leer la URL y el tÃ­tulo separados por comas
+        if (std::getline(ss, url, ',') && std::getline(ss, titulo, ',')) {
+            // Crear un objeto SitioWeb y agregarlo al vector
+            sitiosWeb.push_back(SitioWeb(url, titulo));
+        }
     }
 
     file.close();
@@ -29,14 +30,13 @@ bool CSV::cargarSitiosDesdeCSV(const std::string& archivo) {
 }
 
 // Buscar una URL en los sitios cargados
-SitioWeb* CSV::buscarSitioPorURL(const std::string& url) {
+SitioWeb CSV::buscarSitioPorURL(const std::string& url) {
     for (const auto& sitio : sitiosWeb) {
-        if (sitio->getUrl() == url) {
-            return sitio;
+        if (sitio.getUrl() == url) {
+            return sitio;  // Devolver el objeto SitioWeb si la URL coincide
         }
     }
 
-    // Crear un sitio "404 - Not Found" estático
-    static SitioWeb sitioNoEncontrado(url, "404 - Not Found");
-    return &sitioNoEncontrado;
+    // Si no se encuentra, devolver un sitio con mensaje "404 - Not Found"
+    return SitioWeb(url, "404 - Not Found");
 }
