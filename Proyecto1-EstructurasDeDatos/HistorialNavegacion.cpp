@@ -46,10 +46,17 @@ void HistorialNavegacion::agregarPagina(SitioWeb* sitio) {
 
 
 // Obtener la página actual
+
 SitioWeb* HistorialNavegacion::obtenerPaginaActual() {
     SitioWeb* sitio = new SitioWeb(" ", " ", " ");
     if (historial->empty() || actual == historial->end()) {
         return sitio;  // Si el historial está vacío o el iterador es inválido, devolver nullptr
+
+//SitioWeb& HistorialNavegacion::obtenerPaginaActual() {
+    //static SitioWeb sitioNulo("404 - Not Found", "Pagina no encontrada");  // Objeto estático para un sitio nulo
+    //if (historial.empty()  || actual == historial.end()) {
+        //return sitioNulo;  // Devolver el sitio nulo si no hay páginas en el historial
+
     }
     return *actual;  // Devolver el sitio web actual
 }
@@ -58,6 +65,7 @@ std::list<SitioWeb*>* HistorialNavegacion::getHistorialList() const
 {
     return historial;
 }
+
 
 size_t HistorialNavegacion::getHistorialSize() const
 {
@@ -68,6 +76,20 @@ size_t HistorialNavegacion::getHistorialSize() const
 bool HistorialNavegacion::estaVacio()
 {
     return historial->empty();
+
+std::list<SitioWeb> HistorialNavegacion::getLista()
+{
+    return historial;
+}
+
+
+void HistorialNavegacion::setMinutosTodosSitios(int n)
+{
+    
+    for (SitioWeb& sitio : historial) {
+        sitio.setTiempo(n);
+    }
+
 }
 
 void HistorialNavegacion::setActualAlUltimo()
@@ -81,17 +103,18 @@ void HistorialNavegacion::setActualAlUltimo()
   
 void HistorialNavegacion::setearActualAlPrincipio()
 {
-    actual = std::prev(historial.end());
+    if (historial.size() >= 1) {
+        actual = std::prev(historial.end());
+    }
+    else {
+        actual = actual;
+    }
 }
 
 void HistorialNavegacion::eliminarSitiosWeb()
 {
-    TimePoint ahora = Clock::now();
-
-    auto duracionExpiracion = std::chrono::minutes(5);
-
     historial.erase(std::remove_if(historial.begin(), historial.end(), [&](const SitioWeb& sitio) {
-        return(ahora - sitio.getCreacion()) >= duracionExpiracion;
+        return sitio.haExpirado();
     }), historial.end());
 }
 
@@ -246,4 +269,8 @@ void HistorialNavegacion::cargarDesdeBinario(const std::string& nombreArchivo) {
     archivo.close();
 }
 
+
+std::list<SitioWeb>& HistorialNavegacion::getHistorial() {
+    return historial;
+}
 

@@ -4,14 +4,16 @@
 #include "HistorialNavegacion.h"
 #include "Bookmark.h"
 #include <iostream>
-#include<fstream>
-#include<windows.h>
+#include <fstream>
+#include <windows.h>
+#include <mutex>
 
 class Browser {
 private:
     std::vector<Pestania*> Pestanias;    // Lista de Pestanias abiertas
-    int PestaniaActual;                // 蚽dice de la Pestania actual
-    int limiteHistorial;              // L韒ite global para el historial de cada Pestania
+    int PestaniaActual;                // 脥ndice de la Pestania actual
+    int limiteHistorial;              // L铆mite global para el historial de cada Pestania
+    std::mutex mtx;
 
 public:
     Browser(int limiteHistorial = 10);
@@ -24,33 +26,36 @@ public:
     void setPestaniaActual(int);
     int getLimiteHistorial();
     void setLimiteHistorial(int);
+    void setMinutosDeTodasLasPest(int);
 
     Pestania* getPestaniaActualReal();
 
+    bool haysitios();
+    void agregarSitioWeb(const SitioWeb&);
     // Manejo de Pestanias
     int nuevaPestania();
     void cerrarPestania(int index);
     void cambiarPestania(int index);
     bool existeSigPes();
 
-    // Navegaci髇 en la Pestania actual
+    // Navegaci贸n en la Pestania actual
     bool irAtras();
     bool irAdelante();
 
     // Historial
     void limpiarHistorialPestaniaActual();
 
-    // Gesti髇 de bookmarks
+    // Gesti贸n de bookmarks
     void agregarBookmarkPestaniaActual(Bookmark);
     void mostrarBookmarksPestaniaActual();
 
-    // Modo inc骻nito
+    // Modo inc贸gnito
     void activarIncognitoPestaniaActual();
     void desactivarIncognitoPestaniaActual();
 
     void mostrarTodosBookmarks();
 
-    // Mostrar informaci髇 sobre Pestanias
+    // Mostrar informaci贸n sobre Pestanias
     void mostrarPestanias();
 
     //Exportar/Serializar datos
@@ -58,7 +63,11 @@ public:
 
     //Importar/Deserializar datos
     void importarSesion(const std::string&);
+  
     std::vector<Pestania*> importarPestaniasConHistorial(const std::string& nombreArchivo);
     std::vector<Bookmark> importarBookmarks(const std::string& nombreArchivo);
+
+    void verificarSitios();
+
 };
 
