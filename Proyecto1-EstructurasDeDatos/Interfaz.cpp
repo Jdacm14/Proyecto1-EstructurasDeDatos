@@ -56,7 +56,7 @@ void Interfaz::mostrarPaginaActual(Browser& navegador)
 
     try {
         // Obtener la página actual en la Pestania actual
-        SitioWeb* pagina = navegador.getPestaniaActualReal()->getHistorial()->obtenerPaginaActual();
+        SitioWeb pagina = navegador.getPestaniaEnPos(navegador.getPestaniaActual()).getHistorial().obtenerPaginaActual();
 
         // Mostrar los detalles de la página actual usando los getters
         std::cout << std::endl;
@@ -74,8 +74,8 @@ void Interfaz::mostrarPaginaActual(Browser& navegador)
         std::cout << " Presiones 'q' para salir...                                    " << std::endl;
         std::cout << "----------------------------------------------------------------" << std::endl;
         std::cout << "================= Pestania #" << navegador.getPestaniaActual() << " =================\n";
-        std::cout << "URL: " << pagina->getUrl() << "\n";
-        std::cout << "Titulo: " << pagina->getTitulo() << "\n";
+        std::cout << "URL: " << pagina.getUrl() << "\n";
+        std::cout << "Titulo: " << pagina.getTitulo() << "\n";
         std::cout << "===============================================\n";
     } 
     catch (const std::exception& e) {
@@ -85,76 +85,33 @@ void Interfaz::mostrarPaginaActual(Browser& navegador)
 
 void Interfaz::irAlSitioWeb(Browser& navegador)  // Pasar navegador por referencia
 {
-    //std::string urlIngresada;
-    //CSV csv;  // Crear instancia para cargar y buscar en el CSV
-    //std::string archivo = "sitiosWeb.csv";
-
-    //try {
-    //    // Cargar los sitios web desde el archivo CSV
-    //    if (!csv.cargarSitiosDesdeCSV(archivo)) {
-    //        std::cout << "Error al cargar los sitios web." << std::endl;
-    //        return;
-    //    }
-
-    //    // Solicitar al usuario que ingrese una URL
-    //    std::cout << "----------------------------------------------------------------" << std::endl;
-    //    std::cout << "                            SITIO WEB                           " << std::endl;
-    //    std::cout << " Ingresar URL: ";
-    //    std::cin >> urlIngresada;
-
-    //    // Buscar la URL en los sitios cargados
-    //    SitioWeb sitioEncontrado = csv.buscarSitioPorURL(urlIngresada);
-
-    //    if (sitioEncontrado.getTitulo() != "404 - Not Found") {
-    //        // Crear una copia dinámica del sitio encontrado
-    //        SitioWeb* nuevoSitio = new SitioWeb(sitioEncontrado.getUrl(), sitioEncontrado.getDominio(), sitioEncontrado.getTitulo());
-
-    //        // Agregar al historial de navegación
-    //        if (navegador.getPestaniaActualReal().getHistorial()->getHistorialSize() < navegador.getLimiteHistorial()) {
-    //            navegador.getPestaniaEnPos(navegador.getPestaniaActual()).getHistorial()->agregarPagina(nuevoSitio);
-    //        }
-    //        else {
-    //            std::cout << "No hay espacio para más sitios en el historial." << std::endl;
-    //            delete nuevoSitio;  // Liberar memoria si no se agrega al historial
-    //        }
-
-    //        // Mostrar la página actual (si quieres agregar esta funcionalidad)
-    //        /*mostrarPaginaActual(navegador);*/
-    //    }
-    //    else {
-    //        // Si no se encuentra, mostrar el error
-    //        std::cout << sitioEncontrado.getTitulo() << std::endl;  // "404 - Not Found"
-    //    }
-    //}
-    //catch (const std::exception& e) {
-    //    std::cerr << "Error al ir al sitio web: " << e.what() << std::endl;
-    //}
     std::string urlIngresada;
-    CSV csv;  // Instancia para cargar y buscar en el CSV
+    CSV csv;  // Crear instancia para cargar y buscar en el CSV
     std::string archivo = "sitiosWeb.csv";
 
     try {
-        // Cargar sitios web desde el archivo CSV
+        // Cargar los sitios web desde el archivo CSV
         if (!csv.cargarSitiosDesdeCSV(archivo)) {
             std::cout << "Error al cargar los sitios web." << std::endl;
             return;
         }
 
-        // Solicitar la URL al usuario
-        std::cout << "Ingrese la URL: ";
+        // Solicitar al usuario que ingrese una URL
+        std::cout << "----------------------------------------------------------------" << std::endl;
+        std::cout << "                            SITIO WEB                           " << std::endl;
+        std::cout << " Ingresar URL: ";
         std::cin >> urlIngresada;
 
         // Buscar la URL en los sitios cargados
-        SitioWeb* sitioEncontrado = csv.buscarSitioPorURL(urlIngresada);
+        SitioWeb sitioEncontrado = csv.buscarSitioPorURL(urlIngresada);
 
-        if (sitioEncontrado->getTitulo() != "404 - Not Found") {
-            // Si el sitio fue encontrado, agregarlo al historial de la pestaña actual
-            navegador.getPestaniaActualReal()->getHistorial()->agregarPagina(sitioEncontrado);
-            std::cout << "Visitando: " << sitioEncontrado->getUrl() << " - " << sitioEncontrado->getTitulo() << std::endl;
+        if (sitioEncontrado.getTitulo() != "404 - Not Found") {
+            // Si la URL fue encontrada, mostrar URL y título
+           /* std::cout << "Visitando: " << sitioEncontrado.getUrl() << " - " << sitioEncontrado.getTitulo() << std::endl;*/
 
             // Agregar al historial de navegación
-            if (navegador.getPestaniaActualReal()->getHistorial()->getHistorialSize() < navegador.getLimiteHistorial()) {
-                navegador.agregarSitioWeb(*sitioEncontrado);
+            if (navegador.getPestaniaActualReal().getHistorial().getHistorialSize() < navegador.getLimiteHistorial()) {
+                navegador.agregarSitioWeb(sitioEncontrado);
                 //navegador.getPestaniaEnPos(navegador.getPestaniaActual()).getHistorial().agregarPagina(sitioEncontrado);
                
             }else{
@@ -165,14 +122,14 @@ void Interfaz::irAlSitioWeb(Browser& navegador)  // Pasar navegador por referenc
             /*mostrarPaginaActual(navegador);*/
         }
         else {
-            std::cout << sitioEncontrado->getTitulo() << std::endl;
+            // Si no se encuentra, mostrar el error
+            std::cout << sitioEncontrado.getTitulo() << std::endl;  // "404 - Not Found"
         }
     }
     catch (const std::exception& e) {
         std::cerr << "Error al ir al sitio web: " << e.what() << std::endl;
     }
 }
-
 
 
 void Interfaz::agregarBookmark(Browser& b)
@@ -198,15 +155,15 @@ void Interfaz::agregarBookmark(Browser& b)
     }
 
     // Buscar la URL en los sitios cargados
-    SitioWeb sitioEncontrado = *csv.buscarSitioPorURL(op);
+    SitioWeb sitioEncontrado = csv.buscarSitioPorURL(op);
 
     if (sitioEncontrado.getUrl() != "404 - Not Found") {
         // Si la URL fue encontrada, mostrar URL y título
         
-        for (SitioWeb* sitio : *b.getPestaniaActualReal()->getHistorial()->getHistorialList()) {
-            if (sitio->getUrl() == sitioEncontrado.getUrl()) {
+        for (SitioWeb sitio : b.getPestaniaActualReal().getHistorial().getLista()) {
+            if (sitio.getUrl() == sitioEncontrado.getUrl()) {
                 std::cout << " Sitio encontrado en el historial" << std::endl;
-                for (Bookmark bo : b.getPestaniaActualReal()->geVectortBookmarks()) {
+                for (Bookmark bo : b.getPestaniaActualReal().geVectortBookmarks()) {
                     if (sitioEncontrado.getUrl() == bo.getURL()) {
                         std::cout << "Este sitio ya es un bookmark en esta pestania" << "\n";
                         system("pause");
@@ -236,7 +193,7 @@ void Interfaz::agregarBookmark(Browser& b)
                     bo.agregarEtiqueta(s);
                 }
 
-                b.getPestaniaActualReal()->agregarBookmark(bo);
+                b.getPestaniaActualReal().agregarBookmark(bo);
                 return;
             }
         }
@@ -251,7 +208,6 @@ void Interfaz::agregarBookmark(Browser& b)
         system("pause");
     }
     system("pause");
-
    
 }
 
@@ -261,64 +217,65 @@ void Interfaz::verBookmarks(Browser& b)
     std::cout << "----------------------------------------------------------------" << std::endl;
     std::cout << "                          LISTA DE BOOKMARKS                    " << std::endl;
   
-    b.getPestaniaActualReal()->mostrarBookmarks();
+    b.getPestaniaActualReal().mostrarBookmarks();
     system("pause");
 }
 
 void Interfaz::busquedaFiltros(Browser& b)
 {
-    //std::string op;
-    //system("cls");
-    //try {
-    //    std::cout << std::endl;
-    //    std::cout << "----------------------------------------------------------------" << std::endl;
-    //    std::cout << "                            BUSQUEDA/FILTRAR                    " << std::endl;
-    //    std::cout << " Ingrese un titulo o parte de este: " << std::endl;
-    //    std::cin.clear();
-    //    std::cin.ignore();
-    //    std::getline(std::cin, op);
+    std::string op;
+    system("cls");
+    try {
+        std::cout << std::endl;
+        std::cout << "----------------------------------------------------------------" << std::endl;
+        std::cout << "                            BUSQUEDA/FILTRAR                    " << std::endl;
+        std::cout << " Ingrese un titulo o parte de este: " << std::endl;
+        std::cin.clear();
+        std::cin.ignore();
+        std::getline(std::cin, op);
 
-    //    std::vector<std::pair<std::string, std::string>> coincidencias; // contendra las coincidencias
+        std::vector<std::pair<std::string, std::string>> coincidencias; // contendra las coincidencias
 
-    //    for (auto& Pestania : b.getPestanias()) { // recorre cada historias registrado en cada una de las Pestanias
-    //        auto& historial = Pestania.getHistorial();
-    //        for (const auto& pagina : historial.obtenerHistorial()) {
-    //            if (pagina.second.find(op) != std::string::npos) {
-    //                coincidencias.emplace_back(pagina.second, pagina.first);    // guarda la pagina si coincide
-    //            }
-    //        }
-    //    }
-    //    if (!coincidencias.empty()) {   // si encuentra al menos una coincidencia, crea una nueva Pestania
-    //        int nuevaPestania = b.nuevaPestania();
-    //        auto& nuevaHistorial = b.getPestaniaEnPos(nuevaPestania).getHistorial();
+        for (auto& Pestania : b.getPestanias()) { // recorre cada historias registrado en cada una de las Pestanias
+            auto& historial = Pestania.getHistorial();
+            for (const auto& pagina : historial.obtenerHistorial()) {
+                if (pagina.second.find(op) != std::string::npos) {
+                    coincidencias.emplace_back(pagina.second, pagina.first);    // guarda la pagina si coincide
+                }
+            }
+        }
+        if (!coincidencias.empty()) {   // si encuentra al menos una coincidencia, crea una nueva Pestania
+            int nuevaPestania = b.nuevaPestania();
+            auto& nuevaHistorial = b.getPestaniaEnPos(nuevaPestania).getHistorial();
 
-    //        std::set<std::pair<std::string, std::string>> agregadas;
+            std::set<std::pair<std::string, std::string>> agregadas;
 
-    //        for (const auto& coincidencia : coincidencias) {
-    //            SitioWeb encontrados(coincidencia.first, coincidencia.second);
-    //            auto entrada = std::make_pair(encontrados.getTitulo(), encontrados.getUrl());
+            for (const auto& coincidencia : coincidencias) {
+                SitioWeb encontrados(coincidencia.first, coincidencia.second);
+                auto entrada = std::make_pair(encontrados.getTitulo(), encontrados.getUrl());
 
-    //            if (agregadas.find(entrada) == agregadas.end()) {
-    //                nuevaHistorial.agregarPagina(&encontrados);
-    //                agregadas.insert(entrada);
-    //            }
-    //        }
-    //        b.setPestaniaActual(nuevaPestania);
-    //        std::cout << "Titulos encontrados: " << std::endl;
-    //        for (const auto& coincidencia : coincidencias) {
-    //            std::cout << "Titulo: " << coincidencia.first << " en la URL: " << coincidencia.second << std::endl;
-    //        }
-    //        mostrarPaginaActual(b);
-    //    }
-    //    else {
-    //        std::cout << "No se encontraron títulos..." << std::endl;
-    //    }
-    //    system("pause");
-    //}
-    //catch (const std::exception& e) {
-    //    std::cerr << "Error en la busqueda de filtros: " << e.what() << std::endl;
-    //}
+                if (agregadas.find(entrada) == agregadas.end()) {
+                    nuevaHistorial.agregarPagina(encontrados);
+                    agregadas.insert(entrada);
+                }
+            }
+            b.setPestaniaActual(nuevaPestania);
+            std::cout << "Titulos encontrados: " << std::endl;
+            for (const auto& coincidencia : coincidencias) {
+                std::cout << "Titulo: " << coincidencia.first << " en la URL: " << coincidencia.second << std::endl;
+            }
+            mostrarPaginaActual(b);
+        }
+        else {
+            std::cout << "No se encontraron títulos..." << std::endl;
+        }
+        system("pause");
+    }
+    catch (const std::exception& e) {
+        std::cerr << "Error en la busqueda de filtros: " << e.what() << std::endl;
+    }
 }
+
 
 std::string Interfaz::incognito(Browser& b)
 {
@@ -327,16 +284,13 @@ std::string Interfaz::incognito(Browser& b)
     return " ";
 }
 
-
 void Interfaz::importarYExportar(Browser& b)
 {
     char op;
     std::cout << std::endl;
     std::cout << "----------------------------------------------------------------" << std::endl;
     std::cout << "                         Exportar e Importar                    " << std::endl;
-
-    std::cout << "Seleccione una opcion: Importar (i) o Exportar(e) los datos";
-
+    std::cout << "Seleccione una opcion: Importar (i) o Exportar(e) los datos: ";
     std::cin >> op;
     try {
         if (op == 'i') {
@@ -346,12 +300,9 @@ void Interfaz::importarYExportar(Browser& b)
             exportarSesion(b);
         }
     }
-
-    catch (const std::exception& e) {
+    catch (const std::exception&) {
         std::cerr << "/////// Error al momento de serializar o deserializar los datos ////////";
-        system("pause");
     }
-
 }
 
 void Interfaz::exportarSesion(Browser& navegador) {
@@ -368,12 +319,10 @@ void Interfaz::importarSesion(Browser& navegador){
     std::cout << "Ingrese el nombre del archivo para importar la sesión: ";
     std::cin >> nombreArchivo;
 
-  
     navegador.importarSesion(nombreArchivo);
     std::cout << "Sesión importada con éxito." << std::endl;
 }
 
-std::string Interfaz::nuevaPestania(Browser& b)
 
 void Interfaz::nuevaPestania(Browser& b)
 {
@@ -455,34 +404,18 @@ void Interfaz::cambiarPestania(Browser& b, int n) {
 }
 
 void Interfaz::cambiarHistorial(Browser& b, int n) {
-    if (n == 75 && b.getPestaniaActualReal()->getHistorial()->obtenerPaginaActual()->getUrl() != "404 - Not Found") {
+    if (n == 75 && b.getPestaniaActualReal().getHistorial().obtenerPaginaActual().getUrl() != "404 - Not Found") {
         if (b.irAtras()) {
-            b.getPestaniaActualReal()->getHistorial()->setPaginaActual(75);
+            b.getPestaniaActualReal().getHistorial().setPaginaActual(n);
             mostrarPaginaActual(b);
         }
     }
-    if (n == 77 && b.getPestaniaActualReal()->getHistorial()->obtenerPaginaActual()->getUrl() != "404 - Not Found") {
+    if (n == 77 && b.getPestaniaActualReal().getHistorial().obtenerPaginaActual().getUrl() != "404 - Not Found") {
         if (b.irAdelante()) {
-            b.getPestaniaActualReal()->getHistorial()->setPaginaActual(77);
+            b.getPestaniaActualReal().getHistorial().setPaginaActual(n);
             mostrarPaginaActual(b);
         }
     }
-   /* if (n == TECLA_IZQUIERDA) {
-        if (b.irAtras()) {
-            mostrarPaginaActual(b);
-        }
-        else {
-            std::cout << "No hay más páginas anteriores en el historial." << std::endl;
-        }
-    }
-    else if (n == TECLA_DERECHA) {
-        if (b.irAdelante()) {
-
-            b.getPestaniaActualReal()->getHistorial()->setPaginaActual(n);
-
-            mostrarPaginaActual(b);
-        }
-    }*/
 
 }
 
