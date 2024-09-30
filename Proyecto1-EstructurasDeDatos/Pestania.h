@@ -8,7 +8,7 @@
 class Pestania {
 public:
 	Pestania();
-
+	Pestania(HistorialNavegacion);
 
 	HistorialNavegacion& getHistorial();
 	void setHistorial(HistorialNavegacion);
@@ -28,6 +28,9 @@ public:
 
 	bool siguientePag();
 	bool anteriorPag();
+
+	void guardarArchivoPestania(std::ofstream& out);
+	static Pestania cargarArchivoPestania(std::ifstream& in);
 
 
 private:
