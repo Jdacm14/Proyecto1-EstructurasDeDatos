@@ -1,14 +1,14 @@
 #pragma once
 #include "Browser.h"
 #include "Interfaz.h"
-#include<condition_variable>
+#include<atomic>
 
 class Controladora
 {
 private:
 	Browser* browser;
 	char opcion;
-	std::condition_variable cv;
+	std::atomic_bool seguirVerificando;
 
 public:
 	Controladora();

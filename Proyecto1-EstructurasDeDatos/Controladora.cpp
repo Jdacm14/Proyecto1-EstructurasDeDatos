@@ -2,6 +2,7 @@
 
 Controladora::Controladora()
 {
+    seguirVerificando = true;
 	browser = new Browser();
 	opcion = ' ';
 }
@@ -12,13 +13,16 @@ Controladora::~Controladora()
 
 void Controladora::msjOpcionNoValida()
 {
+    std::cout << "Opcion no valida, por favor ingrese una de las opciones ofrecidas" << std::endl;
 }
 
 void Controladora::verificarSitiosEliminados()
 {
-    while (true) {
-        std::this_thread::sleep_for(std::chrono::seconds(10));
-        Interfaz::eliminarSitios(*browser);
+    while (seguirVerificando) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));      //Verifica cada 0.1 segundos
+        if(seguirVerificando) {
+            Interfaz::eliminarSitios(*browser);  // Solo se ejecuta si seguirVerificando es true
+        }
     }
 }
 
@@ -59,7 +63,8 @@ void Controladora::controlMenuGeneral()
             }
            
         }
-        else if (tecla == 'q') {  // Presionar 'q' para salir del bucle
+        else if (tecla == 'q') {// Presionar 'q' para salir del bucle
+            seguirVerificando = false;
             break; // Salir del bucle
         }
         else {
@@ -99,12 +104,12 @@ void Controladora::controlMenuGeneral()
 
         }
         
-        // Pausa para mostrar el resultado
-        std::cout << "\nPresione 'q' para salir o use las flechas para navegar.\n";
         
     } while (true);  // Bucle infinito hasta que se presione 'q'
 
-    verificador.join();
+    if (verificador.joinable()) {
+        verificador.join();
+    }
 }
 
 
