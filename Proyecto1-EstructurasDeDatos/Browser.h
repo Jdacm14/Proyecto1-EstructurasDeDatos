@@ -64,5 +64,9 @@ public:
     void importarSesion(const std::string&);
 
     void verificarSitios();
+
+    void guardarArchivoNavegador(std::ofstream& out);
+    static Browser* cargarArchivoNavegador(std::ifstream& in);
+
 };
 
