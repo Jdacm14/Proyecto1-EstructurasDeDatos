@@ -153,8 +153,8 @@ void Interfaz::irAlSitioWeb(Browser& navegador)  // Pasar navegador por referenc
             std::cout << "Visitando: " << sitioEncontrado->getUrl() << " - " << sitioEncontrado->getTitulo() << std::endl;
 
             // Agregar al historial de navegación
-            if (navegador.getPestaniaActualReal().getHistorial().getHistorialSize() < navegador.getLimiteHistorial()) {
-                navegador.agregarSitioWeb(sitioEncontrado);
+            if (navegador.getPestaniaActualReal()->getHistorial()->getHistorialSize() < navegador.getLimiteHistorial()) {
+                navegador.agregarSitioWeb(*sitioEncontrado);
                 //navegador.getPestaniaEnPos(navegador.getPestaniaActual()).getHistorial().agregarPagina(sitioEncontrado);
                
             }else{
@@ -198,15 +198,15 @@ void Interfaz::agregarBookmark(Browser& b)
     }
 
     // Buscar la URL en los sitios cargados
-    SitioWeb sitioEncontrado = csv.buscarSitioPorURL(op);
+    SitioWeb sitioEncontrado = *csv.buscarSitioPorURL(op);
 
     if (sitioEncontrado.getUrl() != "404 - Not Found") {
         // Si la URL fue encontrada, mostrar URL y título
         
-        for (SitioWeb sitio : b.getPestaniaActualReal().getHistorial().getLista()) {
-            if (sitio.getUrl() == sitioEncontrado.getUrl()) {
+        for (SitioWeb* sitio : *b.getPestaniaActualReal()->getHistorial()->getHistorialList()) {
+            if (sitio->getUrl() == sitioEncontrado.getUrl()) {
                 std::cout << " Sitio encontrado en el historial" << std::endl;
-                for (Bookmark bo : b.getPestaniaActualReal().geVectortBookmarks()) {
+                for (Bookmark bo : b.getPestaniaActualReal()->geVectortBookmarks()) {
                     if (sitioEncontrado.getUrl() == bo.getURL()) {
                         std::cout << "Este sitio ya es un bookmark en esta pestania" << "\n";
                         system("pause");
@@ -236,7 +236,7 @@ void Interfaz::agregarBookmark(Browser& b)
                     bo.agregarEtiqueta(s);
                 }
 
-                b.getPestaniaActualReal().agregarBookmark(bo);
+                b.getPestaniaActualReal()->agregarBookmark(bo);
                 return;
             }
         }
@@ -261,7 +261,7 @@ void Interfaz::verBookmarks(Browser& b)
     std::cout << "----------------------------------------------------------------" << std::endl;
     std::cout << "                          LISTA DE BOOKMARKS                    " << std::endl;
   
-    b.getPestaniaActualReal().mostrarBookmarks();
+    b.getPestaniaActualReal()->mostrarBookmarks();
     system("pause");
 }
 
@@ -454,21 +454,19 @@ void Interfaz::cambiarPestania(Browser& b, int n) {
 }
 
 void Interfaz::cambiarHistorial(Browser& b, int n) {
-    /*if (n == 75 && b.getPestaniaActualReal().getHistorial()->obtenerPaginaActual()->getUrl() != "404 - Not Found") {
+    if (n == 75 && b.getPestaniaActualReal()->getHistorial()->obtenerPaginaActual()->getUrl() != "404 - Not Found") {
         if (b.irAtras()) {
-
-            b.getPestaniaActualReal().getHistorial()->setPaginaActual(77);
-
+            b.getPestaniaActualReal()->getHistorial()->setPaginaActual(75);
             mostrarPaginaActual(b);
         }
     }
-    if (n == 77 && b.getPestaniaActualReal().getHistorial()->obtenerPaginaActual()->getUrl() != "404 - Not Found") {
+    if (n == 77 && b.getPestaniaActualReal()->getHistorial()->obtenerPaginaActual()->getUrl() != "404 - Not Found") {
         if (b.irAdelante()) {
-            b.getPestaniaActualReal().getHistorial()->setPaginaActual(77);
+            b.getPestaniaActualReal()->getHistorial()->setPaginaActual(77);
             mostrarPaginaActual(b);
         }
-    }*/
-    if (n == TECLA_IZQUIERDA) {
+    }
+   /* if (n == TECLA_IZQUIERDA) {
         if (b.irAtras()) {
             mostrarPaginaActual(b);
         }
@@ -479,11 +477,11 @@ void Interfaz::cambiarHistorial(Browser& b, int n) {
     else if (n == TECLA_DERECHA) {
         if (b.irAdelante()) {
 
-            b.getPestaniaActualReal().getHistorial().setPaginaActual(n);
+            b.getPestaniaActualReal()->getHistorial()->setPaginaActual(n);
 
             mostrarPaginaActual(b);
         }
-    }
+    }*/
 
 }
 

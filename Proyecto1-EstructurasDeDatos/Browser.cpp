@@ -58,19 +58,17 @@ void Browser::setLimiteHistorial(int lim){
     limiteHistorial = lim;
 }
 
-
-Pestania* Browser::getPestaniaActualReal()
+//Pestania* Browser::getPestaniaActualReal()
 
 void Browser::setMinutosDeTodasLasPest(int min)
 {
 
-    for (Pestania& p : Pestanias) {
-        p.getHistorial().setMinutosTodosSitios(min);
+    for (Pestania* p : Pestanias) {
+        p->getHistorial()->setMinutosTodosSitios(min);
     }
 }
 
-Pestania& Browser::getPestaniaActualReal()
-
+Pestania* Browser::getPestaniaActualReal()
 {
     if (PestaniaActual >= 0 && PestaniaActual < Pestanias.size()) {
         return Pestanias[PestaniaActual];
@@ -81,8 +79,8 @@ Pestania& Browser::getPestaniaActualReal()
 bool Browser::haysitios()
 {
     int cont = 0;
-    for (Pestania p : Pestanias) {
-        if (!p.getHistorial().getLista().empty()) {
+    for (Pestania* p : Pestanias) {
+        if (!p->getHistorial()->getHistorialList()->empty()) {
             cont++;
         }
     }
@@ -94,9 +92,10 @@ bool Browser::haysitios()
 
 void Browser::agregarSitioWeb(const SitioWeb& s)
 {
+    SitioWeb sitio = s;
     std::lock_guard<std::mutex> lock(mtx);
-   
-   Pestanias[PestaniaActual].getHistorial().agregarPagina(s);
+
+   Pestanias.at(PestaniaActual)->getHistorial()->agregarPagina(&sitio);
    std::cout << "Sitio web agregado." << std::endl;
     
     
@@ -105,10 +104,10 @@ void Browser::agregarSitioWeb(const SitioWeb& s)
 
 int Browser::nuevaPestania() {
     std::lock_guard<std::mutex> lock(mtx);
-    Pestanias.push_back(Pestania());  // Añadir nueva Pestania
+    Pestanias.push_back(new Pestania());  // Añadir nueva Pestania
     PestaniaActual = static_cast<int>(Pestanias.size()) - 1;
     for (int i = (int)Pestanias.size() - 1; i > 0; i--) {
-        Pestanias.at(PestaniaActual - i).getHistorial().setearActualAlPrincipio();
+        Pestanias.at(PestaniaActual - i)->getHistorial()->setearActualAlPrincipio();
     }
     std::cout << "Nueva Pestania creada, ahora estás en la Pestania #" << PestaniaActual << std::endl;
     return PestaniaActual;
@@ -198,49 +197,49 @@ void Browser::exportarSesion(const std::string& nombreArchivo) {
     // Guardar cada pestaña
     for (const auto& pestania : Pestanias) {
         pestania->guardarEnBinario(nombreArchivo);  // Guardar cada pestaña, incluyendo su historial
-     //Si no funciona, comentar a partir de aqui
-    int numeroPestanias = (int) Pestanias.size();
-    archivo.write(reinterpret_cast<const char*>(&numeroPestanias), sizeof(numeroPestanias));
+        //Si no funciona, comentar a partir de aqui
+        int numeroPestanias = (int)Pestanias.size();
+        archivo.write(reinterpret_cast<const char*>(&numeroPestanias), sizeof(numeroPestanias));
 
-    // Guardar la pestaña actual
-    archivo.write(reinterpret_cast<const char*>(&PestaniaActual), sizeof(PestaniaActual));
+        // Guardar la pestaña actual
+        archivo.write(reinterpret_cast<const char*>(&PestaniaActual), sizeof(PestaniaActual));
 
-    // Exportar cada pestaña
-    for (auto& pestaña : Pestanias) {
-        HistorialNavegacion& historial = pestaña.getHistorial();
-        int historialSize = (int) historial.getHistorialSize();
-        archivo.write(reinterpret_cast<const char*>(&historialSize), sizeof(historialSize));
+        // Exportar cada pestaña
+        for (auto pestana : Pestanias) {
+            HistorialNavegacion* historial = pestana->getHistorial();
+            int historialSize = (int)historial->getHistorialSize();
+            archivo.write(reinterpret_cast<const char*>(&historialSize), sizeof(historialSize));
 
-        // Exportar cada página del historial
-        for (const auto& pagina : historial.obtenerHistorial()) {
-            size_t urlLength = pagina.first.size();
-            size_t tituloLength = pagina.second.size();
+            // Exportar cada página del historial
+            for (const auto pagina : historial->obtenerHistorial()) {
+                size_t urlLength = pagina.first.size();
+                size_t tituloLength = pagina.second.size();
 
-            archivo.write(reinterpret_cast<const char*>(&urlLength), sizeof(urlLength));
-            archivo.write(pagina.first.c_str(), urlLength);
+                archivo.write(reinterpret_cast<const char*>(&urlLength), sizeof(urlLength));
+                archivo.write(pagina.first.c_str(), urlLength);
 
-            archivo.write(reinterpret_cast<const char*>(&tituloLength), sizeof(tituloLength));
-            archivo.write(pagina.second.c_str(), tituloLength);
+                archivo.write(reinterpret_cast<const char*>(&tituloLength), sizeof(tituloLength));
+                archivo.write(pagina.second.c_str(), tituloLength);
+            }
+
+            // Exportar los bookmarks
+            std::vector<Bookmark>& bookmarks = pestana->geVectortBookmarks();
+            int numBookmarks = (int)bookmarks.size();
+            archivo.write(reinterpret_cast<const char*>(&numBookmarks), sizeof(numBookmarks));
+
+            for (auto& bookmark : bookmarks) {
+                size_t urlLength = bookmark.getURL().size();
+                size_t titleLength = bookmark.getTitle().size();
+
+                archivo.write(reinterpret_cast<const char*>(&urlLength), sizeof(urlLength));
+                archivo.write(bookmark.getURL().c_str(), urlLength);
+
+                archivo.write(reinterpret_cast<const char*>(&titleLength), sizeof(titleLength));
+                archivo.write(bookmark.getTitle().c_str(), titleLength);
+            }
+
         }
-
-        // Exportar los bookmarks
-        std::vector<Bookmark>& bookmarks = pestaña.geVectortBookmarks();
-        int numBookmarks = (int) bookmarks.size();
-        archivo.write(reinterpret_cast<const char*>(&numBookmarks), sizeof(numBookmarks));
-
-        for (auto& bookmark : bookmarks) {
-            size_t urlLength = bookmark.getURL().size();
-            size_t titleLength = bookmark.getTitle().size();
-
-            archivo.write(reinterpret_cast<const char*>(&urlLength), sizeof(urlLength));
-            archivo.write(bookmark.getURL().c_str(), urlLength);
-
-            archivo.write(reinterpret_cast<const char*>(&titleLength), sizeof(titleLength));
-            archivo.write(bookmark.getTitle().c_str(), titleLength);
-        }
-
     }
-
     // Guardar el índice de la pestaña actual
     archivo.write(reinterpret_cast<const char*>(&PestaniaActual), sizeof(PestaniaActual));
 
@@ -432,8 +431,8 @@ void Browser::importarSesion(const std::string& nombreArchivo) {
 void Browser::verificarSitios()
 {
     std::lock_guard<std::mutex> lock(mtx);
-    for (auto& pestana : Pestanias) {
-        pestana.getHistorial().eliminarSitiosWeb();
+    for (auto pestana : Pestanias) {
+        pestana->getHistorial()->eliminarSitiosWeb();
     }
 }
 

@@ -33,6 +33,11 @@ HistorialNavegacion::~HistorialNavegacion() {
    
 }
 
+std::list<SitioWeb>::iterator HistorialNavegacion::Getactual()
+{
+    return std::list<SitioWeb>::iterator();
+}
+
 // Agregar una página al historial
 void HistorialNavegacion::agregarPagina(SitioWeb* sitio) {
     if (historial->size() >= limiteEntradas) {
@@ -76,18 +81,21 @@ size_t HistorialNavegacion::getHistorialSize() const
 bool HistorialNavegacion::estaVacio()
 {
     return historial->empty();
-
-std::list<SitioWeb> HistorialNavegacion::getLista()
-{
-    return historial;
 }
+
+
+//
+//std::list<SitioWeb> HistorialNavegacion::getLista()
+//{
+//    return historial;
+//}
 
 
 void HistorialNavegacion::setMinutosTodosSitios(int n)
 {
     
-    for (SitioWeb& sitio : historial) {
-        sitio.setTiempo(n);
+    for (SitioWeb* sitio : *historial) {
+        sitio->setTiempo(n);
     }
 
 }
@@ -100,11 +108,12 @@ void HistorialNavegacion::setActualAlUltimo()
     else {
         actual = historial->end();  // Si est� vac�o, apunta al end()
     }
-  
+}
+
 void HistorialNavegacion::setearActualAlPrincipio()
 {
-    if (historial.size() >= 1) {
-        actual = std::prev(historial.end());
+    if (historial->size() >= 1) {
+        actual = std::prev(historial->end());
     }
     else {
         actual = actual;
@@ -113,9 +122,9 @@ void HistorialNavegacion::setearActualAlPrincipio()
 
 void HistorialNavegacion::eliminarSitiosWeb()
 {
-    historial.erase(std::remove_if(historial.begin(), historial.end(), [&](const SitioWeb& sitio) {
+    historial->erase(std::remove_if(historial->begin(), historial->end(), [&](const SitioWeb& sitio) {
         return sitio.haExpirado();
-    }), historial.end());
+    }), historial->end());
 }
 
 void HistorialNavegacion::setPaginaActual(int n)
@@ -270,7 +279,7 @@ void HistorialNavegacion::cargarDesdeBinario(const std::string& nombreArchivo) {
 }
 
 
-std::list<SitioWeb>& HistorialNavegacion::getHistorial() {
+std::list<SitioWeb*>* HistorialNavegacion::getHistorial() {
     return historial;
 }
 

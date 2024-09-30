@@ -47,7 +47,7 @@ public:
     void establecerLimite(int limite);
     size_t getHistorialSize();
     std::list<std::pair<std::string, std::string>> obtenerHistorial();
-    std::list<SitioWeb>& getHistorial();
+    std::list<SitioWeb*>* getHistorial();
 
     //Guardar
     void guardarEnBinario(const std::string& nombreArchivo) const;
