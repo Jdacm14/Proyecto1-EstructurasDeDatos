@@ -70,6 +70,8 @@ void Interfaz::mostrarPaginaActual(Browser& navegador)
         std::cout << " f - Incognito                                                  " << std::endl;
         std::cout << " g - Nueva Pestania                                             " << std::endl;
         std::cout << " h - Configuracion                                              " << std::endl;
+        std::cout << std::endl;
+        std::cout << " Presiones 'q' para salir...                                    " << std::endl;
         std::cout << "----------------------------------------------------------------" << std::endl;
         std::cout << "================= Pestania #" << navegador.getPestaniaActual() << " =================\n";
         std::cout << "URL: " << pagina.getUrl() << "\n";
@@ -342,19 +344,26 @@ void Interfaz::configuracion(Browser& b)
         std::cout << std::endl;
         std::cout << "Ingrese la cantidad de minutos: ";
         std::cin >> tiempo;
-        if (tiempo <= 0) {
-            std::cout << "Valor fuera de rango" << std::endl;
+
+        if (std::cin.fail()) {
+            std::cin.clear();  // Limpia el estado de error de cin
+            std::cout << "Entrada no valida. Por favor, ingresa un numero entero.\n";
+            system("pause");
         }
         else {
-            if (b.haysitios()) {
-                b.setMinutosDeTodasLasPest(tiempo);
+            if (tiempo <= 0) {                                              //Si el tiempo es mayor o diferente de 0
+                std::cout << "Valor fuera de rango" << std::endl;
             }
             else {
-                std::cout << "No hay sitios web para modificar... " << std::endl;
-                system("pause");
+                if (b.haysitios()) {                                   //Si hay sitios en alguna de las pestanias
+                    b.setMinutosDeTodasLasPest(tiempo);
+                }
+                else {
+                    std::cout << "No hay sitios web para modificar... " << std::endl;
+                    system("pause");
+                }
             }
         }
-
         break;
     default:
         break;
