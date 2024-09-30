@@ -11,9 +11,7 @@ bool CSV::cargarSitiosDesdeCSV(const std::string& archivo) {
     }
 
     // Limpiar cualquier contenido anterior en el vector de sitios web
-    if (!sitiosWeb.empty()) {
-        sitiosWeb.clear();
-    }
+    sitiosWeb.clear();
 
     // Leer cada línea del archivo CSV
     while (std::getline(file, linea)) {
@@ -24,9 +22,6 @@ bool CSV::cargarSitiosDesdeCSV(const std::string& archivo) {
         if (std::getline(ss, url, ',') && std::getline(ss, titulo, ',')) {
             // Crear un objeto SitioWeb y agregarlo al vector
             sitiosWeb.push_back(SitioWeb(url, titulo));
-        }
-        else {
-            std::cerr << "Formato incorrecto en: " << linea << std::endl;
         }
     }
 

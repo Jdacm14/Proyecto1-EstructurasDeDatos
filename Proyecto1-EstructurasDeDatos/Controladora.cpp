@@ -1,22 +1,17 @@
 #include "Controladora.h"
 
-// constructor
 Controladora::Controladora()
 {
 	browser = new Browser();
 	opcion = ' ';
 }
 
-// destructor, en esta clase es necesario para eliminar el browser
 Controladora::~Controladora()
 {
-    delete browser; // eliminamos la memoria
 }
 
-// muestra un mensaje si se ingresó una opción inválida
 void Controladora::msjOpcionNoValida()
 {
-    std::cout << "Opcion no valida, intenga de nuevo... " << std::endl;
 }
 
 void Controladora::verificarSitiosEliminados()

@@ -6,13 +6,9 @@
 #include <vector>
 
 class Pestania {
-private:
-	std::vector<Bookmark> bookmarks;
-	bool incognito;
-	HistorialNavegacion historial;
-
 public:
 	Pestania();
+
 
 	HistorialNavegacion& getHistorial();
 	void setHistorial(HistorialNavegacion);
@@ -33,4 +29,9 @@ public:
 	bool siguientePag();
 	bool anteriorPag();
 
+
+private:
+	std::vector<Bookmark> bookmarks;
+	bool incognito;
+	HistorialNavegacion historial;
 };
