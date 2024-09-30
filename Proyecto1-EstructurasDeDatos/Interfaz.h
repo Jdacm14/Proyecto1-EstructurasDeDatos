@@ -35,11 +35,12 @@ public:
 
 	static void importarYExportar(Browser&);
 
-	static void exportarSesion(Browser&);
+	/*static void exportarSesion(Browser&);
 
-	static void importarSesion(Browser&);
+	static void importarSesion(Browser&);*/
 
-
+	static Browser* imp(Browser&);
+	static void exp(Browser&);
 
 
 	static void configuracion(Browser&);
