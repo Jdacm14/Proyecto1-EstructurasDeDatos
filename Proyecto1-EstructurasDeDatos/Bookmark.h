@@ -12,16 +12,12 @@ private:
 
 public:
     Bookmark(const std::string, const std::string);
-    void agregarEtiqueta(std::string&);
+    void agregarEtiqueta(const std::string&);
     void mostrarEtiquetas();
-    bool tieneEtiqueta(std::string&);
+    bool tieneEtiqueta(const std::string&);
     std::string getURL();
     std::string getTitle();
-
-
-
     std::string toString();
-
 };
 
 

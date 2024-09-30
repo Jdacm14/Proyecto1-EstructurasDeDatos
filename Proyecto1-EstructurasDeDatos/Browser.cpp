@@ -1,11 +1,11 @@
 #include "Browser.h"
-// Implementación de los métodos
 
+// constructor
 Browser::Browser(int limite) : PestaniaActual(0), limiteHistorial(limite) { // probablemente haya que cambiar este constructor
-    // Crear la primera Pestania con el límite de historial dado
-    Pestanias.push_back(Pestania());
+    Pestanias.push_back(Pestania());     // Crear la primera Pestania con el límite de historial dado
 }
 
+// getters y setters
 std::vector<Pestania>& Browser::getPestanias()
 {
     return Pestanias;
@@ -78,6 +78,8 @@ void Browser::agregarSitioWeb(const SitioWeb& s)
 }
 
 
+
+// acá se crea una nueva pestaña
 int Browser::nuevaPestania() {
     std::lock_guard<std::mutex> lock(mtx);
     Pestanias.push_back(Pestania());  // Añadir nueva Pestania
@@ -86,9 +88,10 @@ int Browser::nuevaPestania() {
         Pestanias.at(PestaniaActual - i).getHistorial().setearActualAlPrincipio();
     }
     std::cout << "Nueva Pestania creada, ahora estás en la Pestania #" << PestaniaActual << std::endl;
-    return PestaniaActual;
+    return PestaniaActual;  // retorna el indice de la nueva pestaña
 }
 
+// cierra una pestaña
 void Browser::cerrarPestania(int index) {
     if (index >= 0 && index < Pestanias.size()) {
         Pestanias.erase(Pestanias.begin() + index);  // Eliminar la Pestania del vector
@@ -100,9 +103,10 @@ void Browser::cerrarPestania(int index) {
     }
 }
 
+// cambia a otra pestaña
 void Browser::cambiarPestania(int index) {
     if (index >= 0 && index < Pestanias.size()) {
-        PestaniaActual = index;
+        PestaniaActual = index; // cambia el índice
         std::cout << "Cambiado a la Pestania #" << index << std::endl;
     }
     else {
@@ -110,6 +114,7 @@ void Browser::cambiarPestania(int index) {
     }
 }
 
+// verifica que haya una pestaña despues
 bool Browser::existeSigPes()
 {
     if (PestaniaActual == (int)Pestanias.size()-1) {
@@ -118,39 +123,46 @@ bool Browser::existeSigPes()
     return true;
 }
 
-
+// cambia a la anterior pestaña
 bool Browser::irAtras() {
     return Pestanias[PestaniaActual].anteriorPag();
 }
 
+// cambia a la siguiente pestaña
 bool Browser::irAdelante() {
    return Pestanias[PestaniaActual].siguientePag();
 }
 
+// limpia el historial de la pestaña actual
 void Browser::limpiarHistorialPestaniaActual() {
     Pestanias[PestaniaActual].limpiarHistorialVentana();
 }
 
+// agrega un bookmark a la pestaña actual
 void Browser::agregarBookmarkPestaniaActual(Bookmark b)
 {
     Pestanias.at(PestaniaActual).agregarBookmark(b);
 }
 
+// muestra los bookmarks de las pestañas actuales
 void Browser::mostrarBookmarksPestaniaActual()
 {
     Pestanias.at(PestaniaActual).mostrarBookmarks();
 }
 
+// activa el incognito
 void Browser::activarIncognitoPestaniaActual() {
     Pestanias[PestaniaActual].activarIncognito();
     std::cout << "Modo incognito activado en la Pestania #" << PestaniaActual << std::endl;
 }
 
+// lo desactiva
 void Browser::desactivarIncognitoPestaniaActual() {
     Pestanias[PestaniaActual].desactivarIncognito();
     std::cout << "Modo incognito desactivado en la Pestania #" << PestaniaActual << std::endl;
 }
 
+// muestra los bookmarks de todas las pestañas
 void Browser::mostrarTodosBookmarks()
 {
     for (Pestania p : Pestanias) {
@@ -158,6 +170,7 @@ void Browser::mostrarTodosBookmarks()
     }
 }
 
+// mostrar todas las pestañas
 void Browser::mostrarPestanias() {
     std::cout << "=== Pestanias abiertas ===" << std::endl;
     for (size_t i = 0; i < Pestanias.size(); ++i) {
@@ -169,6 +182,7 @@ void Browser::mostrarPestanias() {
     }
 }
 
+// se exporta la sesión actual a un archivo binario
 void Browser::exportarSesion(const std::string& nombreArchivo) {
     std::ofstream archivo(nombreArchivo, std::ios::binary);
 
@@ -222,6 +236,7 @@ void Browser::exportarSesion(const std::string& nombreArchivo) {
     archivo.close();
 }
 
+// importa una sesión desde un archivo binario
 void Browser::importarSesion(const std::string& nombreArchivo) {
     std::ifstream archivo(nombreArchivo, std::ios::binary);
 

@@ -6,6 +6,7 @@
 #include <set> // para verificar duplicados
 #include<thread>
 #include<memory>
+#include <crtdbg.h>
 
 using Clock = std::chrono::steady_clock;
 using TimePoint = std::chrono::time_point<Clock>;
@@ -19,6 +20,7 @@ private:
 public:
     // Constructor
     SitioWeb(const std::string& _url = "", const std::string& _titulo = "");
+    virtual ~SitioWeb() = default;
 
     // Getters
     std::string getUrl() const;

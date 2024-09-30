@@ -65,6 +65,7 @@ void HistorialNavegacion::setearActualAlPrincipio()
     }
 }
 
+// elimnina el sitio web, según tiempo
 void HistorialNavegacion::eliminarSitiosWeb()
 {
     historial.erase(std::remove_if(historial.begin(), historial.end(), [&](const SitioWeb& sitio) {
@@ -73,6 +74,7 @@ void HistorialNavegacion::eliminarSitiosWeb()
 
 }
 
+// setea la pagina actual
 void HistorialNavegacion::setPaginaActual(int n)
 {
     if (historial.empty()) {
