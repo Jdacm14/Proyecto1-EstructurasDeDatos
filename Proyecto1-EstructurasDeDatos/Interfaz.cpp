@@ -70,6 +70,8 @@ void Interfaz::mostrarPaginaActual(Browser& navegador)
         std::cout << " f - Incognito                                                  " << std::endl;
         std::cout << " g - Nueva Pestania                                             " << std::endl;
         std::cout << " h - Configuracion                                              " << std::endl;
+        std::cout << std::endl;
+        std::cout << " Presiones 'q' para salir...                                    " << std::endl;
         std::cout << "----------------------------------------------------------------" << std::endl;
         std::cout << "================= Pestania #" << navegador.getPestaniaActual() << " =================\n";
         std::cout << "URL: " << pagina.getUrl() << "\n";
@@ -109,7 +111,8 @@ void Interfaz::irAlSitioWeb(Browser& navegador)  // Pasar navegador por referenc
 
             // Agregar al historial de navegación
             if (navegador.getPestaniaActualReal().getHistorial().getHistorialSize() < navegador.getLimiteHistorial()) {
-                navegador.getPestaniaEnPos(navegador.getPestaniaActual()).getHistorial().agregarPagina(sitioEncontrado);
+                navegador.agregarSitioWeb(sitioEncontrado);
+                //navegador.getPestaniaEnPos(navegador.getPestaniaActual()).getHistorial().agregarPagina(sitioEncontrado);
                
             }else{
                 std::cout << "No hay espacio para mas sitios... " << std::endl;
@@ -154,43 +157,50 @@ void Interfaz::agregarBookmark(Browser& b)
     // Buscar la URL en los sitios cargados
     SitioWeb sitioEncontrado = csv.buscarSitioPorURL(op);
 
-    if (sitioEncontrado.getTitulo() != "404 - Not Found") {
+    if (sitioEncontrado.getUrl() != "404 - Not Found") {
         // Si la URL fue encontrada, mostrar URL y título
-       /* std::cout << "Visitando: " << sitioEncontrado.getUrl() << " - " << sitioEncontrado.getTitulo() << std::endl;*/
-        for (Pestania p : b.getPestanias()) {
-            for (Bookmark bo : p.geVectortBookmarks()) {
-                if (sitioEncontrado.getUrl() == bo.getURL()) {
-                    std::cout << "Este sitio ya es un bookmark" << "\n";
-                    system("pause");
-                    return;
+        
+        for (SitioWeb sitio : b.getPestaniaActualReal().getHistorial().getLista()) {
+            if (sitio.getUrl() == sitioEncontrado.getUrl()) {
+                std::cout << " Sitio encontrado en el historial" << std::endl;
+                for (Bookmark bo : b.getPestaniaActualReal().geVectortBookmarks()) {
+                    if (sitioEncontrado.getUrl() == bo.getURL()) {
+                        std::cout << "Este sitio ya es un bookmark en esta pestania" << "\n";
+                        system("pause");
+                        return;
+                    }
                 }
+
+                while (s == false) {
+                    int siono;
+                    std::string eti;
+                    std::cout << " Desea agregar una etiqueta?... si(1) / no(2): ";
+                    std::cin >> siono;
+                    if (siono != 1) {
+                        s = true;
+                    }
+                    else {
+                        std::cout << " Ingresar etiqueta: ";
+                        std::cin >> eti;
+                        pes.push_back(eti);
+
+                    }
+                    std::cout << std::endl;
+                }
+
+                Bookmark bo(op, sitioEncontrado.getTitulo());
+                for (std::string s : pes) {
+                    bo.agregarEtiqueta(s);
+                }
+
+                b.getPestaniaActualReal().agregarBookmark(bo);
+                return;
             }
         }
 
-        while (s == false) {
-            int siono;
-            std::string eti;
-            std::cout << " Desea agregar una etiqueta?... si(1) / no(2): ";
-            std::cin >> siono;
-            if (siono != 1) {
-                s = true;
-            }
-            else {
-                std::cout << " Ingresar etiqueta: ";
-                std::cin >> eti;
-                pes.push_back(eti);
-
-            }
-            std::cout << std::endl;
-        }
-
-        Bookmark bo(op, sitioEncontrado.getTitulo());
-        for (std::string s : pes) {
-            bo.agregarEtiqueta(s);
-        }
-
-        b.getPestaniaActualReal().agregarBookmark(bo);
-      
+        
+        std::cout << "Sitio no se encuentra en el historial de esta pestania... " << std::endl;
+       
     }
     else {
         // Si no se encuentra, mostrar el error
@@ -206,7 +216,8 @@ void Interfaz::verBookmarks(Browser& b)
     std::cout << std::endl;
     std::cout << "----------------------------------------------------------------" << std::endl;
     std::cout << "                          LISTA DE BOOKMARKS                    " << std::endl;
-    b.mostrarTodosBookmarks();
+  
+    b.getPestaniaActualReal().mostrarBookmarks();
     system("pause");
 }
 
@@ -328,7 +339,7 @@ void Interfaz::configuracion(Browser& b)
     std::cout << "----------------------------------------------------------------" << std::endl;
     std::cout << "                            CONFIGURACION                       " << std::endl;
     std::cout << " 1 - Limitar cantidad de sitios por pestania                    " << std::endl;
-    std::cout << " 2 - Configurar el tiempo por pestania                          " << std::endl;
+    std::cout << " 2 - Configurar el tiempo de cada sitio                         " << std::endl;
     std::cout << " Ingrese una opcion: ";
     std::cin >> opcion;
 
@@ -347,7 +358,30 @@ void Interfaz::configuracion(Browser& b)
 
         break;
     case 2: 
-        std::cout << "Esta opcion todavia no sirve" << std::endl;
+        int tiempo;
+        std::cout << std::endl;
+        std::cout << "Ingrese la cantidad de minutos: ";
+        std::cin >> tiempo;
+
+        if (std::cin.fail()) {
+            std::cin.clear();  // Limpia el estado de error de cin
+            std::cout << "Entrada no valida. Por favor, ingresa un numero entero.\n";
+            system("pause");
+        }
+        else {
+            if (tiempo <= 0) {                                              //Si el tiempo es mayor o diferente de 0
+                std::cout << "Valor fuera de rango" << std::endl;
+            }
+            else {
+                if (b.haysitios()) {                                   //Si hay sitios en alguna de las pestanias
+                    b.setMinutosDeTodasLasPest(tiempo);
+                }
+                else {
+                    std::cout << "No hay sitios web para modificar... " << std::endl;
+                    system("pause");
+                }
+            }
+        }
         break;
     default:
         break;
@@ -373,13 +407,13 @@ void Interfaz::cambiarPestania(Browser& b, int n) {
 void Interfaz::cambiarHistorial(Browser& b, int n) {
     if (n == 75 && b.getPestaniaActualReal().getHistorial().obtenerPaginaActual().getUrl() != "404 - Not Found") {
         if (b.irAtras()) {
-            b.getPestaniaActualReal().getHistorial().setPaginaActual(75);
+            b.getPestaniaActualReal().getHistorial().setPaginaActual(n);
             mostrarPaginaActual(b);
         }
     }
     if (n == 77 && b.getPestaniaActualReal().getHistorial().obtenerPaginaActual().getUrl() != "404 - Not Found") {
         if (b.irAdelante()) {
-            b.getPestaniaActualReal().getHistorial().setPaginaActual(77);
+            b.getPestaniaActualReal().getHistorial().setPaginaActual(n);
             mostrarPaginaActual(b);
         }
     }
@@ -389,18 +423,7 @@ void Interfaz::cambiarHistorial(Browser& b, int n) {
 
 
 void Interfaz::eliminarSitios(Browser& b) {
-    while (true) {
-        std::this_thread::sleep_for(std::chrono::seconds(2));  
-        
-        for (Pestania p : b.getPestanias()) {
-            p.getHistorial().eliminarSitiosWeb();
-        }
-
-        for (Pestania p : b.getPestanias()) {
-            if (p.getHistorial().obtenerHistorial().empty()) {
-              
-                break;
-            }
-        }
-    }
+    
+    b.verificarSitios();
+    
 }

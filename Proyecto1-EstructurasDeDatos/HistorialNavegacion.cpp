@@ -60,10 +60,22 @@ SitioWeb& HistorialNavegacion::obtenerPaginaActual() {
     return *actual;
 }
 
+std::list<SitioWeb> HistorialNavegacion::getLista()
+{
+    return historial;
+}
 
 bool HistorialNavegacion::estaVacio()
 {
     return historial.empty();
+}
+
+void HistorialNavegacion::setMinutosTodosSitios(int n)
+{
+    
+    for (SitioWeb& sitio : historial) {
+        sitio.setTiempo(n);
+    }
 }
 
 void HistorialNavegacion::setActualAlUltimo()
@@ -74,20 +86,21 @@ void HistorialNavegacion::setActualAlUltimo()
     else {
         actual = historial.end();  // Si está vacío, apunta al end()
     }
-  
+
 void HistorialNavegacion::setearActualAlPrincipio()
 {
-    actual = std::prev(historial.end());
+    if (historial.size() >= 1) {
+        actual = std::prev(historial.end());
+    }
+    else {
+        actual = actual;
+    }
 }
 
 void HistorialNavegacion::eliminarSitiosWeb()
 {
-    TimePoint ahora = Clock::now();
-
-    auto duracionExpiracion = std::chrono::minutes(5);
-
     historial.erase(std::remove_if(historial.begin(), historial.end(), [&](const SitioWeb& sitio) {
-        return(ahora - sitio.getCreacion()) >= duracionExpiracion;
+        return sitio.haExpirado();
     }), historial.end());
 }
 

@@ -1,7 +1,7 @@
 #include "SitioWeb.h"
 
-// Constructor
-SitioWeb::SitioWeb(const std::string& _url, const std::string& _dominio, const std::string& _titulo) : url(_url), dominio(_dominio), titulo(_titulo), creacion(Clock::now()) {}
+
+SitioWeb::SitioWeb(const std::string& _url, const std::string& _dominio, const std::string& _titulo) : url(_url), dominio(_dominio), titulo(_titulo), creacion(Clock::now(), tiempo(5)) {}
 
 // Getters
 std::string SitioWeb::getUrl() const {
@@ -22,11 +22,21 @@ TimePoint SitioWeb::getCreacion() const
     return creacion;
 }
 
+int SitioWeb::getTiempo() const
+{
+    return tiempo;
+}
+
+void SitioWeb::setTiempo(int t)
+{
+    this->tiempo = t;
+}
+
 bool SitioWeb::haExpirado() const
 {
     auto ahora = std::chrono::steady_clock::now();
     auto duracion = std::chrono::duration_cast<std::chrono::minutes>(ahora - creacion);
-    return duracion.count() >= 5;  // Retorna true si han pasado 5 minutos o más   
+    return duracion.count() >= this->tiempo;
 }
 
 // Setters

@@ -17,7 +17,7 @@ private:
     std::string dominio; // Atributo para el dominio
     std::string titulo; // Atributo para el título
     TimePoint creacion;
-
+    int tiempo;
 public:
     // Constructor
     SitioWeb(const std::string& _url = "", const std::string& _dominio = "", const std::string& _titulo = "");
@@ -27,6 +27,8 @@ public:
     std::string getDominio() const;
     std::string getTitulo() const;
     TimePoint getCreacion() const;
+    int getTiempo() const;
+    void setTiempo(int);
 
     bool haExpirado() const;
 

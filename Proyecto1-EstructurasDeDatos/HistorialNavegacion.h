@@ -2,6 +2,7 @@
 #include <list>
 #include <iterator> 
 #include "SitioWeb.h"
+#include<algorithm>
 
 
 class HistorialNavegacion {
@@ -19,7 +20,9 @@ public:
     // Métodos
     void agregarPagina(const SitioWeb& sitio);
     SitioWeb& obtenerPaginaActual();
+    std::list<SitioWeb> getLista();
 
+    void setMinutosTodosSitios(int);
     bool estaVacio();
     void setActualAlUltimo();
     void setearActualAlPrincipio();
