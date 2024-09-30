@@ -2,13 +2,14 @@
 #include <list>
 #include <iterator> 
 #include "SitioWeb.h"
+#include "CSV.h"
 
 
 class HistorialNavegacion {
 private:
-    std::list<SitioWeb> historial;  // Usamos std::list para manejar los sitios web
-    std::list<SitioWeb>::iterator actual;  // Iterador para la página actual
-    int limiteEntradas;  // Límite de entradas en el historial
+    std::list<SitioWeb*>* historial;  // Usamos std::list para manejar los sitios web
+    std::list<SitioWeb*>::iterator actual;  // Iterador para la p�gina actual
+    int limiteEntradas;  // L�mite de entradas en el historial
 
 public:
     HistorialNavegacion(int limite = 10);  // Constructor
@@ -16,9 +17,11 @@ public:
 
 
     std::list<SitioWeb>::iterator Getactual();
-    // Métodos
-    void agregarPagina(const SitioWeb& sitio);
-    SitioWeb& obtenerPaginaActual();
+    // M�todos
+    void agregarPagina(SitioWeb* sitio);
+    SitioWeb* obtenerPaginaActual();
+    std::list<SitioWeb*>* getHistorialList() const;
+    size_t getHistorialSize() const;
 
     bool estaVacio();
     void setActualAlUltimo();
@@ -35,9 +38,9 @@ public:
     std::list<std::pair<std::string, std::string>> obtenerHistorial();
 
     //Guardar
-    void guardarEnBinario(std::ofstream& archivo) const;
+    void guardarEnBinario(const std::string& nombreArchivo) const;
 
     //Cargar
-    void cargarDesdeBinario(std::ifstream& archivo);
+    void cargarDesdeBinario(const std::string& nombreArchivo);
 
 };

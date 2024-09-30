@@ -8,10 +8,11 @@
 class Pestania {
 public:
 	Pestania();
+	~Pestania();
 
 
-	HistorialNavegacion& getHistorial();
-	void setHistorial(HistorialNavegacion&);
+	HistorialNavegacion* getHistorial();
+	void setHistorial(HistorialNavegacion*);
 	std::vector<Bookmark>& geVectortBookmarks();
 	
 	//void agregarSitioWeb();
@@ -30,13 +31,13 @@ public:
 	bool anteriorPag();
 
 	//Guardar
-	void guardarEnBinario(std::ofstream& archivo) const;
+	void guardarEnBinario(const std::string& nombreArchivo) const;
 
 	//Cargar
-	void cargarDesdeBinario(std::ifstream& archivo);
+	void cargarDesdeBinario(const std::string& nombreArchivo);
 
 private:
 	std::vector<Bookmark> bookmarks;
 	bool incognito;
-	HistorialNavegacion historial;
+	HistorialNavegacion* historial;
 };

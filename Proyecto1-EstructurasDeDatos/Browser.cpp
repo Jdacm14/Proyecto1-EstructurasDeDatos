@@ -1,18 +1,31 @@
 #include "Browser.h"
 // Implementación de los métodos
 
-Browser::Browser(int limite) : PestaniaActual(0), limiteHistorial(limite) { // probablemente haya que cambiar este constructor
-    // Crear la primera Pestania con el límite de historial dado
-    Pestanias.push_back(Pestania());
+Browser::Browser(int limite) : PestaniaActual(0), limiteHistorial(limite) {
+    // Crear la primera Pestania con el límite de historial dado, usando new y almacenando un puntero
+    Pestanias.push_back(new Pestania());
 }
 
-std::vector<Pestania>& Browser::getPestanias()
+Browser::~Browser()
+{
+    // Liberar memoria de cada Pestania
+        for (auto pestania : Pestanias) {
+            delete pestania;
+        }
+    Pestanias.clear();
+}
+
+std::vector<Pestania*>& Browser::getPestanias()
 {
     return Pestanias;
 }
 
-void Browser::setPestanias(std::vector<Pestania>& listaPestanias)
+void Browser::setPestanias(std::vector<Pestania*>& listaPestanias)
 {
+    // Liberar la memoria actual antes de asignar nuevas pestañas
+    for (auto pestania : Pestanias) {
+        delete pestania;
+    }
     Pestanias = listaPestanias;
 }
 
@@ -21,14 +34,19 @@ int Browser::getPestaniaActual()
     return PestaniaActual;
 }
 
-Pestania& Browser::getPestaniaEnPos(int pos)
+Pestania* Browser::getPestaniaEnPos(int pos)
 {
-    return Pestanias.at(pos);
+    if (pos >= 0 && pos < Pestanias.size()) {
+        return Pestanias[pos];
+    }
+    return nullptr;
 }
 
 void Browser::setPestaniaActual(int pest)
 {
-    PestaniaActual = pest;
+    if (pest >= 0 && pest < Pestanias.size()) {
+        PestaniaActual = pest;
+    }
 }
 
 int Browser::getLimiteHistorial()
@@ -40,9 +58,12 @@ void Browser::setLimiteHistorial(int lim){
     limiteHistorial = lim;
 }
 
-Pestania& Browser::getPestaniaActualReal()
+Pestania* Browser::getPestaniaActualReal()
 {
-    return Pestanias.at(PestaniaActual);
+    if (PestaniaActual >= 0 && PestaniaActual < Pestanias.size()) {
+        return Pestanias[PestaniaActual];
+    }
+    return nullptr;
 }
 
 
@@ -85,52 +106,38 @@ bool Browser::existeSigPes()
 
 
 bool Browser::irAtras() {
-    return Pestanias[PestaniaActual].anteriorPag();
+    return Pestanias[PestaniaActual]->anteriorPag();  // Usar -> para acceder a métodos de puntero
 }
 
 bool Browser::irAdelante() {
-   return Pestanias[PestaniaActual].siguientePag();
+    return Pestanias[PestaniaActual]->siguientePag();  // Usar ->
 }
 
 void Browser::limpiarHistorialPestaniaActual() {
-    Pestanias[PestaniaActual].limpiarHistorialVentana();
+    Pestanias[PestaniaActual]->limpiarHistorialVentana();  // Usar ->
 }
 
-void Browser::agregarBookmarkPestaniaActual(Bookmark b)
-{
-    Pestanias.at(PestaniaActual).agregarBookmark(b);
+void Browser::agregarBookmarkPestaniaActual(Bookmark b) {
+    Pestanias.at(PestaniaActual)->agregarBookmark(b);  // Usar ->
 }
 
-void Browser::mostrarBookmarksPestaniaActual()
-{
-    Pestanias.at(PestaniaActual).mostrarBookmarks();
+void Browser::mostrarBookmarksPestaniaActual() {
+    Pestanias.at(PestaniaActual)->mostrarBookmarks();  // Usar ->
 }
 
 void Browser::activarIncognitoPestaniaActual() {
-    Pestanias[PestaniaActual].activarIncognito();
+    Pestanias[PestaniaActual]->activarIncognito();  // Usar ->
     std::cout << "Modo incognito activado en la Pestania #" << PestaniaActual << std::endl;
 }
 
 void Browser::desactivarIncognitoPestaniaActual() {
-    Pestanias[PestaniaActual].desactivarIncognito();
+    Pestanias[PestaniaActual]->desactivarIncognito();  // Usar ->
     std::cout << "Modo incognito desactivado en la Pestania #" << PestaniaActual << std::endl;
 }
 
-void Browser::mostrarTodosBookmarks()
-{
-    for (Pestania p : Pestanias) {
-        p.mostrarBookmarks();
-    }
-}
-
-void Browser::mostrarPestanias() {
-    std::cout << "=== Pestanias abiertas ===" << std::endl;
-    for (size_t i = 0; i < Pestanias.size(); ++i) {
-        std::cout << "Pestania #" << i;
-        if (i == PestaniaActual) {
-            std::cout << " (actual)";
-        }
-        std::cout << std::endl;
+void Browser::mostrarTodosBookmarks() {
+    for (auto p : Pestanias) {
+        p->mostrarBookmarks();  // Usar -> para acceder a los métodos de puntero
     }
 }
 
@@ -138,25 +145,23 @@ void Browser::exportarSesion(const std::string& nombreArchivo) {
     std::ofstream archivo(nombreArchivo, std::ios::binary);
 
     if (!archivo.is_open()) {
-        std::cerr << "No se pudo abrir el archivo para exportar la sesión." << std::endl;
+        std::cerr << "Error al abrir el archivo para guardar la sesión del navegador." << std::endl;
         return;
     }
 
     // Guardar el número de pestañas
     size_t numPestanias = Pestanias.size();
     archivo.write(reinterpret_cast<const char*>(&numPestanias), sizeof(numPestanias));
-    std::cout << "Exportando " << numPestanias << " pestañas..." << std::endl;
 
     // Guardar cada pestaña
     for (const auto& pestania : Pestanias) {
-        pestania.guardarEnBinario(archivo);  // Llamamos al método guardarEnBinario de la clase Pestania
+        pestania->guardarEnBinario(nombreArchivo);  // Guardar cada pestaña, incluyendo su historial
     }
 
-    // Guardar la pestaña actual
+    // Guardar el índice de la pestaña actual
     archivo.write(reinterpret_cast<const char*>(&PestaniaActual), sizeof(PestaniaActual));
 
     archivo.close();
-    std::cout << "Sesión exportada con éxito." << std::endl;
 }
 
 
@@ -164,64 +169,33 @@ void Browser::importarSesion(const std::string& nombreArchivo) {
     std::ifstream archivo(nombreArchivo, std::ios::binary);
 
     if (!archivo.is_open()) {
-        std::cerr << "No se pudo abrir el archivo para importar la sesión." << std::endl;
+        std::cerr << "Error al abrir el archivo para importar la sesión del navegador." << std::endl;
         return;
     }
 
     // Leer el número de pestañas
     size_t numPestanias;
     archivo.read(reinterpret_cast<char*>(&numPestanias), sizeof(numPestanias));
-    if (archivo.fail()) {
-        std::cerr << "Error al leer el número de pestañas." << std::endl;
-        return;
+
+    // Limpiar las pestañas actuales antes de importar nuevas
+    for (auto pestania : Pestanias) {
+        delete pestania;  // Liberar memoria de las pestañas actuales
     }
-
-    std::cout << "Importando " << numPestanias << " pestañas..." << std::endl;
-
-    // Limpiar las pestañas actuales antes de cargar las nuevas
     Pestanias.clear();
 
-    // Importar cada pestaña
-    std::vector<Pestania> pest;
+    // Leer cada pestaña
     for (size_t i = 0; i < numPestanias; ++i) {
-        Pestania nuevaPestania;
 
-        std::cout << "Cargando pestaña #" << i << "..." << std::endl;
-
-        nuevaPestania.cargarDesdeBinario(archivo);  // Llamamos al método cargarDesdeBinario de la clase Pestania
-
-        if (archivo.fail()) {
-            std::cerr << "Error al cargar la pestaña #" << i << "." << std::endl;
-            return;
-        }
-
-        pest.push_back(nuevaPestania);
+        Pestania* nuevaPestania = new Pestania();  // Crear nueva pestaña dinámicamente
+        nuevaPestania->cargarDesdeBinario(nombreArchivo);  // Cargar el historial y los bookmarks de la pestaña
+        Pestanias.push_back(nuevaPestania);  // Añadir la pestaña al navegador
     }
 
-    // Establecer las nuevas pestañas en el navegador
-    setPestanias(pest);
-
-    // Leer la pestaña actual
+    // Leer el índice de la pestaña actual
     archivo.read(reinterpret_cast<char*>(&PestaniaActual), sizeof(PestaniaActual));
-    if (archivo.fail()) {
-        std::cerr << "Error al leer la pestaña actual." << std::endl;
-        return;
-    }
-
-    std::cout << "Pestaña actual es: " << PestaniaActual << std::endl;
-
-    // Verificar si la pestaña actual tiene historial vacío
-    if (getPestaniaEnPos(PestaniaActual).getHistorial().estaVacio()) {
-        std::cout << "El historial de la pestaña actual está vacío." << std::endl;
-    }
-    else {
-        std::cout << "El historial de la pestaña actual tiene entradas." << std::endl;
-    }
 
     archivo.close();
-    std::cout << "Sesión importada con éxito." << std::endl;
 }
-
 
 //std::vector<Pestania> Browser::importarPestaniasConHistorial(const std::string& nombreArchivo) {
 //    std::ifstream archivo(nombreArchivo, std::ios::binary);

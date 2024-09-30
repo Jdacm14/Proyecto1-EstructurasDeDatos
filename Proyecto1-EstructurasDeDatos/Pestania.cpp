@@ -2,15 +2,20 @@
 
 Pestania::Pestania(): incognito(false)
 {
-	historial = HistorialNavegacion();
+	historial = new HistorialNavegacion();
 }
 
-HistorialNavegacion& Pestania::getHistorial()
+Pestania::~Pestania()
+{
+	delete historial;
+}
+
+HistorialNavegacion* Pestania::getHistorial()
 {
 	return historial;
 }
 
-void Pestania::setHistorial(HistorialNavegacion& histo)
+void Pestania::setHistorial(HistorialNavegacion* histo)
 {
 	historial = histo;
 }
@@ -52,76 +57,71 @@ bool Pestania::getEstadoIncognito()
 
 void Pestania::limpiarHistorialVentana()
 {
-	historial.limpiarHistorial();
+	if (historial) {  // Verifica que el puntero no sea nulo
+		historial->limpiarHistorial();  // Accede al método usando '->' ya que es un puntero
+	}
 }
 
 bool Pestania::siguientePag()
 {
-		if (historial.puedeAvanzar()) {
-			return true;
-		}
-		return false;
+	return historial && historial->puedeAvanzar();
 }
 
 bool Pestania::anteriorPag()
 {
-	if (historial.puedeRetroceder()) {
-		return true;
-	}
-	return false;
+	return historial && historial->puedeRetroceder();
 }
 
-void Pestania::guardarEnBinario(std::ofstream& archivo) const {
-	std::cout << "Guardando pestania..." << std::endl;
+void Pestania::guardarEnBinario(const std::string& nombreArchivo) const {
+	// Abrir el archivo en modo binario
+	std::ofstream archivo(nombreArchivo, std::ios::binary);
 
-	// Guardar el estado de incógnito
-	archivo.write(reinterpret_cast<const char*>(&incognito), sizeof(incognito));
-	std::cout << "Modo incógnito: " << incognito << std::endl;
-
-	// Guardar el historial de navegación
-	std::cout << "Guardando historial de navegación..." << std::endl;
-	historial.guardarEnBinario(archivo);
-
-	// Guardar el número de bookmarks
-	size_t numBookmarks = bookmarks.size();
-	archivo.write(reinterpret_cast<const char*>(&numBookmarks), sizeof(numBookmarks));
-	std::cout << "Número de bookmarks a guardar: " << numBookmarks << std::endl;
-
-	// Guardar cada bookmark
-	for (Bookmark bookmark : bookmarks) {
-		bookmark.guardarEnBinario(archivo);
-		std::cout << "Guardando bookmark: " << bookmark.getURL() << ", " << bookmark.getTitle() << std::endl;
+	if (!archivo.is_open()) {
+		std::cerr << "Error al abrir el archivo para guardar el historial." << std::endl;
+		return;
 	}
-	std::cout << "Pestania guardada correctamente." << std::endl;
+
+	// Guardar el historial de navegación usando el método de HistorialNavegacion
+	if (historial != nullptr) {
+		historial->guardarEnBinario(nombreArchivo);  // Delegar la tarea a HistorialNavegacion
+	}
+	else {
+		std::cerr << "No hay historial disponible para guardar." << std::endl;
+	}
+
+	// Cerrar el archivo después de guardar los datos
+	archivo.close();
 }
 
 
-void Pestania::cargarDesdeBinario(std::ifstream& archivo) {
-	std::cout << "Cargando pestania..." << std::endl;
+void Pestania::cargarDesdeBinario(const std::string& nombreArchivo) {
+	std::ifstream archivo(nombreArchivo, std::ios::binary);
+
+	if (!archivo.is_open()) {
+		std::cerr << "Error al abrir el archivo para cargar los datos de la pestaña." << std::endl;
+		return;
+	}
 
 	// Cargar el estado de incógnito
 	archivo.read(reinterpret_cast<char*>(&incognito), sizeof(incognito));
-	std::cout << "Modo incógnito cargado: " << incognito << std::endl;
 
 	// Cargar el historial de navegación
-	std::cout << "Cargando historial de navegación..." << std::endl;
-	historial.cargarDesdeBinario(archivo);
+	historial->cargarDesdeBinario(nombreArchivo);
 
 	// Cargar el número de bookmarks
-	//size_t numBookmarks;
-	//archivo.read(reinterpret_cast<char*>(&numBookmarks), sizeof(numBookmarks));
-	//std::cout << "Número de bookmarks a cargar: " << numBookmarks << std::endl;
+	size_t numBookmarks;
+	archivo.read(reinterpret_cast<char*>(&numBookmarks), sizeof(numBookmarks));
+	bookmarks.clear();
+	for (size_t i = 0; i < numBookmarks; ++i) {
+		Bookmark bookmark("", "");
+		bookmark.cargarDesdeBinario(archivo);
+		bookmarks.push_back(bookmark);
+	}
 
-	//// Limpiar la lista de bookmarks y cargar cada uno
-	//bookmarks.clear();
-	//for (size_t i = 0; i < numBookmarks; ++i) {
-	//	Bookmark bookmark("", "");
-	//	bookmark.cargarDesdeBinario(archivo);
-	//	bookmarks.push_back(bookmark);
-	//	std::cout << "Bookmark cargado: " << bookmark.getURL() << ", " << bookmark.getTitle() << std::endl;
-	//}
-	//std::cout << "Pestania cargada correctamente." << std::endl;
+	archivo.close();
 }
+
+
 
 
 
