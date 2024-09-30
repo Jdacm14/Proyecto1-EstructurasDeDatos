@@ -10,25 +10,24 @@
 
 class Browser {
 private:
-    std::vector<Pestania*> Pestanias;    // Lista de Pestanias abiertas
+    std::vector<Pestania> Pestanias;    // Lista de Pestanias abiertas
     int PestaniaActual;                // Índice de la Pestania actual
     int limiteHistorial;              // Límite global para el historial de cada Pestania
     std::mutex mtx;
 
 public:
     Browser(int limiteHistorial = 10);
-    ~Browser();  // Destructor para liberar memoria
 
-    std::vector <Pestania*>& getPestanias();
-    void setPestanias(std::vector<Pestania*>&);
+    std::vector <Pestania>& getPestanias();
+    void setPestanias(std::vector<Pestania>);
     int getPestaniaActual();
-    Pestania* getPestaniaEnPos(int);
+    Pestania& getPestaniaEnPos(int);
     void setPestaniaActual(int);
     int getLimiteHistorial();
     void setLimiteHistorial(int);
     void setMinutosDeTodasLasPest(int);
 
-    Pestania* getPestaniaActualReal();
+    Pestania& getPestaniaActualReal();
 
     bool haysitios();
     void agregarSitioWeb(const SitioWeb&);
@@ -63,11 +62,7 @@ public:
 
     //Importar/Deserializar datos
     void importarSesion(const std::string&);
-  
-    std::vector<Pestania*> importarPestaniasConHistorial(const std::string& nombreArchivo);
-    std::vector<Bookmark> importarBookmarks(const std::string& nombreArchivo);
 
     void verificarSitios();
-
 };
 
