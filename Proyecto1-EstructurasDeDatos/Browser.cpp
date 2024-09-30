@@ -1,8 +1,8 @@
 #include "Browser.h"
-// ImplementaciÛn de los mÈtodos
+// Implementaci√≥n de los m√©todos
 
 Browser::Browser(int limite) : PestaniaActual(0), limiteHistorial(limite) { // probablemente haya que cambiar este constructor
-    // Crear la primera Pestania con el lÌmite de historial dado
+    // Crear la primera Pestania con el l√≠mite de historial dado
     Pestanias.push_back(Pestania());
 }
 
@@ -80,12 +80,12 @@ void Browser::agregarSitioWeb(const SitioWeb& s)
 
 int Browser::nuevaPestania() {
     std::lock_guard<std::mutex> lock(mtx);
-    Pestanias.push_back(Pestania());  // AÒadir nueva Pestania
+    Pestanias.push_back(Pestania());  // A√±adir nueva Pestania
     PestaniaActual = static_cast<int>(Pestanias.size()) - 1;
     for (int i = (int)Pestanias.size() - 1; i > 0; i--) {
         Pestanias.at(PestaniaActual - i).getHistorial().setearActualAlPrincipio();
     }
-    std::cout << "Nueva Pestania creada, ahora est·s en la Pestania #" << PestaniaActual << std::endl;
+    std::cout << "Nueva Pestania creada, ahora est√°s en la Pestania #" << PestaniaActual << std::endl;
     return PestaniaActual;
 }
 
@@ -93,10 +93,10 @@ void Browser::cerrarPestania(int index) {
     if (index >= 0 && index < Pestanias.size()) {
         Pestanias.erase(Pestanias.begin() + index);  // Eliminar la Pestania del vector
         PestaniaActual = (index == 0) ? 0 : index - 1;  // Cambiar a la Pestania anterior si se cierra la actual
-        std::cout << "Pestania cerrada, ahora est·s en la Pestania #" << PestaniaActual << std::endl;
+        std::cout << "Pestania cerrada, ahora est√°s en la Pestania #" << PestaniaActual << std::endl;
     }
     else {
-        std::cout << "Õndice de Pestania inv·lido" << std::endl;
+        std::cout << "√çndice de Pestania inv√°lido" << std::endl;
     }
 }
 
@@ -106,7 +106,7 @@ void Browser::cambiarPestania(int index) {
         std::cout << "Cambiado a la Pestania #" << index << std::endl;
     }
     else {
-        std::cout << "Õndice de Pestania inv·lido" << std::endl;
+        std::cout << "√çndice de Pestania inv√°lido" << std::endl;
     }
 }
 
@@ -177,20 +177,20 @@ void Browser::exportarSesion(const std::string& nombreArchivo) {
         return;
     }
 
-    // Guardar el n˙mero de pestaÒas
+    // Guardar el n√∫mero de pesta√±as
     int numeroPestanias = (int) Pestanias.size();
     archivo.write(reinterpret_cast<const char*>(&numeroPestanias), sizeof(numeroPestanias));
 
-    // Guardar la pestaÒa actual
+    // Guardar la pesta√±a actual
     archivo.write(reinterpret_cast<const char*>(&PestaniaActual), sizeof(PestaniaActual));
 
-    // Exportar cada pestaÒa
-    for (auto& pestaÒa : Pestanias) {
-        HistorialNavegacion& historial = pestaÒa.getHistorial();
+    // Exportar cada pesta√±a
+    for (auto& pesta√±a : Pestanias) {
+        HistorialNavegacion& historial = pesta√±a.getHistorial();
         int historialSize = (int) historial.getHistorialSize();
         archivo.write(reinterpret_cast<const char*>(&historialSize), sizeof(historialSize));
 
-        // Exportar cada p·gina del historial
+        // Exportar cada p√°gina del historial
         for (const auto& pagina : historial.obtenerHistorial()) {
             size_t urlLength = pagina.first.size();
             size_t tituloLength = pagina.second.size();
@@ -203,7 +203,7 @@ void Browser::exportarSesion(const std::string& nombreArchivo) {
         }
 
         // Exportar los bookmarks
-        std::vector<Bookmark>& bookmarks = pestaÒa.geVectortBookmarks();
+        std::vector<Bookmark>& bookmarks = pesta√±a.geVectortBookmarks();
         int numBookmarks = (int) bookmarks.size();
         archivo.write(reinterpret_cast<const char*>(&numBookmarks), sizeof(numBookmarks));
 
@@ -230,25 +230,25 @@ void Browser::importarSesion(const std::string& nombreArchivo) {
         return;
     }
 
-    // Limpiar las pestaÒas actuales antes de cargar las nuevas
+    // Limpiar las pesta√±as actuales antes de cargar las nuevas
     Pestanias.clear();
 
-    // Leer el n˙mero de pestaÒas
+    // Leer el n√∫mero de pesta√±as
     int numeroPestanias;
     archivo.read(reinterpret_cast<char*>(&numeroPestanias), sizeof(numeroPestanias));
 
-    // Leer la pestaÒa actual
+    // Leer la pesta√±a actual
     archivo.read(reinterpret_cast<char*>(&PestaniaActual), sizeof(PestaniaActual));
 
     for (int i = 0; i < numeroPestanias; ++i) {
         Pestania nuevaPestania;
         HistorialNavegacion nuevoHistorial;
 
-        // Leer el tamaÒo del historial
+        // Leer el tama√±o del historial
         int historialSize;
         archivo.read(reinterpret_cast<char*>(&historialSize), sizeof(historialSize));
 
-        // Leer cada p·gina del historial
+        // Leer cada p√°gina del historial
         for (int j = 0; j < historialSize; ++j) {
             size_t urlLength, tituloLength;
             archivo.read(reinterpret_cast<char*>(&urlLength), sizeof(urlLength));
@@ -264,7 +264,7 @@ void Browser::importarSesion(const std::string& nombreArchivo) {
             nuevoHistorial.agregarPagina(sitio);
         }
 
-        if (!nuevoHistorial.getHistorial().empty()) {   // aseguramos que el historial no estÈ vacÌo
+        if (!nuevoHistorial.getHistorial().empty()) {   // aseguramos que el historial no est√© vac√≠o
             nuevoHistorial.setearActualAlPrincipio();
         }
         else {
@@ -305,4 +305,5 @@ void Browser::verificarSitios()
         pestana.getHistorial().eliminarSitiosWeb();
     }
 }
+
 

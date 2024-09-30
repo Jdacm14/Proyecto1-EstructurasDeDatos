@@ -7,8 +7,8 @@
 class HistorialNavegacion {
 private:
     std::list<SitioWeb> historial;  // Usamos std::list para manejar los sitios web
-    std::list<SitioWeb>::iterator actual;  // Iterador para la p·gina actual
-    int limiteEntradas;  // LÌmite de entradas en el historial
+    std::list<SitioWeb>::iterator actual;  // Iterador para la p√°gina actual
+    int limiteEntradas;  // L√≠mite de entradas en el historial
 
 public:
     HistorialNavegacion(int limite = 10);  // Constructor
@@ -16,7 +16,7 @@ public:
 
 
     std::list<SitioWeb>::iterator Getactual();
-    // MÈtodos
+    // M√©todos
     void agregarPagina(const SitioWeb& sitio);
     SitioWeb& obtenerPaginaActual();
     std::list<SitioWeb> getLista();
@@ -36,3 +36,4 @@ public:
     std::list<SitioWeb>& getHistorial();
 
 };
+
